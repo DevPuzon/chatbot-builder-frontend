@@ -1,20 +1,49 @@
 <ion-content>
   <ion-row>
     <ion-col size="12" size-sm="12" size-md="4" size-lg="4">
-      <div class="btn-deploy-con" (click)="onDeploy()">
-        <ion-button color="primary">
-          <ion-icon name="rocket-outline" slot="start"></ion-icon>
-          Deploy
-        </ion-button>
-      </div>
-      <div class="blocks-container" >
-        <div class="block-container" *ngFor="let data of maindatas;index as i" (click)="onBlocks(data,i)">
-          <p class="block-title">{{data.block_name}}</p>
+      <div class="blocks-word-main-con"> 
+        <h1>Blocks</h1>
+        <div class="btn-deploy-con" (click)="onDeploy()">
+          <ion-button color="primary">
+            <ion-icon name="rocket-outline" slot="start"></ion-icon>
+            Deploy
+          </ion-button>
+        </div>
+        <div class="blocks-container" >
+          <div class="block-container" *ngFor="let data of maindatas;index as i" (click)="onBlocks(data,i)">
+            <p class="block-title">{{data.block_name}}</p>
+          </div>
+        </div>
+        <div class="blocks-container"  > 
+          <ion-button (click)="addBlock()"  color="primary" fill="outline" style="width:100% ;height: 40px;"> 
+            Add Block
+          </ion-button>
         </div>
       </div>
-      <div class="blocks-container" (click)="addBlock()">
-        <div class="block-container">
-          <p class="block-title">Add block</p>
+      <div class="blocks-word-main-con">
+        <h1>Word matching</h1>
+        <ion-row>
+          <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+            <p class="say">User say.</p>
+            <input class="word-input" type="text" placeholder="Please hit enter to add word.">
+            <ion-row  class="choices-block"> 
+              <ion-col *ngFor="let block of ['','','','']" > 
+                <div class="non-block">
+                  <p class="txt-block">Hsssdaello</p>
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACLklEQVRIidWVvW8TQRTEf89nQgFS7BYMBbIQXCIXoaOkoYxDdJsOJIrQh4gAlQsQ2EbpUuAiEnTeA3TpaPgLUFJEia1ISQMWdIldUARkHs3FOsfnD9xlqtt582Z2b/f24KxDBhU9z5sA5kRkFpgBMmGpAWwBgaoGvu///u8AY8y8iJRU9dqQSR6IyJNqtfpppADP8xwRKQKPhxifxhvXdVcKhcLfKJnoSRzPHGC5Vqu96vGLDowx88CHMcyjmLPWBieDzgo8z5sQkVJMgxWRLHAY4Q5Dzo/Rl8PD0R0AzPXZUHdycvIbsBThlkLuZow+m0gkZnsCRCQfIwaYbjabT62174DPqvrFWvv+6OjoGTAd16CqnYDOHhhj9oDrfUKOVXWm3W7/AnAc54KIbAHn++j3rLU3ulYAXOojJjRadxynkcvlvotIZYA5wOWTh55jOiJ0SL3zLUQDfgxoOAYettvtzPb29hVVfRRy/fAzLmBzQMML3/dryWTybTKZXPd9vw68HKD/GhcQxAgBdlKpVNEY8wC4C9wxxtxPpVKvgZ24BlXd6AlQ1QA4iNHXWq3WVWA1wq2GXD1Gv59OpzsBXVfFwsLCPVX92GclI0FE8tVqtRPgRIu7u7v1qampi8DtMf2L1tq1KNFzTF3XXRGR8hjmJdd1n58mB/1w8kAZyA4x3heR5ehrGSkAYHFx8Vyr1cqr6qyI3FLVDICINFR1U1WDdDq9UalU/gyZxBnGP2+juUbleEnvAAAAAElFTkSuQmCC">
+                </div>
+              </ion-col> 
+            </ion-row>
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
+            <p class="say">Bot reply.</p>
+
+          </ion-col>
+        </ion-row>
+        <div class="blocks-container"  > 
+          <ion-button    color="primary" fill="outline" style="width:100% ;height: 40px;"> 
+            Add Block
+          </ion-button>
         </div>
       </div>
     </ion-col>
