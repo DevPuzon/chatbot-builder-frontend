@@ -16,8 +16,12 @@ export class AppComponent {
     private statusBar: StatusBar
   ) {
     this.initializeApp();
+    this.toggleDarkTheme(true);
   }
 
+  toggleDarkTheme(shouldAdd) {  
+    document.body.classList.toggle('dark', false); 
+  } 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();

@@ -63,6 +63,11 @@
 ion-content{
   --ion-background-color:#F3F2F2;
 }
+
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/theming/
+
+/** Ionic CSS Variables **/
 :root {
   /** primary **/
   --ion-color-primary: #3880ff;
@@ -291,6 +296,7 @@ ion-content{
     --color: white;
   }
 }
+
 
 /*
  * Dark Colors

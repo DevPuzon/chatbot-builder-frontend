@@ -7,7 +7,7 @@ import { CryptService } from './crypt.service';
 })
 export class CustomHttpService {
 
-  private base  ="http://localhost:8080/"; 
+  private base  ="https://fbchatbotexample012.herokuapp.com/"; 
   // private base  ="http://192.168.0.108:8000/";  
   private token  = "";
   constructor(private http:HttpClient,
