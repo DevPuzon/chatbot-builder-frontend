@@ -8,7 +8,8 @@ import { BlockUtils } from '../utils/block-utils';
 import { ChatbotFunc } from '../utils/chatbot-func';
 import { CustomHttpService } from '../utils/custom-http.service';
 import { ToastMessageService } from '../utils/toast-message.service';
-import { UuidService } from '../utils/uuid.service'; 
+import { UuidService } from '../utils/uuid.service';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'; 
 
 declare var $:any;
 @Component({
@@ -30,6 +31,10 @@ export class AutomationComponent implements OnInit {
     private custHttps:CustomHttpService) { }
 
   ngOnInit() {
+    // $( function() {
+    //   $( "#sortable" ).sortable();
+    //   $( "#sortable" ).disableSelection();
+    // } );
     this.init(); 
     if(BlockUtils.getLocalBlocks() == undefined
      ||BlockUtils.getLocalBlocks() == null  ){ 
@@ -160,7 +165,10 @@ export class AutomationComponent implements OnInit {
     });
     return await popover.present();
   } 
-
+  delBtnTxt(mini_block_index,button_index){
+    this.maindatas[this.block_index].mini_blocks[mini_block_index].message.attachment.payload.buttons.splice(button_index,1);
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
   async onDeploy(){
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present();
@@ -294,5 +302,18 @@ export class AutomationComponent implements OnInit {
     this.maindatas[this.block_index]
     .mini_blocks[mini_block_i].message.attachment.payload.elements.push(element);
      BlockUtils.setLocalBlocks(this.maindatas);
+  }
+  drop(event){
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+    }
+    this.maindatas[this.block_index].mini_blocks = event.container.data;
+    BlockUtils.setLocalBlocks(this.maindatas)
   }
 }

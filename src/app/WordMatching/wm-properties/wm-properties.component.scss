@@ -1,0 +1,40 @@
+.container{
+    padding: 10px;
+}
+.c-blocks-container{
+    .input-button-title{
+        padding: 8px;
+        border-radius: 7px;
+        width: 100%;
+    }
+    .choices-block{
+        display: flex;
+        .non-block{
+            cursor: pointer;
+            margin: 3px;
+            border-radius: 8px;
+            width: fit-content;
+            padding: 5px;
+            background: #C6C6C6;
+            p{
+                white-space: pre;
+                margin: 0px;
+            }
+        }
+        .has-block{
+            cursor: pointer;
+            margin: 3px;
+            border-radius: 8px;
+            padding: 5px;
+            width: fit-content;
+            background: #208EF0;;
+            .txt-block{
+                color: #FFF;
+            }
+            p{
+                white-space: pre;
+                margin: 0px;
+            }
+        }
+    }
+}

@@ -25,16 +25,22 @@ import {
   GoogleLoginProvider,
   FacebookLoginProvider
 } from 'angularx-social-login'; //https://github.com/abacritt/angularx-social-login
+import { WordMatchingContentComponent } from './WordMatching/word-matching-content/word-matching-content.component';
+import { WmPropertiesComponent } from './WordMatching/wm-properties/wm-properties.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
-  declarations: [AppComponent,AutomationComponent,AddTextButtonPopupComponent],
-  entryComponents: [AutomationComponent,AddTextButtonPopupComponent],
+  declarations: [AppComponent,AutomationComponent,AddTextButtonPopupComponent,
+    WordMatchingContentComponent,WmPropertiesComponent],
+  entryComponents: [AutomationComponent,AddTextButtonPopupComponent,
+    WordMatchingContentComponent,WmPropertiesComponent],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // firestore
     AngularFireAuthModule, // auth
     AngularFireStorageModule, // storage
     AngularFireDatabaseModule,
+    DragDropModule,
     FormsModule, HttpClientModule, 
     ReactiveFormsModule,
     SocialLoginModule,

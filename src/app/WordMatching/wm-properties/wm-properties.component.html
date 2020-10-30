@@ -1,0 +1,24 @@
+<div class="container">
+  <h4>Bot reply</h4> 
+  <ion-toolbar class="toolbar-segment md in-toolbar hydrated">
+    <ion-segment value="all" class="md in-toolbar hydrated">
+      <ion-segment-button (click)="isBlock()" value="all" >Blocks</ion-segment-button>
+      <ion-segment-button  (click)="isBlock()"value="favorites" >Text</ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <div class="c-blocks-container"  *ngIf="is_block">
+    <h4>Redirect to block</h4> 
+    <ion-row  class="choices-block"> 
+      <ion-col *ngFor="let block of blocks;index as i" (click)="onCheckBtnBlock(i)"> 
+        <div [class]="block.ischecked ? 'has-block':'non-block'">
+          <p class="txt-block">{{block.block_name}}</p>
+        </div>
+      </ion-col> 
+    </ion-row>
+  </div>
+  <div class="c-blocks-container" *ngIf="!is_block">
+    <h4>Input message</h4> 
+    <input type="text" class="input-button-title"
+    placeholder="How are you?....." [(ngModel)]="txt_URL" (keyup)="kURL()">
+  </div>
+</div>

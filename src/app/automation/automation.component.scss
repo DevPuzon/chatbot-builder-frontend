@@ -84,6 +84,12 @@ ion-col{
         margin-top: 18px;
     }
     .builder-block-container{
+        // display: flex;
+        .logo-nresize{
+            cursor: n-resize;
+            width: 17px;
+            margin: 10px;
+        }
         .txt-container{
             .textarea-container{
                 padding: 10px;
@@ -103,74 +109,89 @@ ion-col{
                     border: 0;
                 }
             }
-            .button{
-                padding: 2px;
-                cursor: pointer;
-                text-align: center;
-                border-top: 1px solid #C7C7C7;
-                p{
-                    margin: 0px;
-                }
-                .button-title{
-                    color: #0084CA;
-                    font-size: 19px;
-                    margin-top: 10px;
-                    margin-bottom: 0px;
-                } 
-                .button-subtitle{
-                    display: flex;
-                    margin-top: 7px;
-                    margin-bottom: 12px;
-                    justify-content: center;
-                    p{
-                        color: #858484;
-                        margin-right: 7px;
-                        border-right: 1px solid;
-                        padding-right: 2px;
-                        font-size: 14px;
-                    }
-                }
-                .button-url{
-                    color: #AAAAAA;
-                    font-size: 14px;
-                    font-weight: bold;
-                    margin-top: 7px;
-                    margin-bottom: 12px;
-                }
-            } 
-            .err-button{
-                padding: 2px;
-                cursor: pointer;
-                text-align: center;
-                border: 1px solid #FC4338;
-                p{
-                    margin: 0px;
-                }
-                .button-title{
+            .buttons-container:hover  .del-btn-txt {
+                display: block;
+            }
+            .buttons-container{ 
+                .del-btn-txt{
+                    width: 100%;
+                    // background: #FC4338;
                     color: #FC4338;
-                    font-size: 19px;
-                    margin-top: 10px;
-                    margin-bottom: 0px;
-                } 
-                .button-subtitle{
-                    display: flex;
-                    margin-top: 7px;
-                    margin-bottom: 12px;
-                    justify-content: center;
+                    padding: 8px;
+                    display: none;
+                }
+                .button{
+                    padding: 2px;
+                    cursor: pointer;
+                    text-align: center;
+                    border-top: 1px solid #C7C7C7;
                     p{
+                        margin: 0px;
+                    }
+                    .button-title{
+                        color: #0084CA;
+                        font-size: 19px;
+                        margin-top: 10px;
+                        margin-bottom: 0px;
+                    } 
+                    .button-subtitle{
+                        // display: flex;
+                        margin-top: 7px;
+                        margin-bottom: 12px;
+                        justify-content: center;
+                        p{
+                            background: #D0D0D0; 
+                            padding: 7px;
+                            border-radius: 6px;
+                            margin: 2px;
+                            // border-right: 1px solid; 
+                            font-size: 14px;
+                        }
+                    }
+                    .button-url{
+                        color: #AAAAAA;
+                        font-size: 14px;
+                        font-weight: bold;
+                        margin-top: 7px;
+                        margin-bottom: 12px;
+                    }
+                } 
+                .err-button{
+                    padding: 2px;
+                    cursor: pointer;
+                    text-align: center;
+                    border: 1px solid #FC4338;
+                    p{
+                        margin: 0px;
+                    }
+                    .button-title{
                         color: #FC4338;
-                        margin-right: 7px;
-                        border-right: 1px solid;
-                        padding-right: 2px;
-                        font-size: 14px;
+                        font-size: 19px;
+                        margin-top: 10px;
+                        margin-bottom: 0px;
+                    } 
+                    .button-subtitle{
+                        // display: flex;
+                        margin-top: 7px;
+                        margin-bottom: 12px;
+                        justify-content: center;
+                        p{  
+                            padding: 7px;
+                            color: #FC4338;
+                            border: 2px solid #FC4338;
+                            border-radius: 6px;
+                            margin: 2px;
+                            // border-right: 1px solid; 
+                            font-size: 14px;
+                        }
                     }
-                }
-                .button-url{
-                    color: #FC4338;
-                    font-size: 14px;
-                    font-weight: bold; 
-                    margin-top: 7px;
-                    margin-bottom: 12px;
+                    .button-url{
+                        color: #FC4338;
+                        font-size: 14px;
+                        font-weight: bold; 
+                        margin-top: 7px;
+                        margin-bottom: 12px;
+                    }
                 }
             }
             .button-add{ 
@@ -186,6 +207,9 @@ ion-col{
                         padding: 10px; 
                     } 
                 } 
+                .add-button-txt{
+                    margin: revert;
+                }
             }
             .button-add:hover{   
                 background-color: #F4F4F4;
@@ -213,7 +237,7 @@ ion-col{
             .car-container{   
                 margin-right: 10px;  
                 .car-img{
-                    height: 180px;
+                    min-height: 180px;
                     cursor: pointer; 
                     justify-content: center;
                     align-items: center;
@@ -271,7 +295,7 @@ ion-col{
                 text-align-last: center;
                 h5{
                     color: #FFFFFF;
-                    font-weight: bold;
+                    font-size: 18px;
                 }
             }
         }
@@ -300,4 +324,11 @@ ion-col{
 .err-text{
     border: 2px solid red;
     color: red;
+}
+
+.cdk-drop-list-dragging .cdk-drag {
+transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.cdk-drag-animating {
+transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
 }

@@ -1,6 +1,6 @@
 <ion-content>
   <ion-row>
-    <ion-col size="12" size-sm="12" size-md="4" size-lg="4">
+    <ion-col style="height: 100vh; overflow: scroll;" size="12" size-sm="12" size-md="4" size-lg="4">
       <div class="blocks-word-main-con"> 
         <h1>Blocks</h1>
         <div class="btn-deploy-con" (click)="onDeploy()">
@@ -20,32 +20,7 @@
           </ion-button>
         </div>
       </div>
-      <div class="blocks-word-main-con">
-        <h1>Word matching</h1>
-        <ion-row>
-          <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-            <p class="say">User say.</p>
-            <input class="word-input" type="text" placeholder="Please hit enter to add word.">
-            <ion-row  class="choices-block"> 
-              <ion-col *ngFor="let block of ['','','','']" > 
-                <div class="non-block">
-                  <p class="txt-block">Hsssdaello</p>
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACLklEQVRIidWVvW8TQRTEf89nQgFS7BYMBbIQXCIXoaOkoYxDdJsOJIrQh4gAlQsQ2EbpUuAiEnTeA3TpaPgLUFJEia1ISQMWdIldUARkHs3FOsfnD9xlqtt582Z2b/f24KxDBhU9z5sA5kRkFpgBMmGpAWwBgaoGvu///u8AY8y8iJRU9dqQSR6IyJNqtfpppADP8xwRKQKPhxifxhvXdVcKhcLfKJnoSRzPHGC5Vqu96vGLDowx88CHMcyjmLPWBieDzgo8z5sQkVJMgxWRLHAY4Q5Dzo/Rl8PD0R0AzPXZUHdycvIbsBThlkLuZow+m0gkZnsCRCQfIwaYbjabT62174DPqvrFWvv+6OjoGTAd16CqnYDOHhhj9oDrfUKOVXWm3W7/AnAc54KIbAHn++j3rLU3ulYAXOojJjRadxynkcvlvotIZYA5wOWTh55jOiJ0SL3zLUQDfgxoOAYettvtzPb29hVVfRRy/fAzLmBzQMML3/dryWTybTKZXPd9vw68HKD/GhcQxAgBdlKpVNEY8wC4C9wxxtxPpVKvgZ24BlXd6AlQ1QA4iNHXWq3WVWA1wq2GXD1Gv59OpzsBXVfFwsLCPVX92GclI0FE8tVqtRPgRIu7u7v1qampi8DtMf2L1tq1KNFzTF3XXRGR8hjmJdd1n58mB/1w8kAZyA4x3heR5ehrGSkAYHFx8Vyr1cqr6qyI3FLVDICINFR1U1WDdDq9UalU/gyZxBnGP2+juUbleEnvAAAAAElFTkSuQmCC">
-                </div>
-              </ion-col> 
-            </ion-row>
-          </ion-col>
-          <ion-col size="12" size-sm="12" size-md="6" size-lg="6">
-            <p class="say">Bot reply.</p>
-
-          </ion-col>
-        </ion-row>
-        <div class="blocks-container"  > 
-          <ion-button    color="primary" fill="outline" style="width:100% ;height: 40px;"> 
-            Add Block
-          </ion-button>
-        </div>
-      </div>
+      <app-word-matching-content></app-word-matching-content>
     </ion-col>
     <ion-col size="12" size-sm="12" size-md="8" size-lg="8">
       <input  id="fUploadAuto"
@@ -57,80 +32,96 @@
       <div class="builder-container" > 
         <!-- <h1 class="builder-block-title">{{block.block_name}}</h1> -->
         <input [readonly]="block_index == 0" [(ngModel)]="block.block_name" (keyup)="kBlockTitle(block.block_name)" type="text" class="builder-block-title">
-        <div class="builder-block-container" *ngFor="let min_block of block.mini_blocks;index as i">
-          <!-- TEXT BUTTON -->
-          <div class="txt-container block-card" 
-          *ngIf="min_block.type == 'button-text-only' || min_block.type == 'text-only'">
-            <div class="textarea-container"> 
-              <textarea class="txt" #textminblock (keyup)="kTitleTxt(textminblock.value,min_block,i)" >{{min_block.type == 'text-only'? min_block.message.text : min_block.message.attachment.payload.text}} </textarea>
-              <!-- <textarea class="txt" *ngIf="min_block.type == 'text-only'" [(ngModel)]="min_block.message.text" > {{min_block.message.text}} </textarea>
-              <textarea class="txt" *ngIf="min_block.type == 'button-text-only'" [(ngModel)]="min_block.message.attachment.payload.text"  >{{min_block.message.attachment.payload.text}} </textarea> -->
-            </div>
-            <div class="buttons-container"
-             *ngIf="min_block.type == 'button-text-only'">
-              <div [class]="btn.title == '' ? 'err-button':'button'" *ngFor="let btn of min_block.message.attachment.payload.buttons; index as x"
-               (click)="onBtnTxtEdit($event,i,x,btn.title,btn.url)">
-                <p class="button-title">{{btn.title == '' ? 'Enter button name':btn.title}}</p>
-                <p class="button-url" *ngIf="btn.type =='web_url'">{{btn.url}}</p>
-                <div class="button-subtitle" *ngIf="btn.type =='postback'">
-                  <div *ngFor="let payload of btn.payload">
-                    <p  *ngIf="payload.ischecked">{{payload.block_name}} </p>
+        <div  cdkDropList #minha="cdkDropList"  [cdkDropListData]="block.mini_blocks"
+        class="col-lg-6" (cdkDropListDropped)="drop($event)" >
+          <div *ngFor="let min_block of block.mini_blocks;index as i"
+          cdkDrag > 
+            <div class="builder-block-container" >
+              <ion-row>
+                <ion-col size="auto">
+                  <img class="logo-nresize" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABj0lEQVRIidWWPy8EQRjGn3du9hKFkIhIlD7C7SUqEf8ajY7u3J7beb+ABKFQCEqaS26buZYPoBENQrVXq7TEKbR2LjsaFBJ7s4fCU87zPO9vkslkBsghZt5g5o08nYJrUCm1CeAAwLzv+69xHF//GiAMw3UiqgI4AXALYKlcLo/EcXzZqysch9eklLMAHgE8G2PmrLXLzLzzIwAzV4ho1Rgz3Wg0Hj/Wtdadd8gKM1f6Blhrz5MkmdJad756WutOkiRT1trzrBkyy4yi6CHLb7VaLwBesjI9z+Cn+nMAMbNyDadpuggAQogz145M03Qix4bu3kF5Ov9cFIbhoXOYiKy1Ng9ACiHuXcP9HHIuKaW2lVLbeTr//6JlAur1+phSaug7v1qtDtdqtfG+AYVCYQHAdRAEo1+9IAhGi8Xiled581kzKMsEPh+cNSnlTLfbXQMAY0zked4FEZ02m829zE32ArTb7ZtSqTRgrT0G8EREA0KIXZfhToAPiO/7gwC2AEwCOIqiaN+lm0v9fFveAA3EkwkZ3V4jAAAAAElFTkSuQmCC">
+                </ion-col>
+                <ion-col>
+                  <!-- TEXT BUTTON -->
+                  <div  class="txt-container block-card" 
+                  *ngIf="min_block.type == 'button-text-only' || min_block.type == 'text-only'">
+                    <div class="textarea-container"> 
+                      <textarea class="txt" #textminblock (keyup)="kTitleTxt(textminblock.value,min_block,i)" >{{min_block.type == 'text-only'? min_block.message.text : min_block.message.attachment.payload.text}} </textarea>
+                      <!-- <textarea class="txt" *ngIf="min_block.type == 'text-only'" [(ngModel)]="min_block.message.text" > {{min_block.message.text}} </textarea>
+                      <textarea class="txt" *ngIf="min_block.type == 'button-text-only'" [(ngModel)]="min_block.message.attachment.payload.text"  >{{min_block.message.attachment.payload.text}} </textarea> -->
+                    </div>
+                    <div class="buttons-container"
+                    *ngIf="min_block.type == 'button-text-only'">
+                      <div [class]="btn.title == '' ? 'err-button':'button'" *ngFor="let btn of min_block.message.attachment.payload.buttons; index as x"
+                      (click)="onBtnTxtEdit($event,i,x,btn.title,btn.url)">
+                        <p class="button-title">{{btn.title == '' ? 'Enter button name':btn.title}}</p>
+                        <p class="button-url" *ngIf="btn.type =='web_url'">{{btn.url}}</p>
+                        <div class="button-subtitle" *ngIf="btn.type =='postback'">
+                          <ion-row>
+                            <ion-col size="auto" *ngFor="let payload of btn.payload" >
+                              <p  *ngIf="payload.ischecked">{{payload.block_name}} </p></ion-col>
+                          </ion-row>
+                        </div>
+                        di
+                      </div>
+                    </div>
+                    <!-- {{min_block.message.attachment.payload.buttons.length}} -->
+                    
+                    <div class="button-add" id="add-{{i}}" (click)="addTextButton($event,i)" >
+                      <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
+                      <p class="add-button-txt">ADD BUTTON (OPTIONAL)</p>
+                    </div>
+                  </div>  
+                  <!-- IMAGE -->
+                  <div class="img-container block-card"
+                  *ngIf="min_block.type == 'image-only'"
+                  (click)="onGetImg(i,'image',-1)"> 
+                    <img *ngIf="min_block.message.attachment.payload.url != ''" src="{{min_block.message.attachment.payload.url}}" alt="">
+                    <div *ngIf="min_block.message.attachment.payload.url == ''" class="img-con-sub">
+                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABmJLR0QA/wD/AP+gvaeTAAALpklEQVR4nO2df3AU5RnHv8/eEbjJ0YJWKG0S1PFXO9NOa2js9AdFoLXFwRGswQLG7O4BVmairRXqjMqJf3QstoXMRA3Ze/eIxB83Ah2LOG0VtXbsD8VOx1ZLZ6qQpFXqryAXL+nl3qd/ZI/sbe5yd7lLcmH3M5OZex/ed98n9+V93h/77Abw8PDw8PDw8PDw8PDw8PCoHEgIwVPthMcIylQ74JGJJ0iF4QlSYfidBk3TaCoccSvOOdwbIRWGJ0iF4QlSYXiCVBieIBWGJ0iF4QlSYXiCVBieIBWGJ0iF4QlSYYw6y/IYIRqNLkulUmuI6OsAai1zD4DfAXhM07TD5e7TEyQLhmFcoChKh5RyCdGos9ZLrJ+NQojDiqJsbG5u/le5+vZCloNoNPpVRVH+CGBJAdWXSin/JIT4Srn69wSx0dHRcZ6U8gCAs4todjaAXxmGcUE5fPAEseHz+QSAcxzmAwCW+P3+oN/vDxLR5cz8S0eds4jowXL44M0hFtFodJmUMiNMMfMWXdd3OKo+B+A5IcQWAPemjUS0LBKJXK7r+rOl+OGNEItUKrXGYTqQRYzTaJr2UwBP2G1E5LxG0XiCWBDRYodpV742zLzTYfpGqX54gozwaXshkUgcKaDNy45yTalOeIKMUHTC4MyZM52bFFmqExMmSDgcnm4Lhv/YC4FAoD5fg8HBQWedf5fqxIQIIoRYU1dXd5CZp1NK0fP2AjPfkq8BEf3AUX4+V91CKbsgQog1APYCuMI0zY3lvv4E8pi9QERXW0vbrJimuRXAyrGuMR5GJVuXkihnEyMdrk5JKT8XCoWOl+DjpCGEeAbAUof5CWbeOTAw8BIABAKBBgC3YLQYT2ua9s1x9Jnx/ZctzpumeS0z28UAgNmKoghmXk5EFZ9lT0Q6M/8Zmbv1q4joqkAgMFbT9xRFubEcPpQlZAkh1jDzw8gu8NLpErpUVT0G4GoA7xXR7F1mXlmuE9+SBckSprKxwzCMhaX2NRlomvYigAZmfqaA6k+nUqkGXdf/UK7+SwpZOcQYYuYfE9E2ALMt22xFUQxm/tZ0CF2apr0BYHkkErncOg5ZjJEbVN0AXiCiR1VVfa7cfY9bkBxzRoqZm3Vd7xJCxAHYT0CXW6Grfbx9TjbWQWFJh4XFMq6QZYnhnDNSzHyDrutdAKCq6m4Av3Y0/ZkQ4vzxueoOihakEDEAgIhYSrkJwClbvWoAHdNswzipFCVIjtXUEIB1djHSWPuP2xzmpaZpbiikP2YmIYTzhtEZTcEbw0JHhhNmJtM0nwJwhc3cD+Dz1uR5mkgk8ilFUeqllPVEVA/gywDmAmjWNG1vcb/a9GBcG0NrZIxaTQFYr+v6mMcFRMSGYWxSFOVVjKy6qgG0m6a5m5kXMXNagDnMjCyZHqYQIqlpWslHE5VO3pBlmua1GL20TTFzc6FfUI7QtZyZYwC2ENEyAHPGuIQfQJcQYn0h/U1nxhRkvGEqGzlWXcXgAxA900XJKUixE3g+cqy6nPQx8zNEtAPAdQA2WX2m8WE4fJV877pSyTqH5Nn0jTuOh0Kh40KIH2F4c/ghM79KREeY+YjP5zty7Nix18PhcMZdNyHE+wAesfmSDl8zzsSJPtu7Tq5DluMQAOvLMakyMxmGce6GDRveLLRNriOacvk0lRTynPqE/uJExMWIAQBW3+uRGb78APaeaeEr39uAxjWBTxRCiO8iM3yNhwQR3a6qat40n8mgmDc5VJQYAKBp2uMAvofMkVIsAWbeKYTYv2fPnmJyeCeFXIJUnBhpyiQKAKxKpVJ/M03z22Vwq2xkE6RixUhTRlE+ycyHhBC7YrFYVRlcK5lssXhdKUvbycIS5fFi2pimeSEzdwH4ks1MRLTy5MmTDwJ4PVu7cDis1NTULCKipYqiLGLmizCcpVhtVekH0AvgKDMfYebDvb29LzuX8IVQ1qyT6UB7e/uMqqqq7cy8BcMR4ikiWquqal+WugtmzJixGUATRu4YFko3gIeSyWTbpk2b3spVyfn9u06QNKZpLpFSruzp6dkaDoczQl9XV9fcwcHBMICNAGaV2NUAgN1EtC2b6KZp7mXmdemyawXJhWmaq5n5AQDzynzpE0R0k6qq++3GWCzmi8fjnQDWAl6y9WlisZhPCLGLmfchuxinmPlRItpIRA0A5iWTyapkMlkFYJ6U8jIMn709BiCepf18Zt4nhNgZi8V8aWNjY2Oqu7v7BiL6DeCNEACAaZqzrIPUVVn++W0iusfn8+1pamrqL+R6nZ2d1clkspmI7gQwP0uVA9a8NZA2GIZxlqIor7h+hMRiMZ+U8hGMFmOQiMKJROJCVVXvL1QMAGhqaurXdb0tkUhcAGA7gP85qqxi5oftIyUUCr0PYO10e2Sg7MTj8Z8T0dUO8wkAq1VVfbGUa2/evDkOYFskEvktETlD4ar+/v77AJzOoNc07UVXjxDTNFcDaHGY/+73+xusDMacRKPReiHEk6ZpHhRCXDpWXV3Xfy+lbADwmt3OzDdHIpGMkelaQbq6uuZaqyk7J/x+/4qmpqbufO2llF0AVjDzlQDynmqEQqHjUsoVAN6xmYmIHjBN8/Tta9cKMjAwcDcyQ8gggNWFiGFxke3zxYU0CIVCx4noGmTOKfOZ+e50wZWCtLe3LyCijNwwIvpJvjDlgHJ8HhNVVV/A8ERvZ2N7e/sCwKWCWMch9h342x999NHPJqv/eDx+HxHZb9LNsnxynyDhcFgBcL3dRkT3WCuiSaGlpWWQme91mNeHw2HFdYLU1NQsAlBnM53y+Xx7JtuPRCLRhcwd/cLa2tpLXScIEWU8Q8jMTxaz6SsX1og8ZLcpirLMdYIoirLIUS77W+GKIKNvZl7kOkGYOWOJmkql/jpVvhCRs++L3Xh0ssBeSKVSGRn40Wi0Xkq5F8Ov8SuYAv6W1+sYTqd6JW3w+XxvDA1l3IpZ4LoRgpEMfADA3LlzP7SXpZTbUaQYBfIZAHfbDX19fSedvrlRkDGZ6odS3ShIRrL3Bx988DF7mZnvQo5khxJ5TUp5l90wZ86cjzt9c+Mc8hZsL7n0+XznA3g3XbZi/GfzXaQcN/ZSqZTzAdi3XDdCiOiovawoyhemyhcppbPvo64TRErpfAuc82Uzk4b15Jidl1wnCDM7N4JXdnZ2VmetPIG0tbUFAXzHbmPmw6PmkDPwb+P+t7u7e0E6i7C3t/flurq6boycZwWTyWQzgLbJdCoQCFyPkcxHADje09PjiiSHebW1tZelC5YwD9krENGdkUhk9qiWE0Rra+tMAFsd5ofC4bB0gyAgorX2cjKZbMNwRmGa+QBunSx/gsHgVgD2tyMNJJPJ+wH37ENusI8AK9d2t70CEd0eiUS+VsQ1OcfnMTEMYzGAOxzm9nT+r9+NiXEAQETbmHkNRhLZqohon2EYDQW+kvAoRo5Y/lFIn6ZpnmtlRs6wmU8QUThdcMsIGYWqqn1EdBMy/3fPUxTlUIEvW1sH4CCAg1LKdfkqd3R0nMfMhwB8wmZmIrrRnoTtytFhRwixE8DNDvM7RHSNlZBQMoZhLFYUZR8yxQCAX2ia9kO7wY1HJxkEg8Fb4/F4HTJTSc9h5qeFENuDweCOxsZGZypoQbS2ts6srq7eQkR3AHA+obU/GAw6XzfijRBg+IsLBoPZ8ntBRG8y872JRKKr0ESItra2oLXPcK6m0uyPx+NrW1paBkf1V6zzZyqxWMzX399/HzPfjOzfSz+AJ5n5WSL6i9/vf3PWrFl9ADAwMDBnaGjoPGb+onXPfgUyN31pGMDOYDB4W2NjYyqbH54gDiKRyCoiegDZHyMohRPM/H1d1w+MVcm1q6xc6Lp+gIguAdCKzM3jeBkAsIuILsknBuCNkDGxHvq8CcMPfdblq+/gOIYf+rx/rIc+nXiCFEA4HFYWLlxYD2Cp9Qa8i4ioBkDQqhJn5l4i+ieAl5j5cE9PzyvjeSz6/4z615cnqOKYAAAAAElFTkSuQmCC">
+                      <h2>Upload image</h2> 
+                    </div>
+                  </div> 
+                  <!-- CAROUSEL -->
+                  <div class="car-main-con" *ngIf="min_block.type == 'carousel-only'">
+                  <div class="car-container block-card"
+                  *ngFor="let car of min_block.message.attachment.payload.elements;index as ie">
+                  
+                    <div class="car-img" (click)="onGetImg(i,'carousel',ie)"> 
+                      <img *ngIf="car.image_url != ''" src="{{car.image_url}}" alt="">
+                      <div  *ngIf="car.image_url == ''" > 
+                        <img src="data:image/png;base64,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">
+                        <h2>Upload image</h2> 
+                      </div>
+                    </div>
+                    <ion-item class="item-transaparent" color="light" [class]="car.title == ''? 'err-text':''"> 
+                      <ion-label position="stacked">{{car.title != ''? 'Title':'Title (required)'}}</ion-label>
+                      <ion-input [(ngModel)]="car.title" #cartitle (keyup)="kCarTxt(cartitle.value,'','',ie,i)"> </ion-input>
+                    </ion-item>
+                    <ion-item  class="item-transaparent" color="light"  [class]="car.subtitle == ''? 'err-text':''"> 
+                      <ion-label position="stacked">Subtitle</ion-label>
+                      <ion-input [(ngModel)]="car.subtitle" #carsubtitle (keyup)="kCarTxt('',carsubtitle.value,'',ie,i)"></ion-input>
+                    </ion-item>
+                    <ion-item  class="item-transaparent" color="light"> 
+                      <ion-label position="stacked">Url</ion-label>
+                      <ion-input [(ngModel)]="car.default_action.url" #carurl (keyup)="kCarTxt('','',carurl.value,ie,i)"></ion-input>
+                      <!-- <ion-input [(ngModel)]="car.image_url" #carimage_url (keyup)="kCarTxt('','',carimage_url.value,ie,i)"></ion-input> -->
+                    </ion-item> 
+                  </div>  
+                  <div *ngIf="min_block.message.attachment.payload.elements.length <= 9"  class="add-car block-card" (click)="onAddCarElem(i)">
+                    <img src="data:image/png;base64,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">
                   </div>
-                </div>
-              </div>
-            </div>
-            <!-- {{min_block.message.attachment.payload.buttons.length}} -->
-            
-            <div class="button-add" id="add-{{i}}" (click)="addTextButton($event,i)" >
-              <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
-              <p class="add-button-txt">ADD BUTTON (OPTIONAL)</p>
-            </div>
-          </div>  
-          <!-- IMAGE -->
-          <div class="img-container block-card"
-          *ngIf="min_block.type == 'image-only'"
-          (click)="onGetImg(i,'image',-1)"> 
-            <img *ngIf="min_block.message.attachment.payload.url != ''" src="{{min_block.message.attachment.payload.url}}" alt="">
-            <div *ngIf="min_block.message.attachment.payload.url == ''" class="img-con-sub">
-              <img src="data:image/png;base64,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">
-              <h2>Upload image</h2> 
-            </div>
-          </div> 
-          <!-- CAROUSEL -->
-          <div class="car-main-con" *ngIf="min_block.type == 'carousel-only'">
-           <div class="car-container block-card"
-           *ngFor="let car of min_block.message.attachment.payload.elements;index as ie">
-           
-            <div class="car-img" (click)="onGetImg(i,'carousel',ie)">
-              <img *ngIf="car.image_url != ''" src="{{car.image_url}}" alt="">
-              <div  *ngIf="car.image_url == ''" > 
-                <img src="data:image/png;base64,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">
-                <h2>Upload image</h2> 
-              </div>
-            </div>
-            <ion-item class="item-transaparent" color="light" [class]="car.title == ''? 'err-text':''"> 
-              <ion-label position="stacked">{{car.title != ''? 'Title':'Title (required)'}}</ion-label>
-              <ion-input [(ngModel)]="car.title" #cartitle (keyup)="kCarTxt(cartitle.value,'','',ie,i)"> </ion-input>
-            </ion-item>
-            <ion-item  class="item-transaparent" color="light"> 
-              <ion-label position="stacked">Subtitle</ion-label>
-              <ion-input [(ngModel)]="car.subtitle" #carsubtitle (keyup)="kCarTxt('',carsubtitle.value,'',ie,i)"></ion-input>
-            </ion-item>
-            <ion-item  class="item-transaparent" color="light"> 
-              <ion-label position="stacked">Url</ion-label>
-              <ion-input [(ngModel)]="car.default_action.url" #carurl (keyup)="kCarTxt('','',carurl.value,ie,i)"></ion-input>
-              <!-- <ion-input [(ngModel)]="car.image_url" #carimage_url (keyup)="kCarTxt('','',carimage_url.value,ie,i)"></ion-input> -->
-            </ion-item> 
-           </div> 
-           <div class="add-car block-card" (click)="onAddCarElem(i)">
-             <img src="data:image/png;base64,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">
-           </div>
+                  </div>
+        
+                  <div class="line-bottom"> 
+                  </div>
+                </ion-col>
+              </ion-row> 
+            </div> 
           </div>
+        </div> 
 
-          <div class="line-bottom"> 
-          </div>
 
-        </div>  
         <div class="mini-block" > 
           <h2>Add mini block</h2> 
           <div class="mini-blocks-con" > 
