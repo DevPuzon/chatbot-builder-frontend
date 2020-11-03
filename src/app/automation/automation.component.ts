@@ -172,13 +172,11 @@ export class AutomationComponent implements OnInit {
   async onDeploy(){
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present();
-    let dtaString = JSON.stringify(BlockUtils.getLocalBlocks());
+    let data = BlockUtils.getLocalBlocks();
     
-    this.custHttps.postNoToken("savedatares",{
-      id:"121qew",
-      data_res:dtaString
-    })
+    this.custHttps.postNoToken("setallblocks/1",data)
     .subscribe(async (snap:any)=>{ 
+      console.log(data);
       console.log(snap) 
       loading.dismiss();
     }, 
@@ -189,10 +187,10 @@ export class AutomationComponent implements OnInit {
   }
 
   getCloudblocks(){  
-    this.custHttps.post("datares",{
-      id:"121qew" 
-    })
+    this.custHttps.get("getallblocks/1")
     .subscribe(async (snap:any)=>{ 
+      snap = snap.response;
+      console.log(snap);
       if(!snap){
         this.initMaindatas();
         return;
@@ -200,6 +198,7 @@ export class AutomationComponent implements OnInit {
       console.log(snap);
       this.maindatas = snap;
       BlockUtils.setLocalBlocks(this.maindatas);
+      window.location.reload();
     }, 
     (errorCode: Response) => { 
       console.log(errorCode) 
