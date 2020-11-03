@@ -28,11 +28,10 @@ import {
 import { WordMatchingContentComponent } from './WordMatching/word-matching-content/word-matching-content.component';
 import { WmPropertiesComponent } from './WordMatching/wm-properties/wm-properties.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import { WordMatchingUtils } from './Utils/word-matching-utils';
 
 @NgModule({
   declarations: [AppComponent,AutomationComponent,AddTextButtonPopupComponent,
-    WordMatchingContentComponent,WmPropertiesComponent,WordMatchingUtils],
+    WordMatchingContentComponent,WmPropertiesComponent],
   entryComponents: [AutomationComponent,AddTextButtonPopupComponent,
     WordMatchingContentComponent,WmPropertiesComponent],
   imports: [

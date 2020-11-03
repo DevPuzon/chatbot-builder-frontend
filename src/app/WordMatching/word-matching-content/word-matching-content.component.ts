@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular'; 
-import { WordMatchingUtils } from 'src/app/Utils/word-matching-utils';
+import { PopoverController } from '@ionic/angular';  
+import { WordmatchingutilsService } from 'src/app/Utils/wordmatchingutils.service'; 
 import { WmPropertiesComponent } from '../wm-properties/wm-properties.component';
 
 @Component({
@@ -18,8 +18,8 @@ export class WordMatchingContentComponent implements OnInit {
   }
 
   init() {
-    if(WordMatchingUtils.getWordMatch() != null){
-      this.wmatchingdtas = WordMatchingUtils.getWordMatch();
+    if(WordmatchingutilsService.getWordMatch() != null){
+      this.wmatchingdtas = WordmatchingutilsService.getWordMatch();
     }else{
       this.wmatchingdtas.push({user_possible_words:[],commands:[ {
         "command_type": "",
@@ -41,10 +41,10 @@ export class WordMatchingContentComponent implements OnInit {
 
   kWord(word,wm_i){
     this.wmatchingdtas[wm_i].user_possible_words.push(word);
-    WordMatchingUtils.setWordMatch(this.wmatchingdtas);
+    WordmatchingutilsService.setWordMatch(this.wmatchingdtas);
   }
   delWord(word_i,wm_i){
     this.wmatchingdtas[wm_i].user_possible_words.splice(word_i, 1);
-    WordMatchingUtils.setWordMatch(this.wmatchingdtas);
+    WordmatchingutilsService.setWordMatch(this.wmatchingdtas);
   }
 }

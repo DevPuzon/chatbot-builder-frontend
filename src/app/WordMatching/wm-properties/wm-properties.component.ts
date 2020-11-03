@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BlockUtils } from 'src/app/utils/block-utils';
-import { WordMatchingUtils } from 'src/app/Utils/word-matching-utils';
-
+import { BlockUtils } from 'src/app/utils/block-utils'; 
+import { WordmatchingutilsService } from 'src/app/Utils/wordmatchingutils.service';
 @Component({
   selector: 'app-wm-properties',
   templateUrl: './wm-properties.component.html',
@@ -24,7 +23,7 @@ export class WmPropertiesComponent implements OnInit {
     this.maindatas = BlockUtils.getLocalBlocks();
     console.log(this.wmatchingdta);
     
-    let local_block_p =WordMatchingUtils.getBlockProperties(this.wmatchingdta.commands[this.command_i]);
+    let local_block_p =WordmatchingutilsService.getBlockProperties(this.wmatchingdta.commands[this.command_i]);
     if(local_block_p.length == 0){
       this.saveNoBlocks();
     }else{
@@ -73,6 +72,6 @@ export class WmPropertiesComponent implements OnInit {
     }
     console.log( this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].block_properties[index].ischecked);
  
-    WordMatchingUtils.setWordMatch(this.wmatchingdtas);
+    WordmatchingutilsService.setWordMatch(this.wmatchingdtas);
   }
 }
