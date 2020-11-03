@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';  
+import { PopoverController } from '@ionic/angular';
+import { WmPropertiesComponent } from '../wm-properties/wm-properties.component';  
 import { WordmatchingutilsService } from 'src/app/Utils/wordmatchingutils.service'; 
-import { WmPropertiesComponent } from '../wm-properties/wm-properties.component';
 
 @Component({
   selector: 'app-word-matching-content',

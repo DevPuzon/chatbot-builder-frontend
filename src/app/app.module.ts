@@ -32,8 +32,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [AppComponent,AutomationComponent,AddTextButtonPopupComponent,
     WordMatchingContentComponent,WmPropertiesComponent],
-  entryComponents: [AutomationComponent,AddTextButtonPopupComponent,
-    WordMatchingContentComponent,WmPropertiesComponent],
+  entryComponents: [AutomationComponent,AddTextButtonPopupComponent ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // firestore

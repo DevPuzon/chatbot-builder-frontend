@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BlockUtils } from 'src/app/utils/block-utils'; 
+import { BlockUtils } from 'src/app/utils/block-utils';  
 import { WordmatchingutilsService } from 'src/app/Utils/wordmatchingutils.service';
 @Component({
   selector: 'app-wm-properties',
