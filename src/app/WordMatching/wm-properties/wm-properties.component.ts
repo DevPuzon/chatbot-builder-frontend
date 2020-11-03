@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BlockUtils } from 'src/app/utils/block-utils';   
-import { WmatchingutilsService } from 'src/app/Utils/wmatchingutils.service';
+import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
 @Component({
   selector: 'app-wm-properties',
   templateUrl: './wm-properties.component.html',

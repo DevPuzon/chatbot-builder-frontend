@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
-import { WmatchingutilsService } from 'src/app/Utils/wmatchingutils.service';
+import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
 import { WmPropertiesComponent } from '../wm-properties/wm-properties.component';  
  
 @Component({
