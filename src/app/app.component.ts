@@ -20,7 +20,7 @@ export class AppComponent {
   }
 
   toggleDarkTheme() {  
-    document.body.classList.toggle('dark', false); 
+    document.body.classList.toggle('light', true); 
   } 
   initializeApp() {
     this.platform.ready().then(() => {
