@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class WordmatchingutilsService {
+export class WmatchingutilsService {
 
   constructor() { }
   static setWordMatch(data){
