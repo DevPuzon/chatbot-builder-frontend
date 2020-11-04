@@ -19,7 +19,8 @@
             <p class="say">Bot reply.</p>
             <p (click)="onSCommand($event,i)" class="word-input" style="cursor: pointer;">Select command</p>
             <ion-row  class="choices-block " >  
-              <ion-col class="bot-reply-col" size="12" *ngFor="let command of wmatchingdta.commands"  > 
+              <ion-col class="bot-reply-col" size="12"
+               *ngFor="let command of wmatchingdta.commands"   >  
                 <div *ngIf="command.command_type == 'block'">
                   <ion-row>
                     <ion-col size="auto" *ngFor="let block_property of command.block_properties;index as ie">
@@ -29,8 +30,8 @@
                     </ion-col>
                   </ion-row>
                 </div>
-                <div class="txt-message" *ngIf="command.command_type == 'text_message'" >
-                  <p >{{block_property.text_message}}</p> 
+                <div class="box sb7" *ngIf="command.command_type == 'text_message'" >
+                  {{command.text_message}}
                 </div>
               </ion-col>  
             </ion-row>

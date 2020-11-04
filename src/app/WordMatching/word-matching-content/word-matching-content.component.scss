@@ -42,6 +42,45 @@ ion-col{
     .choices-block{
         display: flex;
         margin-top: 5px;
+        .box {
+            width: 300px; 
+            width: fit-content;
+            margin: 4px; 
+            margin-bottom: 10px;
+            /* margin: 5px; */
+            border: 2px solid #3880FF;
+            /* padding: 20px; */
+            /* text-align: center; */
+            /* font-weight: 900; */
+            color: #3880FF;
+            /* font-family: arial; */
+            position: relative;
+            padding: 2px;
+          }
+          .sb7:before {
+            content: "";
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            border-left: 5px solid #3880FF;
+            border-right: 4px solid transparent;
+            border-top: 5px solid #3880FF;
+            border-bottom: 4px solid transparent;
+            left: 20px;
+            bottom: -10px;
+          }
+          
+          .sb7:after {
+            content: "";
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            border-left: 4px solid #fff;
+            border-right: 4px solid transparent;
+            border-top: 4px solid #fff;
+            border-bottom: 4px solid transparent;
+            left: 24px; 
+          }
         .bot-reply-col{
             border-radius: 4px;
             margin-bottom: 4px;
@@ -67,36 +106,6 @@ ion-col{
                 -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical;
                 max-width: 120px;
-            }
-            .txt-message{ 
-                p {
-                    // layout
-                    position: relative;
-                    max-width: 30em;
-                    
-                    // looks
-                    background-color: #fff;
-                    padding: 1.125em 1.5em;
-                    font-size: 1.25em;
-                    border-radius: 1rem;
-                box-shadow:	0 0.125rem 0.5rem rgba(0, 0, 0, .3), 0 0.0625rem 0.125rem rgba(0, 0, 0, .2);
-                }
-                
-                p::before {
-                    // layout
-                    content: '';
-                    position: absolute;
-                    width: 0;
-                    height: 0;
-                    bottom: 100%;
-                    left: 1.5em; // offset should move with padding of parent
-                    border: .75rem solid transparent;
-                    border-top: none;
-                
-                    // looks
-                    border-bottom-color: #fff;
-                    filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, .1));
-                }
             }
             img{
                 margin-left: 3px; 

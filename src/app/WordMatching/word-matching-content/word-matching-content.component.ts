@@ -21,12 +21,12 @@ export class WordMatchingContentComponent implements OnInit {
     if(WmatchingutilsService.getWordMatch() != null){
       this.wmatchingdtas = WmatchingutilsService.getWordMatch();
     }else{
-      this.wmatchingdtas.push({user_possible_words:[],commands:[{}]});
+      this.wmatchingdtas.push({user_possible_words:[],commands:[ ]});
     }
     console.log(this.wmatchingdtas);
   }
 
-  async onSCommand(ev,wmatchingdtas_i){ 
+  async onSCommand(ev,wmatchingdtas_i){
     const popover = await this.popoverController.create({
       component: WmPropertiesComponent , 
       cssClass: 'ion-popover',

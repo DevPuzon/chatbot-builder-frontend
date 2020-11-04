@@ -186,6 +186,7 @@ export class AutomationComponent implements OnInit {
       loading.dismiss();
       console.log(errorCode) 
     });
+    
   }
 
   getCloudblocks(){  

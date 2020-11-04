@@ -40,7 +40,6 @@ export class WmPropertiesComponent implements OnInit {
   blocks = new Array();
   saveNoBlocks() {
     console.log("saveNoBlocks"); 
-    Object.assign(this.wmatchingdta.commands[this.command_i],{block_properties:[]});
     for(let i  = 0 ; i < this.maindatas.length; i++){
       // this.wmatchingdta.commands[this.command_i].block_properties.push({
       //   block_name:this.maindatas[i].block_name,
@@ -75,11 +74,25 @@ export class WmPropertiesComponent implements OnInit {
   }
   
   onCheckBtnBlock(index){  
-    if(index != null){  
+    if(index != null){    
+      this.wmatchingdta.commands[this.command_i] = {}; 
       let boolGl = !this.blocks[index].ischecked;  
       this.blocks[index].ischecked = boolGl;
-      this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].block_properties = this.blocks;
-      this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].command_type= "block"; 
+      this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i]={
+        block_properties : this.blocks,
+        command_type:"block"
+      } 
+    } 
+    let needDel = false;
+    for(let i = 0 ; i < this.blocks.length;i++){
+      if(this.blocks[i].ischecked){
+        i = this.blocks.length;
+      }else{
+        needDel = true;
+      }
+    }
+    if(needDel){
+      this.wmatchingdta.commands.splice(this.command_i,1);
     }
  
     WmatchingutilsService.setWordMatch(this.wmatchingdtas);
@@ -87,8 +100,20 @@ export class WmPropertiesComponent implements OnInit {
   }
 
   kMessage(txt_message){
-    console.log(txt_message) ;
-    this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].block_properties = this.blocks;
-    this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].command_type= "text_message"; 
+    if(txt_message !=""){
+      console.log(txt_message) ; 
+      this.wmatchingdta.commands[this.command_i] = {}; 
+      this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].command_type= "text_message";
+      this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i]={ 
+        command_type:"text_message",
+        text_message : txt_message
+      }  
+    }else{ 
+      this.wmatchingdta.commands.splice(this.command_i,1);
+    }
+   
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    console.log(JSON.stringify(this.wmatchingdtas));
+
   }
 }
