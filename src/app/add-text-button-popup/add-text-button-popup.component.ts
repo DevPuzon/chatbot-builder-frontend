@@ -97,23 +97,19 @@ export class AddTextButtonPopupComponent implements OnInit {
   }
   
   kBtnTitle(){
-    if(this.btn_name != ""){
-      // this.onCheckBtnBlock(null);
-      let btn =this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.buttons[this.button_index];
-      // if(btn == undefined){
-      //   btn =this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.buttons[this.button_index -1];
-      // } 
-      btn.title = this.btn_name;
-    }
+    // this.onCheckBtnBlock(null);
+    let btn =this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.buttons[this.button_index];
+    // if(btn == undefined){
+    //   btn =this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.buttons[this.button_index -1];
+    // } 
+    btn.title = this.btn_name;
     BlockUtils.setLocalBlocks(this.maindatas);
   }
   kURL(){
-    if(this.txt_URL != ""){
-      for(let i = 0 ; i < this.blocks.length ; i ++){
-        this.blocks[i].ischecked = false;
-      }
-      this.onCheckURLBlock(null); 
+    for(let i = 0 ; i < this.blocks.length ; i ++){
+      this.blocks[i].ischecked = false;
     }
+    this.onCheckURLBlock(null); 
     BlockUtils.setLocalBlocks(this.maindatas);
   }
    // {

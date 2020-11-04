@@ -11,7 +11,7 @@ export class WmPropertiesComponent implements OnInit {
   @Input() command_i = 0;  
   @Input() wmatchingdtas  = new Array();
   wmatchingdta :any;
-  maindatas= new Array();
+  maindatas= new Array(); 
   
   constructor() { }
 
@@ -19,12 +19,13 @@ export class WmPropertiesComponent implements OnInit {
     this.init();
   }
   init() {
+    console.log(this.command_i);
     this.wmatchingdta = this.wmatchingdtas[this.wmatchingdtas_i];
     this.maindatas = BlockUtils.getLocalBlocks();
     console.log(this.wmatchingdta);
     
     let local_block_p =WmatchingutilsService.getBlockProperties(this.wmatchingdta.commands[this.command_i]);
-    if(local_block_p.length == 0){
+    if(!local_block_p){
       this.saveNoBlocks();
     }else{
       this.saveHasBlocks(local_block_p);
@@ -38,15 +39,21 @@ export class WmPropertiesComponent implements OnInit {
 
   blocks = new Array();
   saveNoBlocks() {
-    console.log("saveNoBlocks");
+    console.log("saveNoBlocks"); 
+    Object.assign(this.wmatchingdta.commands[this.command_i],{block_properties:[]});
     for(let i  = 0 ; i < this.maindatas.length; i++){
-      this.wmatchingdta.commands[this.command_i].block_properties.push({
+      // this.wmatchingdta.commands[this.command_i].block_properties.push({
+      //   block_name:this.maindatas[i].block_name,
+      //   block_index:i,
+      //   ischecked:false
+      // });
+      this.blocks.push({
         block_name:this.maindatas[i].block_name,
         block_index:i,
         ischecked:false
-      })
+      });
     }
-    this.blocks = this.wmatchingdta.commands[0].block_properties;
+    // this.blocks = this.wmatchingdta.commands[0].block_properties;
     console.log(this.wmatchingdta);
   }
   saveHasBlocks(localBlocks) {
@@ -62,16 +69,26 @@ export class WmPropertiesComponent implements OnInit {
         bblock.ischecked = localBlocks[i].ischecked;
       } 
       this.blocks[i]=bblock;
+      this.wmatchingdta.commands[this.command_i].block_properties[i] = bblock;
     }
     console.log(this.blocks);
   }
-  onCheckBtnBlock(index){ 
-    if(index != null){
-      this.blocks[index].ischecked = !this.blocks[index].ischecked;
-      this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].block_properties[index].ischecked = !this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].block_properties[index].ischecked;
+  
+  onCheckBtnBlock(index){  
+    if(index != null){  
+      let boolGl = !this.blocks[index].ischecked;  
+      this.blocks[index].ischecked = boolGl;
+      this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].block_properties = this.blocks;
+      this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].command_type= "block"; 
     }
-    console.log( this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].block_properties[index].ischecked);
  
     WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    console.log(JSON.stringify(this.wmatchingdtas));
+  }
+
+  kMessage(txt_message){
+    console.log(txt_message) ;
+    this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].block_properties = this.blocks;
+    this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].command_type= "text_message"; 
   }
 }

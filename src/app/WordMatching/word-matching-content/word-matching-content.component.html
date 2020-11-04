@@ -7,7 +7,7 @@
             <p class="say">User say.</p>
             <input (keyup.enter)="kWord(wordkey.value,i)" #wordkey class="word-input" type="text" placeholder="Please hit enter to add word.">
             <ion-row  class="choices-block"> 
-              <ion-col *ngFor="let word of wmatchingdta.user_possible_words;index as ie" > 
+              <ion-col size="12"  *ngFor="let word of wmatchingdta.user_possible_words;index as ie" > 
                 <div class="non-block">
                   <p class="txt-block">{{word}}</p>
                   <img (click)="delWord(ie,i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACLklEQVRIidWVvW8TQRTEf89nQgFS7BYMBbIQXCIXoaOkoYxDdJsOJIrQh4gAlQsQ2EbpUuAiEnTeA3TpaPgLUFJEia1ISQMWdIldUARkHs3FOsfnD9xlqtt582Z2b/f24KxDBhU9z5sA5kRkFpgBMmGpAWwBgaoGvu///u8AY8y8iJRU9dqQSR6IyJNqtfpppADP8xwRKQKPhxifxhvXdVcKhcLfKJnoSRzPHGC5Vqu96vGLDowx88CHMcyjmLPWBieDzgo8z5sQkVJMgxWRLHAY4Q5Dzo/Rl8PD0R0AzPXZUHdycvIbsBThlkLuZow+m0gkZnsCRCQfIwaYbjabT62174DPqvrFWvv+6OjoGTAd16CqnYDOHhhj9oDrfUKOVXWm3W7/AnAc54KIbAHn++j3rLU3ulYAXOojJjRadxynkcvlvotIZYA5wOWTh55jOiJ0SL3zLUQDfgxoOAYettvtzPb29hVVfRRy/fAzLmBzQMML3/dryWTybTKZXPd9vw68HKD/GhcQxAgBdlKpVNEY8wC4C9wxxtxPpVKvgZ24BlXd6AlQ1QA4iNHXWq3WVWA1wq2GXD1Gv59OpzsBXVfFwsLCPVX92GclI0FE8tVqtRPgRIu7u7v1qampi8DtMf2L1tq1KNFzTF3XXRGR8hjmJdd1n58mB/1w8kAZyA4x3heR5ehrGSkAYHFx8Vyr1cqr6qyI3FLVDICINFR1U1WDdDq9UalU/gyZxBnGP2+juUbleEnvAAAAAElFTkSuQmCC">
@@ -18,6 +18,22 @@
           <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6">
             <p class="say">Bot reply.</p>
             <p (click)="onSCommand($event,i)" class="word-input" style="cursor: pointer;">Select command</p>
+            <ion-row  class="choices-block " >  
+              <ion-col class="bot-reply-col" size="12" *ngFor="let command of wmatchingdta.commands"  > 
+                <div *ngIf="command.command_type == 'block'">
+                  <ion-row>
+                    <ion-col size="auto" *ngFor="let block_property of command.block_properties;index as ie">
+                      <div class="non-block" *ngIf="block_property.ischecked">
+                        <p class="txt-block">{{block_property.block_name}}</p> 
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </div>
+                <div class="txt-message" *ngIf="command.command_type == 'text_message'" >
+                  <p >{{block_property.text_message}}</p> 
+                </div>
+              </ion-col>  
+            </ion-row>
           </ion-col>
           <ion-col size="12" class="line-bottom"></ion-col>
         </ion-row>

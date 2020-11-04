@@ -1,6 +1,11 @@
 .container{
     padding: 10px;
 }
+.input-button-title{
+    padding: 8px;
+    border-radius: 7px;
+    width: 100%;
+}
 .c-blocks-container{
     .input-button-title{
         padding: 8px;
@@ -37,4 +42,11 @@
             }
         }
     }
+}
+.toolbar-segment{
+    margin-top: 7px;
+    margin-bottom: 11px;
+}
+ion-col{
+    padding: 0px;
 }

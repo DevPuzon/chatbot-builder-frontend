@@ -21,20 +21,19 @@ export class WordMatchingContentComponent implements OnInit {
     if(WmatchingutilsService.getWordMatch() != null){
       this.wmatchingdtas = WmatchingutilsService.getWordMatch();
     }else{
-      this.wmatchingdtas.push({user_possible_words:[],commands:[ {
-        "command_type": "",
-        "text_message": "",
-        "block_properties": []
-      }]});
+      this.wmatchingdtas.push({user_possible_words:[],commands:[{}]});
     }
+    console.log(this.wmatchingdtas);
   }
 
-  async onSCommand(ev,wmatchingdtas_i){
+  async onSCommand(ev,wmatchingdtas_i){ 
     const popover = await this.popoverController.create({
       component: WmPropertiesComponent , 
       cssClass: 'ion-popover',
       event: ev,
-      componentProps:{wmatchingdtas_i:wmatchingdtas_i,wmatchingdtas:this.wmatchingdtas}
+      componentProps:{wmatchingdtas_i:wmatchingdtas_i,
+        command_i:this.wmatchingdtas[wmatchingdtas_i].commands.length,
+        wmatchingdtas:this.wmatchingdtas}
     });
     return await popover.present();
   }
