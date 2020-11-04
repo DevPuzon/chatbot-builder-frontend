@@ -8,7 +8,7 @@ import { CryptService } from './crypt.service';
 export class CustomHttpService {
 
   // private base  ="https://fbchatbotexample012.herokuapp.com/"; 
-  private base  ="http://18.140.245.243:20184/api/"; 
+  private base  ="https://chatbot-builder-api.herokuapp.com/api/"; 
   
   // private base  ="http://192.168.0.108:8000/";  
   private token  = "";
