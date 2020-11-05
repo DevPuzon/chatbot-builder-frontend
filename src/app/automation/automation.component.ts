@@ -30,7 +30,8 @@ export class AutomationComponent implements OnInit {
     private loadingController:LoadingController,
     private custHttps:CustomHttpService) { }
 
-  ngOnInit() {
+  ngOnInit() { 
+    this.initSortable();
     // $( function() {
     //   $( "#sortable" ).sortable();
     //   $( "#sortable" ).disableSelection();
@@ -47,7 +48,40 @@ export class AutomationComponent implements OnInit {
     console.log(JSON.stringify(this.maindatas));
     console.log(this.block);
     BlockUtils.setLocalBlocks(this.maindatas); 
-  } 
+  }  
+  
+  initSortable() { 
+    let _this = this;
+    $(".slides-sub-arrange").sortable({ 
+     stop: function(e, ui) {
+      var data = "";
+
+        var sets = [];            
+        $('input[id^=subsets]').each(function(){
+          sets.push(JSON.parse($(this).val()));
+        });
+        _this.maindatas[0].mini_blocks = sets;
+        console.log(_this.maindatas[_this.block_index].mini_blocks);
+        BlockUtils.setLocalBlocks(_this.maindatas);
+        $(".slide-placeholder-animator").remove(); 
+     },
+    });
+    
+    $(".slides-main-arrange").sortable({ 
+      stop: function(e, ui) {
+       var data = "";
+ 
+         var sets = [];            
+         $('input[id^=mainsets]').each(function(){
+           sets.push(JSON.parse($(this).val()));
+         });
+         _this.maindatas[0].mini_blocks = sets;
+         console.log(_this.maindatas[_this.block_index].mini_blocks);
+         BlockUtils.setLocalBlocks(_this.maindatas);
+         $(".slide-placeholder-animator").remove(); 
+      },
+     });
+  }
 
   init() { 
     let inter = setInterval(()=>{

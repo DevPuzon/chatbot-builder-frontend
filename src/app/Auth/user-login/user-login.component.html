@@ -1,3 +1,47 @@
-<ion-button (click)="signInWithFB()">
-  Facebook
-</ion-button>
+<ion-content   >
+  <div class="container"> 
+    <ion-label class="ion-text-center"   > 
+      <ion-text >
+        <img class="logo-circle" src="../../../../assets/icon/favicon.png">
+        <p style="font-size: 35px;color: #488AFF;"><b>Chatbot builder</b></p> </ion-text> 
+      <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()">
+        <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input formControlName="email" placeholder="juandelacruz@gmail.com"></ion-input>
+        </ion-item>
+        <div *ngIf="submitted && f.email.errors">  
+          <div class="error-text">{{(f.email.errors.required) ? 'Email is required' :
+            (f.email.errors) ? 'Email is not valid.' :  ''}}</div>
+        </div>
+
+        <ion-item color="transparent" style="margin-bottom: 14px;" class="ion-no-padding">
+          <ion-label position="stacked">Password</ion-label>
+          <ion-input formControlName="password" type="{{typePass}}"></ion-input>
+          <ion-icon class="passwordIcon" slot="end" name="{{imgPass}}" (click)="onClickShow()"></ion-icon>
+        </ion-item> 
+        <div *ngIf="submitted && f.password.errors">  
+          <div class="error-text">{{(f.password.errors.required) ? 'Password is required' :
+            (f.password.errors) ? 'Password is not valid.' :  ''}}</div>
+        </div>
+        <div class="signin-con"> 
+          <ion-button  fill="outline" class="btn-login" (click)="onSubmit()"> 
+          Sign in</ion-button>
+          <div class="login-or">
+            <div class="line"></div>
+            <p class="or">OR</p>
+            <div class="line"></div>
+          </div>
+          <ion-button class="btn-fb" (click)="signInWithFB()">
+            <ion-icon name="logo-facebook" slot="start"></ion-icon>
+            Facebook
+          </ion-button>
+        </div>
+        <div class='forgotpass'> 
+          <p (click)="onForgotPass()">Forgot password?</p>
+          <p [routerLink]="['/admin-auth/register']">Don't have account yet.</p>
+        </div>
+      </form>
+    </ion-label>
+  </div>
+ </ion-content>  
+
