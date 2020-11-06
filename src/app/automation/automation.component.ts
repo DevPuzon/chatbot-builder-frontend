@@ -350,6 +350,16 @@ export class AutomationComponent implements OnInit {
         event.currentIndex);
     }
     this.maindatas[this.block_index].mini_blocks = event.container.data;
-    BlockUtils.setLocalBlocks(this.maindatas)
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
+
+  onDelMiniBlock(mini_block_i){
+    this.maindatas[this.block_index].mini_blocks.splice(mini_block_i,1);
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
+
+  onDelTxtBtn(mini_block_i,txtbtn_i){
+    this.maindatas[this.block_index].mini_blocks[mini_block_i]
+    .message.attachment.payload.buttons.splice(txtbtn_i,1);
   }
 }

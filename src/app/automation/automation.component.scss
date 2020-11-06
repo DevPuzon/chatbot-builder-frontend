@@ -90,6 +90,11 @@ ion-col{
             width: 17px;
             margin: 10px;
         }
+        .logo-del{ 
+            cursor: pointer;
+            width: 17px;
+            margin: 10px;
+        }
         .txt-container{
             .textarea-container{
                 padding: 10px;
@@ -134,26 +139,33 @@ ion-col{
                         margin-top: 10px;
                         margin-bottom: 0px;
                     } 
-                    .button-subtitle{
-                        // display: flex;
-                        margin-top: 7px;
-                        margin-bottom: 12px;
-                        justify-content: center;
-                        p{
-                            background: #D0D0D0; 
-                            padding: 7px;
-                            border-radius: 6px;
-                            margin: 2px;
-                            // border-right: 1px solid; 
-                            font-size: 14px;
+                    .button-main{ 
+                        display: flex;
+                        margin: 2px;
+                        .button-subtitle{
+                            // display: flex;
+                            margin-top: 7px;
+                            margin-bottom: 12px;
+                            justify-content: center;
+                            p{
+                                background: #D0D0D0; 
+                                padding: 7px;
+                                border-radius: 6px;
+                                margin: 2px;
+                                // border-right: 1px solid; 
+                                font-size: 14px;
+                            }
                         }
-                    }
-                    .button-url{
-                        color: #AAAAAA;
-                        font-size: 14px;
-                        font-weight: bold;
-                        margin-top: 7px;
-                        margin-bottom: 12px;
+                        .button-url{
+                            color: #AAAAAA;
+                            font-size: 14px;
+                            font-weight: bold;
+                            margin-top: 7px;
+                            margin-bottom: 12px;
+                        }
+                        .func{
+                            width: 88%;
+                        }
                     }
                 } 
                 .err-button{
@@ -164,34 +176,43 @@ ion-col{
                     p{
                         margin: 0px;
                     }
+                    
+                    .button-main{ 
+                        display: flex;
+                        margin: 2px;
+                        
+                        .button-subtitle{
+                            // display: flex;
+                            margin-top: 7px;
+                            margin-bottom: 12px;
+                            justify-content: center;
+                            p{  
+                                padding: 7px;
+                                color: #FC4338;
+                                border: 2px solid #FC4338;
+                                border-radius: 6px;
+                                margin: 2px;
+                                // border-right: 1px solid; 
+                                font-size: 14px;
+                            }
+                        }
+                        .button-url{
+                            color: #FC4338;
+                            font-size: 14px;
+                            font-weight: bold; 
+                            margin-top: 7px;
+                            margin-bottom: 12px;
+                        }
+                        .func{
+                            width: 88%;
+                        }
+                    }
                     .button-title{
                         color: #FC4338;
                         font-size: 19px;
                         margin-top: 10px;
                         margin-bottom: 0px;
-                    } 
-                    .button-subtitle{
-                        // display: flex;
-                        margin-top: 7px;
-                        margin-bottom: 12px;
-                        justify-content: center;
-                        p{  
-                            padding: 7px;
-                            color: #FC4338;
-                            border: 2px solid #FC4338;
-                            border-radius: 6px;
-                            margin: 2px;
-                            // border-right: 1px solid; 
-                            font-size: 14px;
-                        }
-                    }
-                    .button-url{
-                        color: #FC4338;
-                        font-size: 14px;
-                        font-weight: bold; 
-                        margin-top: 7px;
-                        margin-bottom: 12px;
-                    }
+                    }  
                 }
             }
             .button-add{ 

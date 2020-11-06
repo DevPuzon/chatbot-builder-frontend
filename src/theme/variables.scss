@@ -63,34 +63,29 @@ $app-theme: mat-light-theme((
 // }input{
 //   color: violet;
 // }
+.tooltip {
+  position: relative;
+  display: inline-block; 
+}
 
-.toolbar-rti{
-  --ion-background-color:#0D47A1;
-  color: #FFF;
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 105%;
 }
-.toolbar-client{
-  --ion-background-color:#BF360C;
-  color: #FFF;
-}
-.client{
-  --ion-color-primary: #BF360C;
-  --ion-color-primary-rgb: 56, 128, 255;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #BF360C;
-  --ion-color-primary-tint: #BF360C;
-} 
-.toolbar-site{
-  --ion-background-color:#212121;
-  color: #FFF;
-}
-.site{
-  --ion-color-primary: #212121;
-  --ion-color-primary-rgb: 56, 128, 255;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #212121;
-  --ion-color-primary-tint: #212121;
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 .split-pane-visible >.split-pane-side {
   min-width: 200px!important;
