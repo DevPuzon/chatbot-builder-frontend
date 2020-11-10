@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
 import { BlockUtils } from 'src/app/utils/block-utils';   
 import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
 @Component({
@@ -13,7 +14,7 @@ export class WmPropertiesComponent implements OnInit {
   wmatchingdta :any;
   maindatas= new Array(); 
   
-  constructor() { }
+  constructor(private popCtrl:PopoverController) { }
 
   ngOnInit() {
     this.init();
@@ -115,5 +116,9 @@ export class WmPropertiesComponent implements OnInit {
     WmatchingutilsService.setWordMatch(this.wmatchingdtas);
     console.log(JSON.stringify(this.wmatchingdtas));
 
+  }
+  onEnterMsg(){
+    console.log("onEnterMsg");
+    this.popCtrl.dismiss();
   }
 }

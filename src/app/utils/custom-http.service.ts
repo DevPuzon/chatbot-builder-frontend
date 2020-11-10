@@ -10,7 +10,7 @@ export class CustomHttpService {
   // private base  ="https://fbchatbotexample012.herokuapp.com/"; 
   private base  ="https://chatbot-builder-api.herokuapp.com/api/"; 
   
-  // private base  ="http://192.168.0.108:8000/";  
+  // private base  ="http://localhost:20184/api/";  
   private token  = "";
   constructor(private http:HttpClient,
     private crypt:CryptService) { 

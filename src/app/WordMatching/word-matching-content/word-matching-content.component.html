@@ -5,7 +5,7 @@
           <ion-col size="12"><h3 style="margin: 0px;">{{i+1}}.</h3></ion-col>
           <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6">
             <p class="say">User say.</p>
-            <input (keyup.enter)="kWord(wordkey.value,i)" #wordkey class="word-input" type="text" placeholder="Please hit enter to add word.">
+            <input (keyup.enter)="kWord(wordkey.value,i,$event)" #wordkey class="word-input" type="text" placeholder="Please hit enter to add word.">
             <ion-row  class="choices-block"> 
               <ion-col size="12"  *ngFor="let word of wmatchingdta.user_possible_words;index as ie" > 
                 <div class="non-block">
@@ -20,10 +20,16 @@
             <p (click)="onSCommand($event,i)" class="word-input" style="cursor: pointer;">Select command</p>
             <ion-row  class="choices-block " >  
               <ion-col class="bot-reply-col" size="12"
-               *ngFor="let command of wmatchingdta.commands"   >  
-                <div *ngIf="command.command_type == 'block'">
+               *ngFor="let command of wmatchingdta.commands;index as ie"   >  
+               <div class="del-command">
+                <div class="tooltip"> 
+                  <img class="logo-del" (click)="onDelComm(ie,i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+                  <span class="tooltiptext">Delete command</span>
+                </div>
+               </div>
+               <div *ngIf="command.command_type == 'block'">
                   <ion-row>
-                    <ion-col size="auto" *ngFor="let block_property of command.block_properties;index as ie">
+                    <ion-col size="auto" *ngFor="let block_property of command.block_properties;index as ie"> 
                       <div class="non-block" *ngIf="block_property.ischecked">
                         <p class="txt-block">{{block_property.block_name}}</p> 
                       </div>
@@ -39,8 +45,8 @@
           <ion-col size="12" class="line-bottom"></ion-col>
         </ion-row>
         <div class="blocks-container"  > 
-          <ion-button  color="primary" fill="outline" style="width:100% ;height: 40px;"> 
-            Add Block
+          <ion-button (click)="onAddWordM()" color="primary" fill="outline" style="width:100% ;height: 40px;"> 
+            Add Word matching
           </ion-button>
         </div>
       </div>

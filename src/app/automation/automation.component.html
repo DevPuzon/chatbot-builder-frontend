@@ -10,8 +10,10 @@
           </ion-button>
         </div>
         <div class="blocks-container" >
-          <div class="block-container" *ngFor="let data of maindatas;index as i" (click)="onBlocks(data,i)">
-            <p class="block-title">{{data.block_name}}</p>
+          <div *ngFor="let data of maindatas;index as i" >
+            <div class="block-container" (click)="onBlocks(data,i)">
+              <p class="block-title">{{data.block_name}}</p>
+            </div>
           </div>
         </div>
         <div class="blocks-container"  > 

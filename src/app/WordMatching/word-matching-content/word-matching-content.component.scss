@@ -86,6 +86,14 @@ ion-col{
             margin-bottom: 4px;
             border: 2px solid #C6C6C6;
         }
+        .del-command{
+            text-align: -webkit-right;
+            .logo-del{
+                cursor: pointer;
+                width: 17px;
+                margin: 4px;
+            }
+        }
         .non-block{  
             margin: 3px;
             border-radius: 8px; 

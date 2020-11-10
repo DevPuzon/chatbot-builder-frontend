@@ -38,12 +38,22 @@ export class WordMatchingContentComponent implements OnInit {
     return await popover.present();
   }
 
-  kWord(word,wm_i){
+  kWord(word,wm_i,$event){
     this.wmatchingdtas[wm_i].user_possible_words.push(word);
     WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    console.log($event);
+    $event.target.value = "";
   }
   delWord(word_i,wm_i){
     this.wmatchingdtas[wm_i].user_possible_words.splice(word_i, 1);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+  }
+  onDelComm(comm_i,wm_i){
+    this.wmatchingdtas[wm_i].commands.splice(comm_i, 1);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+  }
+  onAddWordM(){
+    this.wmatchingdtas.push({user_possible_words:[],commands:[ ]});
     WmatchingutilsService.setWordMatch(this.wmatchingdtas);
   }
 }

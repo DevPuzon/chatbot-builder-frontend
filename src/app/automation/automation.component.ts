@@ -10,6 +10,7 @@ import { CustomHttpService } from '../utils/custom-http.service';
 import { ToastMessageService } from '../utils/toast-message.service';
 import { UuidService } from '../utils/uuid.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'; 
+import { WmatchingutilsService } from '../utils/wmatchingutils.service';
 
 declare var $:any;
 @Component({
@@ -84,17 +85,17 @@ export class AutomationComponent implements OnInit {
   }
 
   init() { 
-    let inter = setInterval(()=>{
-      clearInterval(inter);
-      $('textarea').height($("textarea").prop('scrollHeight'));
-    },1000);
+    // let inter = setInterval(()=>{
+    //   clearInterval(inter);
+    //   $('textarea').height($("textarea").prop('scrollHeight'));
+    // },1000);
 
-    $("textarea").keyup(function(e) { 
-      console.log("asd")
-      while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
-          $(this).height($(this).height()+1);
-      };
-    });
+    // $("textarea").keyup(function(e) { 
+    //   console.log("asd")
+    //   while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
+    //       $(this).height($(this).height()+1);
+    //   };
+    // });
   } 
 
   async addTextButton(ev: any,mini_block_index) {
@@ -124,9 +125,7 @@ export class AutomationComponent implements OnInit {
         {
           "block_name":"Welcome message",
           "mini_blocks":[ 
-            ChatbotFunc.genText(`Hi, {{first name}}name}! Nice to meet you.
-
-            You successfully connected your bot created on https://retailgate.chatbotbuilder.com to your page.`)
+            ChatbotFunc.genText(`Hi, {{first name}}name}! Nice to meet you.\n \t \tYou successfully connected your bot created on https://retailgate.chatbotbuilder.com to your page.`)
             ]
         }
       )
@@ -150,9 +149,12 @@ export class AutomationComponent implements OnInit {
   onBlocks(block,i){
     this.block = block; 
     this.block_index = i;
+    console.log(this.block_index);
   }
  
   kTitleTxt(txt,min_block,mini_block_i){
+    console.log(txt) 
+    console.log(txt);
     if(min_block.type == 'text-only'){
       this.maindatas[this.block_index].mini_blocks[mini_block_i].message.text = txt;
     }else{
@@ -160,8 +162,7 @@ export class AutomationComponent implements OnInit {
     }
     console.log(this.maindatas); 
     BlockUtils.setLocalBlocks(this.maindatas);
-  }
- 
+  } 
   kBlockTitle(block_name){
     this.maindatas[this.block_index].block_name = block_name;
     console.log(this.maindatas); 
@@ -208,13 +209,25 @@ export class AutomationComponent implements OnInit {
   async onDeploy(){
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present();
-    let data = BlockUtils.getLocalBlocks();
+    // let data = BlockUtils.getLocalBlocks();
     
-    this.custHttps.postNoToken("setallblocks/1",data)
-    .subscribe(async (snap:any)=>{ 
-      console.log(data);
-      console.log(snap) 
-      loading.dismiss();
+    this.custHttps.postNoToken("setallblocks/1",BlockUtils.getLocalBlocks())
+    .subscribe(async (snap:any)=>{  
+      console.log(snap)  
+      if(!WmatchingutilsService.getWordMatch()){
+        loading.dismiss();
+        return;
+      }
+      console.log("word matching is not null");
+      this.custHttps.postNoToken("setwordmatch/1",WmatchingutilsService.getWordMatch())
+      .subscribe(async (snap:any)=>{  
+        console.log(snap) 
+        loading.dismiss();
+      }, 
+      (errorCode: Response) => { 
+        loading.dismiss();
+        console.log(errorCode) 
+      });
     }, 
     (errorCode: Response) => { 
       loading.dismiss();

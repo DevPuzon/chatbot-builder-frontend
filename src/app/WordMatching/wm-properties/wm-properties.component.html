@@ -19,6 +19,6 @@
   <div class="c-blocks-container" *ngIf="!is_block">
     <h4>Input message</h4> 
     <input type="text" class="input-button-title"
-    placeholder="How are you?....." #txt_message (keyup)="kMessage(txt_message.value)">
+    placeholder="How are you?....." #txt_message (keyup)="kMessage(txt_message.value)" (keyup.enter)="onEnterMsg()">
   </div>
 </div>

@@ -99,11 +99,10 @@ export class AddTextButtonPopupComponent implements OnInit {
   kBtnTitle(){
     // this.onCheckBtnBlock(null);
     let btn =this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.buttons[this.button_index];
-    // if(btn == undefined){
-    //   btn =this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.buttons[this.button_index -1];
-    // } 
-    btn.title = this.btn_name;
-    BlockUtils.setLocalBlocks(this.maindatas);
+    if(btn != undefined){
+      btn.title = this.btn_name;
+      BlockUtils.setLocalBlocks(this.maindatas);
+    } 
   }
   kURL(){
     for(let i = 0 ; i < this.blocks.length ; i ++){
