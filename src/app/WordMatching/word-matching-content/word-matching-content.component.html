@@ -2,7 +2,10 @@
       <div class="blocks-word-main-con">
         <h1>Word matching</h1>
         <ion-row *ngFor="let wmatchingdta of wmatchingdtas;index as i">
-          <ion-col size="12"><h3 style="margin: 0px;">{{i+1}}.</h3></ion-col>
+          <ion-col size="12" style="display: flex;">
+            <h3 style="margin: 0px; width: -webkit-fill-available;">{{i+1}}.</h3>
+            <img style="cursor:pointer" (click)="onDelConv(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+          </ion-col>
           <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6">
             <p class="say">User say.</p>
             <input (keyup.enter)="kWord(wordkey.value,i,$event)" #wordkey class="word-input" type="text" placeholder="Please hit enter to add word.">
@@ -18,9 +21,10 @@
           <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6">
             <p class="say">Bot reply.</p>
             <p (click)="onSCommand($event,i)" class="word-input" style="cursor: pointer;">Select command</p>
-            <ion-row  class="choices-block " >  
+            <ion-row id="{{i}}comms" class="choices-block slides-sub-arrange " >  
               <ion-col class="bot-reply-col" size="12"
                *ngFor="let command of wmatchingdta.commands;index as ie"   >  
+               <input  id="{{i}}sets[]" type="hidden" [value]="command | json">
                <div class="del-command">
                 <div class="tooltip"> 
                   <img class="logo-del" (click)="onDelComm(ie,i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">

@@ -151,7 +151,10 @@ export class AutomationComponent implements OnInit {
     this.block_index = i;
     console.log(this.block_index);
   }
- 
+  onDelBlock(block_i){
+    this.maindatas.splice(block_i,1);
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
   kTitleTxt(txt,min_block,mini_block_i){
     console.log(txt) 
     console.log(txt);
