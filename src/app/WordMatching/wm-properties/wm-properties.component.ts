@@ -75,26 +75,17 @@ export class WmPropertiesComponent implements OnInit {
   }
   
   onCheckBtnBlock(index){  
+    console.log(index);
     if(index != null){    
       this.wmatchingdta.commands[this.command_i] = {}; 
       let boolGl = !this.blocks[index].ischecked;  
+      console.log(boolGl);
       this.blocks[index].ischecked = boolGl;
       this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i]={
         block_properties : this.blocks,
         command_type:"block"
       } 
-    } 
-    let needDel = false;
-    for(let i = 0 ; i < this.blocks.length;i++){
-      if(this.blocks[i].ischecked){
-        i = this.blocks.length;
-      }else{
-        needDel = true;
-      }
-    }
-    if(needDel){
-      this.wmatchingdta.commands.splice(this.command_i,1);
-    }
+    }  
  
     WmatchingutilsService.setWordMatch(this.wmatchingdtas);
     console.log(JSON.stringify(this.wmatchingdtas));
