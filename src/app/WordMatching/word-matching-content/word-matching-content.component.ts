@@ -43,7 +43,7 @@ export class WordMatchingContentComponent implements OnInit {
     let _this = this;
     $( document ).ready(function() {
       
-    $(".slides-sub-arrange").sortable({ 
+    $(".wm-slides-sub-arrange").sortable({ 
       stop: function(e, ui) {
         var data = "";
         let id_con =$(this).context.id;

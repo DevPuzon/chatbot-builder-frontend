@@ -3,12 +3,11 @@
   <input type="text" class="input-button-title"
   placeholder="Add button title" [(ngModel)]="btn_name" (keyup)="kBtnTitle()">
   <ion-toolbar class="toolbar-segment md in-toolbar hydrated">
-    <ion-segment value="all" [(ngModel)]="segment" class="md in-toolbar hydrated">
-      <ion-segment-button value="block" (click)="isBlock()"  >Blocks</ion-segment-button>
-      <ion-segment-button value="url" (click)="isBlock()"  >URL</ion-segment-button>
+    <ion-segment value="all" class="md in-toolbar hydrated">
+      <ion-segment-button class="segment-button-checked" >Blocks</ion-segment-button> 
     </ion-segment>
   </ion-toolbar>
-  <div class="c-blocks-container"  *ngIf="is_block">
+  <div class="c-blocks-container">
     <h4>Redirect to block</h4> 
     <ion-row  class="choices-block"> 
       <ion-col *ngFor="let block of blocks;index as i" (click)="onCheckBtnBlock(i)"> 
@@ -17,10 +16,5 @@
         </div>
       </ion-col> 
     </ion-row>
-  </div>
-  <div class="c-blocks-container" *ngIf="!is_block">
-    <h4>Open URL</h4> 
-    <input type="text" class="input-button-title"
-    placeholder="Add URL" [(ngModel)]="txt_URL" (keyup)="kURL()">
-  </div>
+  </div> 
 </div>

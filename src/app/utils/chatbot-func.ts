@@ -65,5 +65,21 @@ export class ChatbotFunc{
     }  
     return response;
   } 
- 
+
+  static genQuickReply(text, quickReplies) {
+    let response = {
+      type:"quickreply-only",
+      message:{
+          text: text,
+          quick_replies: quickReplies
+      }
+    }   
+    // quickReplies = [{ content_type:content_type,
+    //   title:Green, payload:payload }
+  // let response = {
+  //   text: text,
+  //   quick_replies: quickReplies
+  // };  
+    return response;
+  }
 }

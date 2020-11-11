@@ -29,12 +29,17 @@ import { WordMatchingContentComponent } from './WordMatching/word-matching-conte
 import { WmPropertiesComponent } from './WordMatching/wm-properties/wm-properties.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { UserLoginComponent } from './Auth/user-login/user-login.component';
+import { AddCarButtonComponent } from './add-car-button/add-car-button.component';
+import { AddQuickreplyComponent } from './add-quickreply/add-quickreply.component';
 
 @NgModule({
   declarations: [AppComponent,AutomationComponent,AddTextButtonPopupComponent,
+    AddCarButtonComponent,AddQuickreplyComponent,
     UserLoginComponent,
     WordMatchingContentComponent,WmPropertiesComponent],
-  entryComponents: [AutomationComponent,AddTextButtonPopupComponent ],
+  entryComponents: [AutomationComponent,
+    AddTextButtonPopupComponent,AddCarButtonComponent,
+    AddQuickreplyComponent ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // firestore

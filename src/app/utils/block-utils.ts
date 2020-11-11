@@ -26,7 +26,7 @@ export class BlockUtils {
     // return this.reBtnsPayloadParse(mblocks); 
   }
 
-  static getButtonBlocks(block_index,mini_block_index,button_index){
+  static getTxtButtonBlocks(block_index,mini_block_index,button_index){
     button_index = button_index ;
     let blocks ;
     blocks = localStorage.getItem("localblocks");
@@ -52,6 +52,54 @@ export class BlockUtils {
     return ret;
   } 
 
+  static getCarButtonBlocks(block_index,mini_block_index,element_i,button_index){
+    button_index = button_index ;
+    let blocks ;
+    blocks = localStorage.getItem("localblocks");
+    if(blocks == "" || blocks == null ){
+      return null;
+    }
+    blocks = JSON.parse(blocks);
+    console.log(mini_block_index);
+    let mini_blocks = blocks[block_index].mini_blocks[mini_block_index];
+    if(mini_blocks.type != 'carousel-only'){
+      return null;
+    } 
+    let ret = null;
+    console.log(mini_blocks);
+    console.log(button_index);
+    let btns = mini_blocks.message.attachment.payload.elements[element_i].buttons[button_index];
+    if(btns == undefined || btns == null){
+      return null;
+    }
+
+    console.log(btns);
+    ret = mini_blocks.message.attachment.payload.elements[element_i].buttons[button_index].payload;
+    return ret;
+  } 
+  static getQReplyButtonBlocks(block_index,mini_block_index,qreply_i){
+    let blocks ;
+    blocks = localStorage.getItem("localblocks");
+    if(blocks == "" || blocks == null ){
+      return null;
+    }
+    blocks = JSON.parse(blocks);
+    console.log(mini_block_index);
+    let mini_blocks = blocks[block_index].mini_blocks[mini_block_index];
+    if(mini_blocks.type != 'quickreply-only'){
+      return null;
+    } 
+    let ret = null;
+    console.log(mini_blocks); 
+    let btns = mini_blocks.message.quick_replies[qreply_i].payload; 
+    if(btns == undefined || btns == null || btns.length <= 0){
+      return null;
+    }
+
+    console.log(btns);
+    ret = mini_blocks.message.quick_replies[qreply_i].payload;
+    return ret;
+  } 
   // static reBtnsPayloadParse(dtas){ 
   //   let b_dtas = dtas;
   //   // let ret : any[];

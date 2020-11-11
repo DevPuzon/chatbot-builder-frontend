@@ -11,6 +11,8 @@ import { ToastMessageService } from '../utils/toast-message.service';
 import { UuidService } from '../utils/uuid.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'; 
 import { WmatchingutilsService } from '../utils/wmatchingutils.service';
+import { AddCarButtonComponent } from '../add-car-button/add-car-button.component';
+import { AddQuickreplyComponent } from '../add-quickreply/add-quickreply.component';
 
 declare var $:any;
 @Component({
@@ -98,27 +100,6 @@ export class AutomationComponent implements OnInit {
     // });
   } 
 
-  async addTextButton(ev: any,mini_block_index) {
-    console.log(this.block.mini_blocks[mini_block_index].type);
-    if(this.block.mini_blocks[mini_block_index].type =="button-text-only"){
-      let btns_length =this.block.mini_blocks[mini_block_index].message.attachment.payload.buttons.length;
-      if(btns_length == 3){
-        $("#add-"+mini_block_index).hide();
-        return;
-      }
-    }
-    const popover = await this.popoverController.create({
-      component: AddTextButtonPopupComponent , 
-      cssClass: 'ion-popover',
-      event: ev,
-      componentProps:{maindatas:this.maindatas,
-        is_add:true, 
-        mini_block_index:mini_block_index,
-        block_index:this.block_index}
-    });
-    return await popover.present();
-  }
-
   initMaindatas() {
     if(this.maindatas.length == 0){
       this.maindatas.push(
@@ -190,25 +171,8 @@ export class AutomationComponent implements OnInit {
     BlockUtils.setLocalBlocks(this.maindatas);
   }
 
-  async onBtnTxtEdit(ev: any,mini_block_index,button_index,btn_name,txt_URL) { 
-    console.log(btn_name);
-    const popover = await this.popoverController.create({
-      component: AddTextButtonPopupComponent , 
-      cssClass: 'ion-popover',
-      event: ev,
-      componentProps:{maindatas:this.maindatas, 
-        mini_block_index:mini_block_index,
-        button_index:button_index,
-        btn_name:btn_name,
-        txt_URL:txt_URL,
-        block_index:this.block_index}
-    });
-    return await popover.present();
-  } 
-  delBtnTxt(mini_block_index,button_index){
-    this.maindatas[this.block_index].mini_blocks[mini_block_index].message.attachment.payload.buttons.splice(button_index,1);
-    BlockUtils.setLocalBlocks(this.maindatas);
-  }
+
+  
   async onDeploy(){
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present();
@@ -289,6 +253,29 @@ export class AutomationComponent implements OnInit {
     BlockUtils.setLocalBlocks(this.maindatas);
   }
   
+  onAddQreplyMiniBlock(){
+    console.log(this.maindatas);
+    console.log(this.block_index);
+    this.maindatas[this.block_index]
+    .mini_blocks.push(ChatbotFunc.genQuickReply("",[]));
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
+
+  onAddQReply(mini_block_i){
+    this.maindatas[this.block_index].mini_blocks[mini_block_i]
+    .message.quick_replies.push({ content_type:"text",
+      title:"", payload:[] });
+    console.log(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
+
+  kQreplyTxt(mini_block_i,qreplytxt){
+    this.maindatas[this.block_index].mini_blocks[mini_block_i]
+    .message.text =qreplytxt;
+    console.log(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
+
   onCMinBImg(file,miniblock_index){
     if (file) {     
       BlobService.resize(file,140).then((data)=>{
@@ -374,8 +361,92 @@ export class AutomationComponent implements OnInit {
     BlockUtils.setLocalBlocks(this.maindatas);
   }
 
+  async addTextButton(ev: any,mini_block_index) {
+    console.log(this.block.mini_blocks[mini_block_index].type);
+    if(this.block.mini_blocks[mini_block_index].type =="button-text-only"){
+      let btns_length =this.block.mini_blocks[mini_block_index].message.attachment.payload.buttons.length;
+    }
+    const popover = await this.popoverController.create({
+      component: AddTextButtonPopupComponent , 
+      cssClass: 'ion-popover',
+      event: ev,
+      componentProps:{maindatas:this.maindatas,
+        is_add:true, 
+        mini_block_index:mini_block_index,
+        block_index:this.block_index}
+    });
+    return await popover.present();
+  }
+  async onBtnTxtEdit(ev: any,mini_block_index,button_index,btn_name,txt_URL) { 
+    console.log(btn_name);
+    const popover = await this.popoverController.create({
+      component: AddTextButtonPopupComponent , 
+      cssClass: 'ion-popover',
+      event: ev,
+      componentProps:{maindatas:this.maindatas, 
+        mini_block_index:mini_block_index,
+        button_index:button_index,
+        btn_name:btn_name,
+        txt_URL:txt_URL,
+        block_index:this.block_index}
+    });
+    return await popover.present();
+  } 
+  async onQreplyEdit(ev: any,mini_block_index,qreply_i,qreply_title) { 
+    const popover = await this.popoverController.create({
+      component: AddQuickreplyComponent , 
+      cssClass: 'ion-popover',
+      event: ev,
+      componentProps:{maindatas:this.maindatas, 
+        mini_block_index:mini_block_index,
+        qreply_i:qreply_i,
+        btn_name:qreply_title, 
+        block_index:this.block_index}
+    });
+    return await popover.present();
+  } 
   onDelTxtBtn(mini_block_i,txtbtn_i){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.attachment.payload.buttons.splice(txtbtn_i,1);
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
+  onDelQreply(mini_block_i,qreply_i){
+    this.maindatas[this.block_index].mini_blocks[mini_block_i]
+    .message.quick_replies.splice(qreply_i,1);
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
+  async addCarButton(ev: any,mini_block_index,element_i) {
+    console.log(this.block.mini_blocks[mini_block_index].type);
+    if(this.block.mini_blocks[mini_block_index].type =="button-text-only"){
+      let btns_length =this.block.mini_blocks[mini_block_index].message.attachment.payload.buttons.length;
+    }
+    const popover = await this.popoverController.create({
+      component: AddCarButtonComponent , 
+      cssClass: 'ion-popover',
+      event: ev,
+      componentProps:{maindatas:this.maindatas,
+        is_add:true, 
+        element_i:element_i,
+        mini_block_index:mini_block_index,
+        block_index:this.block_index}
+    });
+    return await popover.present();
+  }
+
+  async onBtnCarEdit(ev: any,mini_block_index,button_index,btn_name,txt_URL,element_i) { 
+    console.log(btn_name);
+    const popover = await this.popoverController.create({
+      component: AddCarButtonComponent , 
+      cssClass: 'ion-popover',
+      event: ev,
+      componentProps:{maindatas:this.maindatas, 
+        mini_block_index:mini_block_index,
+        button_index:button_index,
+        btn_name:btn_name,
+        element_i:element_i,
+        txt_URL:txt_URL,
+        block_index:this.block_index}
+    });
+    return await popover.present();
+  } 
 }

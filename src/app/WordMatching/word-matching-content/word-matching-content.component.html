@@ -21,7 +21,7 @@
           <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6">
             <p class="say">Bot reply.</p>
             <p (click)="onSCommand($event,i)" class="word-input" style="cursor: pointer;">Select command</p>
-            <ion-row id="{{i}}comms" class="choices-block slides-sub-arrange " >  
+            <ion-row id="{{i}}comms" class="choices-block wm-slides-sub-arrange " >  
               <ion-col class="bot-reply-col" size="12"
                *ngFor="let command of wmatchingdta.commands;index as ie"   >  
                <input  id="{{i}}sets[]" type="hidden" [value]="command | json">
