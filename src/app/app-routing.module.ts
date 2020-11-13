@@ -1,23 +1,36 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AddTextButtonPopupComponent } from './add-text-button-popup/add-text-button-popup.component';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router'; 
+import { AppComponent } from './app.component';
 import { UserLoginComponent } from './Auth/user-login/user-login.component';
-import { AutomationComponent } from './automation/automation.component';
-
+import { UserRegisterComponent } from './Auth/user-register/user-register.component';
+ 
 const routes: Routes = [ 
   {
     path: '',
-    redirectTo: 'automation',
+    redirectTo: 't',
     pathMatch: 'full'
-  },{
-    path:"automation",
-    component:AutomationComponent
-  },{
-    path:"popupaddtxt",
-    component:AddTextButtonPopupComponent
-  },{
-    path:"login",
-    component:UserLoginComponent
+  },
+  {
+    path: 'auth',
+    redirectTo: 'auth/login',
+    pathMatch: 'full'
+  }
+  ,{
+    path:"auth",
+    children:[
+      {
+        path:"login",
+        component:UserLoginComponent
+      },
+      {
+        path:"register",
+        component:UserRegisterComponent
+      },
+    ]
+  },
+  {
+    path: 't',
+    loadChildren: () => import('./AutomationMain/main-automation/main-automation.module').then( m => m.MainAutomationPageModule)
   }
 ];
 
@@ -28,3 +41,10 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
+export const declarations= [
+  AppComponent,UserLoginComponent,UserRegisterComponent
+]
+export const entryComponents= [
+  UserLoginComponent,UserRegisterComponent
+]

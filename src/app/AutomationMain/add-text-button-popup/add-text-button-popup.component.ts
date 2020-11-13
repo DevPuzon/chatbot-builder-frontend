@@ -1,18 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BlockUtils } from '../utils/block-utils';
-import { ChatbotFunc } from '../utils/chatbot-func';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'; 
+import { BlockUtils } from 'src/app/utils/block-utils';
+import { ChatbotFunc } from 'src/app/utils/chatbot-func';
+
 @Component({
-  selector: 'app-add-car-button',
-  templateUrl: './add-car-button.component.html',
-  styleUrls: ['./add-car-button.component.scss'],
+  selector: 'app-add-text-button-popup',
+  templateUrl: './add-text-button-popup.component.html',
+  styleUrls: ['./add-text-button-popup.component.scss'],
 })
-export class AddCarButtonComponent implements OnInit {
+export class AddTextButtonPopupComponent implements OnInit {
   @Input() maindatas :any;
 
   @Input() block_index = 0 ;
   @Input() mini_block_index  = 0 ; 
-  @Input() element_i  = 0 ; 
   @Input() is_add  = false ; 
   @Input() btn_name =""; 
   @Input() txt_URL =""; 
@@ -25,7 +25,7 @@ export class AddCarButtonComponent implements OnInit {
  
   constructor(private formBuilder:FormBuilder) { 
   }
-  // .elements[this.element_i].buttons
+
   ngOnInit() {   
     this.mini_block = this.maindatas[this.block_index].
     mini_blocks[this.mini_block_index];
@@ -35,7 +35,7 @@ export class AddCarButtonComponent implements OnInit {
 
     console.log(this.mini_block_index);
     console.log(this.button_index);
-    let localBlocks = BlockUtils.getCarButtonBlocks(this.block_index,this.mini_block_index,this.element_i,this.button_index);
+    let localBlocks = BlockUtils.getTxtButtonBlocks(this.block_index,this.mini_block_index,this.button_index);
     
     console.log(localBlocks);
     if(localBlocks != null || localBlocks != undefined){
@@ -43,14 +43,13 @@ export class AddCarButtonComponent implements OnInit {
     }else{
       this.saveNoBlocks();
     }
-    console.log(this.maindatas); 
     BlockUtils.setLocalBlocks(this.maindatas); 
   }
 
   onCheckButton() {
     if(this.is_add){ 
-      if(this.mini_block.message.attachment){  
-        this.button_index = this.mini_block.message.attachment.payload.elements[this.element_i].buttons.length;
+      if(this.mini_block.message.attachment){ 
+        this.button_index = this.mini_block.message.attachment.payload.buttons.length;
       }
     }
   }
@@ -94,7 +93,7 @@ export class AddCarButtonComponent implements OnInit {
   kBtnTitle(){
     // this.onCheckBtnBlock(null);
     if(this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment){
-      let btn = this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.elements[this.element_i].buttons[this.button_index];
+      let btn = this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.buttons[this.button_index];
       btn.title = this.btn_name;
       BlockUtils.setLocalBlocks(this.maindatas);
     } 
@@ -118,18 +117,34 @@ export class AddCarButtonComponent implements OnInit {
     if(index != null){
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
     }
- 
-    console.log(this.blocks); 
-    console.log(this.button_index);
-   
-    this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.elements[this.element_i].buttons[this.button_index] =
-    {
-      type:"postback",
-      payload:this.blocks,
-      title:this.btn_name
-    } 
 
-    console.log(JSON.stringify(this.maindatas));
+    console.log(this.blocks);
+    // "type":"postback",
+    // "payload":'[{"block_name":"name","block_index":0,"ischecked":false}]',
+    // "title":"Default Block"
+    let buttons = new Array();
+    let func;
+    console.log(this.button_index);
+    if(this.mini_block.type == "button-text-only"){
+      buttons = this.mini_block.message.attachment.payload.buttons; 
+      buttons[this.button_index] =
+      {
+        type:"postback",
+        payload:this.blocks,
+        title:this.btn_name
+      }
+     func = ChatbotFunc.genButtonTemplate(this.mini_block.message.attachment.payload.text,buttons);
+    }else{
+      buttons[this.button_index] =
+      {
+        type:"postback",
+        payload:this.blocks,
+        title:this.btn_name
+      }
+      func = ChatbotFunc.genButtonTemplate(this.mini_block.message.text,buttons);
+    }
+    this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func;
+    console.log(this.maindatas);
     BlockUtils.setLocalBlocks(this.maindatas); 
   }
 
@@ -138,14 +153,32 @@ export class AddCarButtonComponent implements OnInit {
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
     }
 
-    console.log(this.blocks); 
-   
-    this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.elements[this.element_i].buttons[this.button_index] =
-    {
-      type:"web_url",
-      url:this.txt_URL, 
-      title:this.btn_name
-    } 
+    console.log(this.blocks);
+    // "type":"postback",
+    // "payload":'[{"block_name":"name","block_index":0,"ischecked":false}]',
+    // "title":"Default Block"
+    let buttons = new Array();
+    let func;
+    console.log(this.button_index);
+    if(this.mini_block.type == "button-text-only"){
+      buttons = this.mini_block.message.attachment.payload.buttons; 
+      buttons[this.button_index] =
+      {
+        type:"web_url",
+        url:this.txt_URL, 
+        title:this.btn_name
+      }
+     func = ChatbotFunc.genButtonTemplate(this.mini_block.message.attachment.payload.text,buttons);
+    }else{
+      buttons[this.button_index] =
+      {
+        type:"web_url",
+        url:this.txt_URL, 
+        title:this.btn_name
+      }
+      func = ChatbotFunc.genButtonTemplate(this.mini_block.message.text,buttons);
+    }
+    this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func;
     console.log(this.maindatas);
     BlockUtils.setLocalBlocks(this.maindatas); 
   }

@@ -7,9 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { AutomationComponent } from './automation/automation.component';
-import { AddTextButtonPopupComponent } from './add-text-button-popup/add-text-button-popup.component';
+import { AppRoutingModule, declarations, entryComponents } from './app-routing.module';  
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -24,22 +22,13 @@ import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-logi
 import {
   GoogleLoginProvider,
   FacebookLoginProvider
-} from 'angularx-social-login'; //https://github.com/abacritt/angularx-social-login
-import { WordMatchingContentComponent } from './WordMatching/word-matching-content/word-matching-content.component';
-import { WmPropertiesComponent } from './WordMatching/wm-properties/wm-properties.component';
+} from 'angularx-social-login'; //https://github.com/abacritt/angularx-social-login 
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { UserLoginComponent } from './Auth/user-login/user-login.component';
-import { AddCarButtonComponent } from './add-car-button/add-car-button.component';
-import { AddQuickreplyComponent } from './add-quickreply/add-quickreply.component';
-
+ 
 @NgModule({
-  declarations: [AppComponent,AutomationComponent,AddTextButtonPopupComponent,
-    AddCarButtonComponent,AddQuickreplyComponent,
-    UserLoginComponent,
-    WordMatchingContentComponent,WmPropertiesComponent],
-  entryComponents: [AutomationComponent,
-    AddTextButtonPopupComponent,AddCarButtonComponent,
-    AddQuickreplyComponent ],
+  declarations: declarations,
+  entryComponents: entryComponents,
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // firestore

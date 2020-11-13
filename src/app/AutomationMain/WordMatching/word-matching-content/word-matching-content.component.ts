@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { LoadingController, PopoverController, ToastController } from '@ionic/angular';
+import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { ToastMessageService } from 'src/app/utils/toast-message.service';
 import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
 import { WmPropertiesComponent } from '../wm-properties/wm-properties.component';  
  
@@ -12,15 +14,21 @@ declare var $:any;
 export class WordMatchingContentComponent implements OnInit {
 
   wmatchingdtas = new Array();
-  constructor(private popoverController:PopoverController) { }
+  constructor(private popoverController:PopoverController,
+    private custHttps:CustomHttpService,
+    private toast : ToastMessageService,
+    private loadingController:LoadingController) { }
 
   ngOnInit() {
     this.initSortable();
     this.init();
+    if(!WmatchingutilsService.getWordMatch()){ 
+      this.getCloudblocks();
+    }
   }
 
   init() {
-    if(WmatchingutilsService.getWordMatch() != null){
+    if(WmatchingutilsService.getWordMatch() != null){ 
       this.wmatchingdtas = WmatchingutilsService.getWordMatch();
     }else{
       this.wmatchingdtas.push({user_possible_words:[],commands:[ ]});
@@ -28,6 +36,31 @@ export class WordMatchingContentComponent implements OnInit {
     console.log(this.wmatchingdtas);
   }
 
+  async getCloudblocks(){  
+    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    await loading.present();
+    
+    this.custHttps.get("getwordmatch/1")
+    .subscribe(async (snap:any)=>{ 
+      await loading.dismiss();
+      snap = snap.response;
+      console.log(snap);
+      if(!snap){ 
+        return;
+      }
+      console.log(snap);
+      WmatchingutilsService.setWordMatch(snap); 
+      this.init();
+    }, 
+    async (errorCode: Response) => { 
+      console.log(errorCode) ;
+      this.toast.presentToast("Something went wrong please try again later");
+      await loading.dismiss();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1800);
+    });
+  }
   async onSCommand(ev,wmatchingdtas_i){
     const popover = await this.popoverController.create({
       component: WmPropertiesComponent , 

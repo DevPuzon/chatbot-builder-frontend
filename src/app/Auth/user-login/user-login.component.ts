@@ -5,6 +5,8 @@ import { LoadingController } from '@ionic/angular';
 
 import { SocialAuthService } from "angularx-social-login";
 import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
+import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { ToastMessageService } from 'src/app/utils/toast-message.service';
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
@@ -15,6 +17,8 @@ export class UserLoginComponent implements OnInit {
   submitted=false;
   constructor(private authService: SocialAuthService,
     private router:Router, 
+    private cusHttp :CustomHttpService,
+    private toast:ToastMessageService,
     private loadingController:LoadingController,
     private formBuilder :FormBuilder) {
     this.form = this.formBuilder.group({
@@ -41,13 +45,23 @@ export class UserLoginComponent implements OnInit {
     if(this.form.invalid){
       return;
     }   
-    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    await loading.present();
-    setTimeout(() => {
-      loading.dismiss();
-      this.router.navigateByUrl("automation");
-    }, 1800);
+    this.onLogin();
   } 
+  
+  async onLogin() { 
+    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    await loading.present(); 
+    
+    this.cusHttp.postNoToken("login", this.form.value)
+    .subscribe(async (snap:any)=>{ 
+      await loading.dismiss();   
+      this.router.navigateByUrl("t");
+    }, 
+    async (err: Response) => { 
+      await loading.dismiss();   
+      this.toast.presentToast("Something went wrong");
+    });
+  }
 
   signInWithGoogle(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);

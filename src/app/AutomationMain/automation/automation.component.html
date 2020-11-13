@@ -1,6 +1,6 @@
 <ion-content>
   <ion-row>
-    <ion-col style="height: 100vh; overflow: scroll;" size="12" size-sm="12" size-md="4" size-lg="4">
+    <ion-col style="height: 100vh; overflow: auto;" size="12" size-sm="12" size-md="4" size-lg="4">
       <div class="blocks-word-main-con"> 
         <h1>Blocks</h1>
         <div class="btn-deploy-con" (click)="onDeploy()">
@@ -36,15 +36,15 @@
         <!-- <h1 class="builder-block-title">{{block.block_name}}</h1> -->
         <input [readonly]="block_index == 0" [(ngModel)]="block.block_name" (keyup)="kBlockTitle(block.block_name)" type="text" class="builder-block-title">
          
-        <div class="arrange-main slides-sub-arrange"     > 
+        <div class="arrange-main slides-sub-arrange" > 
           <div *ngFor="let min_block of block.mini_blocks;index as i"
-           class="arrange slide"
+           class="arrange slide" (click)="onNavMinblock(i)"
            [class]="min_block.type == 'text-only' || min_block.type == 'button-text-only' ?'txt-color':'' ||
             min_block.type == 'image-only'?'img-color':'' ||
             min_block.type == 'carousel-only'?'car-color':''||
             min_block.type == 'quickreply-only'?'qreply-color':''" >  
             <h3>{{i +1}}.</h3>
-            <h5>{{min_block.type == 'text-only' ?'txt-color':'' ||
+            <h5>{{min_block.type == 'text-only' ?'Text':'' ||
               min_block.type == 'button-text-only'?'Text button':'' ||
               min_block.type == 'image-only'?'Image':'' ||
               min_block.type == 'carousel-only'?'Carousel':'' ||
@@ -67,7 +67,7 @@
                 </div>
                 <div>
                   <!-- TEXT BUTTON -->
-                  <div  class="txt-container block-card" 
+                  <div id="min_block_{{i}}" class="txt-container block-card" 
                   *ngIf="min_block.type == 'button-text-only' || min_block.type == 'text-only'">
                     <div class="textarea-container"> 
                       <textarea class="txt" #textminblock (keyup)="kTitleTxt(textminblock.value,min_block,i)" >{{min_block.type == 'text-only'? min_block.message.text : min_block.message.attachment.payload.text}} </textarea>
@@ -109,7 +109,7 @@
                     
                   </div>  
                   <!-- IMAGE -->
-                  <div class="img-container block-card"
+                  <div id="min_block_{{i}}" class="img-container block-card"
                   *ngIf="min_block.type == 'image-only'"
                   (click)="onGetImg(i,'image',-1)"> 
                     <img *ngIf="min_block.message.attachment.payload.url != ''" src="{{min_block.message.attachment.payload.url}}" alt="">
@@ -119,7 +119,7 @@
                     </div>
                   </div> 
                   <!-- CAROUSEL -->
-                  <div class="car-main-con" *ngIf="min_block.type == 'carousel-only'">
+                  <div id="min_block_{{i}}" class="car-main-con" *ngIf="min_block.type == 'carousel-only'">
                     <div class="car-container block-card"
                     *ngFor="let car of min_block.message.attachment.payload.elements;index as ie">
                     
@@ -146,19 +146,18 @@
                       <!-- CAROUSEL WITH BUTTONS -->
                       <div class="buttons-container" >
                         <div *ngFor="let btn of min_block.message.attachment.payload.elements[ie].buttons; index as x"
-                        [class]="btn.title == '' ? 'err-button':'button'"
-                        (click)="onBtnCarEdit($event,i,x,btn.title,btn.url,ie)">
-                          <p class="button-title">{{btn.title == '' ? 'Enter button name':btn.title}}</p>
-                          <div class="button-main">
-                            <p class="button-url func" *ngIf="btn.type =='web_url'">{{btn.url}}</p>
-                            <div class="button-subtitle func" *ngIf="btn.type =='postback'">
+                        [class]="btn.title == '' ? 'err-button':'button'" >
+                          <p class="button-title" (click)="onBtnCarEdit($event,i,x,btn.title,btn.url,ie)">{{btn.title == '' ? 'Enter button name':btn.title}}</p>
+                          <div class="button-main" >
+                            <p class="button-url func" *ngIf="btn.type =='web_url'" (click)="onBtnCarEdit($event,i,x,btn.title,btn.url,ie)">{{btn.url}}</p>
+                            <div class="button-subtitle func" *ngIf="btn.type =='postback'" (click)="onBtnCarEdit($event,i,x,btn.title,btn.url,ie)">
                               <ion-row>
                                 <ion-col size="auto" *ngFor="let payload of btn.payload" >
                                   <p  *ngIf="payload.ischecked">{{payload.block_name}} </p></ion-col>
                                 </ion-row>
                             </div> 
                             <div class="tooltip"> 
-                              <img class="logo-del" (click)="onDelCarBtn(i,x)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+                              <img class="logo-del" (click)="onDelCarBtn(i,ie,x)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
                               <span class="tooltiptext">Delete button</span>
                             </div>
                           </div>
@@ -178,7 +177,7 @@
                     </div>
                   </div>
                   <!-- QUICKREPLY -->
-                  <div class="qreply-main-con" *ngIf="min_block.type == 'quickreply-only'">
+                  <div id="min_block_{{i}}" class="qreply-main-con" *ngIf="min_block.type == 'quickreply-only'">
                     <input (keyup)="kQreplyTxt(i,qreplytxt.value)" #qreplytxt class="qreply-txt" type="text" placeholder="Input some text" [(ngModel)]="min_block.message.text">
                     <div class="con">
                       <div *ngIf="min_block.message.quick_replies.length > 0" style="display: inline-flex;">

@@ -3,17 +3,18 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { LoadingController, PopoverController } from '@ionic/angular';
  
 import { AddTextButtonPopupComponent } from '../add-text-button-popup/add-text-button-popup.component';
-import { BlobService } from '../utils/blob.service';
-import { BlockUtils } from '../utils/block-utils';
-import { ChatbotFunc } from '../utils/chatbot-func';
-import { CustomHttpService } from '../utils/custom-http.service';
-import { ToastMessageService } from '../utils/toast-message.service';
-import { UuidService } from '../utils/uuid.service';
+ 
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'; 
-import { WmatchingutilsService } from '../utils/wmatchingutils.service';
-import { AddCarButtonComponent } from '../add-car-button/add-car-button.component';
+import { BlockUtils } from 'src/app/utils/block-utils';
+import { UuidService } from 'src/app/utils/uuid.service';
+import { ToastMessageService } from 'src/app/utils/toast-message.service';
+import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { ChatbotFunc } from 'src/app/utils/chatbot-func';
+import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
+import { BlobService } from 'src/app/utils/blob.service';
 import { AddQuickreplyComponent } from '../add-quickreply/add-quickreply.component';
-
+import { AddCarButtonComponent } from '../add-car-button/add-car-button.component';
+ 
 declare var $:any;
 @Component({
   selector: 'app-automation',
@@ -35,23 +36,13 @@ export class AutomationComponent implements OnInit {
 
   ngOnInit() { 
     this.initSortable();
-    // $( function() {
-    //   $( "#sortable" ).sortable();
-    //   $( "#sortable" ).disableSelection();
-    // } );
-    this.init(); 
-    if(BlockUtils.getLocalBlocks() == undefined
-     ||BlockUtils.getLocalBlocks() == null  ){ 
-      this.initMaindatas();
-      this.getCloudblocks();
-    }else{ 
-      this.maindatas = BlockUtils.getLocalBlocks();
-      this.block = this.maindatas[0];
-    }
-    console.log(JSON.stringify(this.maindatas));
-    console.log(this.block);
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    this.init();  
   }  
+  onNavMinblock(i){
+    var elmnt = document.getElementById("min_block_"+i) ;
+    console.log(elmnt);
+    elmnt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
   
   initSortable() { 
     let _this = this;
@@ -98,6 +89,15 @@ export class AutomationComponent implements OnInit {
     //       $(this).height($(this).height()+1);
     //   };
     // });
+    if(BlockUtils.getLocalBlocks() == undefined
+    ||BlockUtils.getLocalBlocks() == null  ){ 
+      this.initMaindatas();
+      this.getCloudblocks();
+    }else{ 
+      this.maindatas = BlockUtils.getLocalBlocks();
+      this.block = this.maindatas[0];
+    } 
+    BlockUtils.setLocalBlocks(this.maindatas); 
   } 
 
   initMaindatas() {
@@ -203,22 +203,31 @@ export class AutomationComponent implements OnInit {
     
   }
 
-  getCloudblocks(){  
+  async getCloudblocks(){  
+    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    await loading.present();
+    
     this.custHttps.get("getallblocks/1")
     .subscribe(async (snap:any)=>{ 
+      await loading.dismiss();
       snap = snap.response;
       console.log(snap);
-      if(!snap){
-        this.initMaindatas();
+      if(!snap){ 
         return;
       }
       console.log(snap);
       this.maindatas = snap;
       BlockUtils.setLocalBlocks(this.maindatas);
-      window.location.reload();
+     
+      this.init();
     }, 
-    (errorCode: Response) => { 
-      console.log(errorCode) 
+    async (errorCode: Response) => { 
+      console.log(errorCode) ;
+      this.toast.presentToast("Something went wrong please try again later");
+      await loading.dismiss();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1800);
     });
   }
 
@@ -410,16 +419,18 @@ export class AutomationComponent implements OnInit {
     .message.attachment.payload.buttons.splice(txtbtn_i,1);
     BlockUtils.setLocalBlocks(this.maindatas);
   }
+  onDelCarBtn(mini_block_i,element_i,button_index){
+    this.maindatas[this.block_index].mini_blocks[mini_block_i]
+    .message.attachment.payload.elements[element_i].buttons.splice(button_index,1);
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
   onDelQreply(mini_block_i,qreply_i){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.quick_replies.splice(qreply_i,1);
     BlockUtils.setLocalBlocks(this.maindatas);
   }
   async addCarButton(ev: any,mini_block_index,element_i) {
-    console.log(this.block.mini_blocks[mini_block_index].type);
-    if(this.block.mini_blocks[mini_block_index].type =="button-text-only"){
-      let btns_length =this.block.mini_blocks[mini_block_index].message.attachment.payload.buttons.length;
-    }
+    console.log(this.block.mini_blocks[mini_block_index].type); 
     const popover = await this.popoverController.create({
       component: AddCarButtonComponent , 
       cssClass: 'ion-popover',

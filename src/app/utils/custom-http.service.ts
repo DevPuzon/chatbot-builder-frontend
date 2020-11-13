@@ -9,7 +9,7 @@ export class CustomHttpService {
 
   // private base  ="https://fbchatbotexample012.herokuapp.com/"; 
   private base  ="https://chatbot-builder-api.herokuapp.com/api/"; 
-  
+  // private base = "https://api.retailgate.tech:20185/api/";
   // private base  ="http://localhost:20184/api/";  
   private token  = "";
   constructor(private http:HttpClient,

@@ -1,15 +1,23 @@
- 
- <ion-content>
+<ion-content>
   <ion-row >
     <ion-col style="background-color: white;" 
     size="12" size-sm="12" size-lg="4" size-md="4"> 
       <div class="container"> 
         <ion-label class="ion-text-center"   > 
           <div class="panel"> 
-            <p class="title"><b>Hey!</b></p>
-            <p class="desc"><b>How's your day?</b></p>
+            <p class="title"><b>JOIN NOW</b></p>
+            <p class="desc"><b>Many opportunity waiting for you.</b></p>
           </div>
-          <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()">  
+          <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()">
+            <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
+              <ion-label position="stacked">Messenger ID</ion-label>
+              <ion-input formControlName="clientID" placeholder="Please provide your messenger ID."></ion-input>
+            </ion-item>
+            <div *ngIf="submitted && f.clientID.errors">  
+              <div class="error-text">{{(f.clientID.errors.required) ? 'ID is required' :
+                (f.clientID.errors) ? 'Number only.' :  ''}}</div>
+            </div>
+  
             <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
               <ion-label position="stacked">Email</ion-label>
               <ion-input formControlName="email" placeholder="What is your email address?"></ion-input>
@@ -29,22 +37,9 @@
                 (f.password.errors) ? 'Password is not valid.' :  ''}}</div>
             </div>
             <div class="signin-con"> 
-              <ion-button  fill="outline" class="btn-login" (click)="onSubmit()"> 
-              Sign in</ion-button>
-              <div class="login-or">
-                <div class="line"></div>
-                <p class="or">OR</p>
-                <div class="line"></div>
-              </div>
-              <ion-button class="btn-fb" (click)="signInWithFB()">
-                <ion-icon name="logo-facebook" slot="start"></ion-icon>
-                Facebook
-              </ion-button>
-            </div>
-            <div class='forgotpass'> 
-              <p (click)="onForgotPass()">Forgot password?</p>
-              <p [routerLink]="['/auth/register']">Don't have account yet.</p>
-            </div>
+              <ion-button   class="btn-login" (click)="onSubmit()"> 
+              Sign up</ion-button> 
+            </div> 
           </form>
         </ion-label>
       </div>

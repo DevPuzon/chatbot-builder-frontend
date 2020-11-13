@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BlockUtils } from '../utils/block-utils';
-import { ChatbotFunc } from '../utils/chatbot-func';
+import { BlockUtils } from 'src/app/utils/block-utils';
+import { ChatbotFunc } from 'src/app/utils/chatbot-func';
+
 
 
 @Component({
