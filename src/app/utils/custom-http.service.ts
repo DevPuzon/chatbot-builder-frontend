@@ -175,10 +175,10 @@ export class CustomHttpService {
     })
   }
   onLogoutUser(){// this.toast.presentToast("Something went wrong");
+  this.router.navigateByUrl("");
+  localStorage.clear();
     setTimeout(() => { 
-      // this.router.navigateByUrl("");
-      // localStorage.clear();
-      // window.location.reload();
+      window.location.reload();
     }, 1500);
   }
 }

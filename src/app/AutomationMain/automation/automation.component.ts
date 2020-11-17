@@ -15,6 +15,7 @@ import { BlobService } from 'src/app/utils/blob.service';
 import { AddQuickreplyComponent } from '../add-quickreply/add-quickreply.component';
 import { AddCarButtonComponent } from '../add-car-button/add-car-button.component';
 import { AuthGuardService } from 'src/app/Auth/auth-guard.service';
+import { Router } from '@angular/router';
  
 declare var $:any;
 @Component({
@@ -32,6 +33,7 @@ export class AutomationComponent implements OnInit {
   constructor(private popoverController:PopoverController,
     private toast:ToastMessageService,
     private uuid:UuidService,
+    private router :Router,
     private storage :AngularFireStorage,  
     private loadingController:LoadingController,
     private custHttps:CustomHttpService) { }
@@ -233,8 +235,8 @@ export class AutomationComponent implements OnInit {
       console.log(errorCode) ;
       this.toast.presentToast("Something went wrong please try again later");
       await loading.dismiss();
-      setTimeout(() => {
-        // window.location.reload();
+      setTimeout(() => { 
+        this.router.navigateByUrl("/");
       }, 1800);
     });
   }

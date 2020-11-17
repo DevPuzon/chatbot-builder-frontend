@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoadingController, PopoverController, ToastController } from '@ionic/angular';
 import { CustomHttpService } from 'src/app/utils/custom-http.service';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
@@ -16,6 +17,7 @@ export class WordMatchingContentComponent implements OnInit {
   wmatchingdtas = new Array();
   constructor(private popoverController:PopoverController,
     private custHttps:CustomHttpService,
+    private router:Router,
     private toast : ToastMessageService,
     private loadingController:LoadingController) { }
     user:any;
@@ -60,8 +62,8 @@ export class WordMatchingContentComponent implements OnInit {
       console.log(errorCode) ;
       this.toast.presentToast("Something went wrong please try again later");
       await loading.dismiss();
-      setTimeout(() => {
-        // window.location.reload();
+      setTimeout(() => { 
+        this.router.navigateByUrl("/");
       }, 1800);
     });
   }
@@ -102,6 +104,7 @@ export class WordMatchingContentComponent implements OnInit {
   }
 
   kWord(word,wm_i,$event){
+    if(!word){return;}
     this.wmatchingdtas[wm_i].user_possible_words.push(word);
     WmatchingutilsService.setWordMatch(this.wmatchingdtas);
     console.log($event);

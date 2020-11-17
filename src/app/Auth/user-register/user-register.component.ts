@@ -54,9 +54,10 @@ export class UserRegisterComponent implements OnInit {
       await loading.dismiss();   
       this.router.navigateByUrl("auth");
     }, 
-    async (err: Response) => { 
+    async (err:any) => { 
+      console.log(err);
       await loading.dismiss();   
-      this.toast.presentToast("Something went wrong");
+      this.toast.presentToast(err.error.error_message);
     });
   }
 }
