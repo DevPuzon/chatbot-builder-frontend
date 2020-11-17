@@ -7,7 +7,7 @@ import { UserRegisterComponent } from './Auth/user-register/user-register.compon
 const routes: Routes = [ 
   {
     path: '',
-    redirectTo: 't',
+    redirectTo: 'auth/login',
     pathMatch: 'full'
   },
   {

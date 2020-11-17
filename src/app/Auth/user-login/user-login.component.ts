@@ -35,7 +35,7 @@ export class UserLoginComponent implements OnInit {
 
   imgPass = "eye";
   typePass="password";
-  onClickShow(){ 
+  onClickShow(){  
     this.typePass = this.typePass === 'text' ? 'password' : 'text';
     this.imgPass = this.imgPass === 'eye-off' ? 'eye' : 'eye-off';
   }
@@ -55,11 +55,22 @@ export class UserLoginComponent implements OnInit {
     this.cusHttp.postNoToken("login", this.form.value)
     .subscribe(async (snap:any)=>{ 
       await loading.dismiss();   
-      this.router.navigateByUrl("t");
+      localStorage.setItem("-=[]t",snap.token);
+      console.log(snap);
+      this.cusHttp.getUser()
+      .then(()=>{
+        this.router.navigateByUrl("t"); 
+      }).catch(()=>{
+        this.toast.presentToast("Something went wrong");
+      });
     }, 
     async (err: Response) => { 
       await loading.dismiss();   
-      this.toast.presentToast("Something went wrong");
+      if(err.status == 401){
+        this.toast.presentToast("Email and password doesn't match");
+      }else{ 
+        this.toast.presentToast("Something went wrong");
+      }
     });
   }
 

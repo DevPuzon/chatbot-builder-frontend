@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CryptService } from './crypt.service';
+import { rejects } from 'assert';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +10,20 @@ import { CryptService } from './crypt.service';
 export class CustomHttpService {
 
   // private base  ="https://fbchatbotexample012.herokuapp.com/"; 
-  private base  ="https://chatbot-builder-api.herokuapp.com/api/"; 
-  // private base = "https://api.retailgate.tech:20185/api/";
+  // private base  ="https://chatbot-builder-api.herokuapp.com/api/"; 
+  private base = "https://api.retailgate.tech:20185/api/";
+  private static base = "https://api.retailgate.tech:20185/api/";
   // private base  ="http://localhost:20184/api/";  
   private token  = "";
   constructor(private http:HttpClient,
-    private crypt:CryptService) { 
-    this.token ="Bearer "+ crypt.decryptData(localStorage.getItem("-=[]sultada-token"));
+    private router:Router){  
+      this.token ="Bearer "+ localStorage.getItem("-=[]t");
   }
-  get(ctrl){ 
+  get(ctrl){  
+    this.token ="Bearer "+ localStorage.getItem("-=[]t");
+    console.log(this.token);
     const url = this.base+ctrl;
+    console.log(url);
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
     .set('Authorization', this.token) 
@@ -25,7 +31,10 @@ export class CustomHttpService {
     return this.http
     .get(url, { headers: headers })
   }
+  
   getNoBase(ctrl){ 
+    this.token ="Bearer "+ localStorage.getItem("-=[]t");
+    console.log(this.token);
     const url = ctrl;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
@@ -35,6 +44,8 @@ export class CustomHttpService {
     .get(url, { headers: headers })
   }
   getId(ctrl,id){
+    this.token ="Bearer "+ localStorage.getItem("-=[]t");
+    console.log(this.token);
     const url = this.base+ctrl+"/"+id;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
@@ -46,6 +57,8 @@ export class CustomHttpService {
   } 
 
   post(ctrl,body){
+    this.token ="Bearer "+ localStorage.getItem("-=[]t");
+    console.log(this.token);
     const url = this.base+ctrl;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
@@ -58,6 +71,8 @@ export class CustomHttpService {
     .post(url,body, { headers: headers })
   }
   put(ctrl,id,body){
+    this.token ="Bearer "+ localStorage.getItem("-=[]t");
+    console.log(this.token);
     const url = this.base+ctrl+"/"+id;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
@@ -70,6 +85,8 @@ export class CustomHttpService {
   }
   
   del(ctrl,id){
+    this.token ="Bearer "+ localStorage.getItem("-=[]t");
+    console.log(this.token);
     const url = this.base+ctrl+"/"+id;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
@@ -133,5 +150,35 @@ export class CustomHttpService {
         return keyarray[x];
       }
     } 
+  }
+
+  
+   getUser(){
+    this.token ="Bearer "+ localStorage.getItem("-=[]t");
+    console.log(this.token);
+    return new Promise<any>((resolve,reject)=>{ 
+      this.get("account")
+      .subscribe((snap:any)=>{
+        console.log(snap);
+        if(!snap){
+          reject();
+          return;
+        }
+        resolve(snap);
+        localStorage.setItem("-=[]t",snap.token);
+      }, 
+      (err: Response) => { 
+        console.log(err) ;
+        reject(err);
+        this.onLogoutUser();
+      });
+    })
+  }
+  onLogoutUser(){// this.toast.presentToast("Something went wrong");
+    setTimeout(() => { 
+      // this.router.navigateByUrl("");
+      // localStorage.clear();
+      // window.location.reload();
+    }, 1500);
   }
 }

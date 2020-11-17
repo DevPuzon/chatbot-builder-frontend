@@ -14,6 +14,7 @@ import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
 import { BlobService } from 'src/app/utils/blob.service';
 import { AddQuickreplyComponent } from '../add-quickreply/add-quickreply.component';
 import { AddCarButtonComponent } from '../add-car-button/add-car-button.component';
+import { AuthGuardService } from 'src/app/Auth/auth-guard.service';
  
 declare var $:any;
 @Component({
@@ -27,16 +28,23 @@ export class AutomationComponent implements OnInit {
 
   maindatas = new Array();
   block :any;
+  user:any;
   constructor(private popoverController:PopoverController,
     private toast:ToastMessageService,
     private uuid:UuidService,
-    private storage :AngularFireStorage, 
+    private storage :AngularFireStorage,  
     private loadingController:LoadingController,
     private custHttps:CustomHttpService) { }
 
-  ngOnInit() { 
+  async ngOnInit() { 
     this.initSortable();
     this.init();  
+    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    await loading.present(); 
+    this.user = await this.custHttps.getUser();
+    console.log(this.user);
+    loading.dismiss();
+    this.getCloudblocks();
   }  
   onNavMinblock(i){
     var elmnt = document.getElementById("min_block_"+i) ;
@@ -78,6 +86,7 @@ export class AutomationComponent implements OnInit {
   }
 
   init() { 
+    console.log("init");
     // let inter = setInterval(()=>{
     //   clearInterval(inter);
     //   $('textarea').height($("textarea").prop('scrollHeight'));
@@ -92,7 +101,6 @@ export class AutomationComponent implements OnInit {
     if(BlockUtils.getLocalBlocks() == undefined
     ||BlockUtils.getLocalBlocks() == null  ){ 
       this.initMaindatas();
-      this.getCloudblocks();
     }else{ 
       this.maindatas = BlockUtils.getLocalBlocks();
       this.block = this.maindatas[0];
@@ -178,7 +186,7 @@ export class AutomationComponent implements OnInit {
     await loading.present();
     // let data = BlockUtils.getLocalBlocks();
     
-    this.custHttps.postNoToken("setallblocks/1",BlockUtils.getLocalBlocks())
+    this.custHttps.post("setallblocks/"+this.user.clientID,BlockUtils.getLocalBlocks())
     .subscribe(async (snap:any)=>{  
       console.log(snap)  
       if(!WmatchingutilsService.getWordMatch()){
@@ -186,7 +194,7 @@ export class AutomationComponent implements OnInit {
         return;
       }
       console.log("word matching is not null");
-      this.custHttps.postNoToken("setwordmatch/1",WmatchingutilsService.getWordMatch())
+      this.custHttps.post("setwordmatch/"+this.user.clientID,WmatchingutilsService.getWordMatch())
       .subscribe(async (snap:any)=>{  
         console.log(snap) 
         loading.dismiss();
@@ -206,8 +214,8 @@ export class AutomationComponent implements OnInit {
   async getCloudblocks(){  
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present();
-    
-    this.custHttps.get("getallblocks/1")
+    console.log(this.user);
+    this.custHttps.get("getallblocks/"+this.user.clientID)
     .subscribe(async (snap:any)=>{ 
       await loading.dismiss();
       snap = snap.response;
@@ -226,7 +234,7 @@ export class AutomationComponent implements OnInit {
       this.toast.presentToast("Something went wrong please try again later");
       await loading.dismiss();
       setTimeout(() => {
-        window.location.reload();
+        // window.location.reload();
       }, 1800);
     });
   }

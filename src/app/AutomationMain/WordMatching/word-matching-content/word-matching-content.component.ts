@@ -18,10 +18,14 @@ export class WordMatchingContentComponent implements OnInit {
     private custHttps:CustomHttpService,
     private toast : ToastMessageService,
     private loadingController:LoadingController) { }
-
-  ngOnInit() {
+    user:any;
+  async ngOnInit() {
     this.initSortable();
     this.init();
+    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    await loading.present(); 
+    this.user = await this.custHttps.getUser();
+    loading.dismiss();
     if(!WmatchingutilsService.getWordMatch()){ 
       this.getCloudblocks();
     }
@@ -40,7 +44,7 @@ export class WordMatchingContentComponent implements OnInit {
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present();
     
-    this.custHttps.get("getwordmatch/1")
+    this.custHttps.get("wordmatch/"+this.user.clientID)
     .subscribe(async (snap:any)=>{ 
       await loading.dismiss();
       snap = snap.response;
@@ -57,7 +61,7 @@ export class WordMatchingContentComponent implements OnInit {
       this.toast.presentToast("Something went wrong please try again later");
       await loading.dismiss();
       setTimeout(() => {
-        window.location.reload();
+        // window.location.reload();
       }, 1800);
     });
   }
