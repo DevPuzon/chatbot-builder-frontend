@@ -117,7 +117,7 @@ export class AutomationComponent implements OnInit {
         {
           "block_name":"Welcome message",
           "mini_blocks":[ 
-            ChatbotFunc.genText(`Hi, {{first name}}name}! Nice to meet you.\n \t \tYou successfully connected your bot created on https://retailgate.chatbotbuilder.com to your page.`)
+            ChatbotFunc.genText(`Hi, {{first name}}first_name}! {{last name}}last_name}! Nice to meet you.\n \t \tYou successfully connected your bot created on https://retailgate.chatbotbuilder.com to your page.`)
             ]
         }
       )
