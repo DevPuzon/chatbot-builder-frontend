@@ -45,7 +45,7 @@ export class AddCarButtonComponent implements OnInit {
       this.saveNoBlocks();
     }
     console.log(this.maindatas); 
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    ////BlockUtils.setLocalBlocks(this.maindatas); 
   }
 
   onCheckButton() {
@@ -97,7 +97,7 @@ export class AddCarButtonComponent implements OnInit {
     if(this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment){
       let btn = this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.elements[this.element_i].buttons[this.button_index];
       btn.title = this.btn_name;
-      BlockUtils.setLocalBlocks(this.maindatas);
+      ////BlockUtils.setLocalBlocks(this.maindatas);
     } 
   }
 
@@ -106,7 +106,7 @@ export class AddCarButtonComponent implements OnInit {
       this.blocks[i].ischecked = false;
     }
     this.onCheckURLBlock(null); 
-    BlockUtils.setLocalBlocks(this.maindatas);
+    ////BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   // {
@@ -131,7 +131,7 @@ export class AddCarButtonComponent implements OnInit {
     } 
 
     console.log(JSON.stringify(this.maindatas));
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    ////BlockUtils.setLocalBlocks(this.maindatas); 
   }
 
   onCheckURLBlock(index){
@@ -148,6 +148,6 @@ export class AddCarButtonComponent implements OnInit {
       title:this.btn_name
     } 
     console.log(this.maindatas);
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    ////BlockUtils.setLocalBlocks(this.maindatas); 
   }
 }

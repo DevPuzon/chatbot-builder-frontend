@@ -43,7 +43,7 @@ export class AddTextButtonPopupComponent implements OnInit {
     }else{
       this.saveNoBlocks();
     }
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    //BlockUtils.setLocalBlocks(this.maindatas); 
   }
 
   onCheckButton() {
@@ -94,9 +94,12 @@ export class AddTextButtonPopupComponent implements OnInit {
     // this.onCheckBtnBlock(null);
     if(this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment){
       let btn = this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.buttons[this.button_index];
-      btn.title = this.btn_name;
-      BlockUtils.setLocalBlocks(this.maindatas);
-    } 
+      console.log(btn);
+      if(btn){
+        btn.title = this.btn_name;
+        //BlockUtils.setLocalBlocks(this.maindatas);
+      } 
+    }
   }
 
   kURL(){
@@ -104,7 +107,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       this.blocks[i].ischecked = false;
     }
     this.onCheckURLBlock(null); 
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   // {
@@ -145,7 +148,7 @@ export class AddTextButtonPopupComponent implements OnInit {
     }
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func;
     console.log(this.maindatas);
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    //BlockUtils.setLocalBlocks(this.maindatas); 
   }
 
   onCheckURLBlock(index){
@@ -180,6 +183,6 @@ export class AddTextButtonPopupComponent implements OnInit {
     }
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func;
     console.log(this.maindatas);
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    //BlockUtils.setLocalBlocks(this.maindatas); 
   }
 }

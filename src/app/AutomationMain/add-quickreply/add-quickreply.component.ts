@@ -40,7 +40,7 @@ export class AddQuickreplyComponent implements OnInit {
       this.saveNoBlocks();
     }
     console.log(this.maindatas); 
-    //BlockUtils.setLocalBlocks(this.maindatas); 
+    ////BlockUtils.setLocalBlocks(this.maindatas); 
   }
  
 
@@ -79,7 +79,7 @@ export class AddQuickreplyComponent implements OnInit {
     if(this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.quick_replies){
       this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
     .message.quick_replies[this.qreply_i].title = this.btn_name; 
-      //BlockUtils.setLocalBlocks(this.maindatas);
+      ////BlockUtils.setLocalBlocks(this.maindatas);
     } 
   }
   
@@ -98,6 +98,6 @@ export class AddQuickreplyComponent implements OnInit {
     } 
 
     console.log(JSON.stringify(this.maindatas));
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    //BlockUtils.setLocalBlocks(this.maindatas); 
   } 
 }

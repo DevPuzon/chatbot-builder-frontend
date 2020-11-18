@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core'; 
+
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { LoadingController, PopoverController } from '@ionic/angular';
- 
 import { AddTextButtonPopupComponent } from '../add-text-button-popup/add-text-button-popup.component';
- 
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'; 
 import { BlockUtils } from 'src/app/utils/block-utils';
 import { UuidService } from 'src/app/utils/uuid.service';
@@ -21,12 +20,12 @@ declare var $:any;
 @Component({
   selector: 'app-automation',
   templateUrl: './automation.component.html',
-  styleUrls: ['./automation.component.scss'],
+  styleUrls: ['./automation.component.scss'] 
 })
 export class AutomationComponent implements OnInit { 
   block_index= 0; 
   btntxt_index = null;
-
+  text=""
   maindatas = new Array();
   block :any;
   user:any;
@@ -47,7 +46,14 @@ export class AutomationComponent implements OnInit {
     console.log(this.user);
     loading.dismiss();
     this.getCloudblocks();
+    this.initRealtimeSave();
   }  
+  
+  initRealtimeSave() {
+    setInterval(() => { 
+      BlockUtils.setLocalBlocks(this.maindatas);
+    }, 3500);
+  }
   onNavMinblock(i){
     var elmnt = document.getElementById("min_block_"+i) ;
     console.log(elmnt);
@@ -58,15 +64,14 @@ export class AutomationComponent implements OnInit {
     let _this = this;
     $(".slides-sub-arrange").sortable({ 
      stop: function(e, ui) {
-      var data = "";
-
+      var data = ""; 
         var sets = [];            
         $('input[id^=subsets]').each(function(){
           sets.push(JSON.parse($(this).val()));
         });
-        _this.maindatas[0].mini_blocks = sets;
+        _this.maindatas[_this.block_index].mini_blocks = sets;
         console.log(_this.maindatas[_this.block_index].mini_blocks);
-        BlockUtils.setLocalBlocks(_this.maindatas);
+        //BlockUtils.setLocalBlocks(_this.maindatas);
         $(".slide-placeholder-animator").remove(); 
      },
     });
@@ -74,32 +79,28 @@ export class AutomationComponent implements OnInit {
     $(".slides-main-arrange").sortable({ 
       stop: function(e, ui) {
        var data = "";
- 
+        // const a = _this.maindatas[_this.block_index].mini_blocks;
+        // const b = _this.maindatas[_this.block_index].mini_blocks[a.length-2];
+        // console.log(a);
+        // console.log(a.length);
+        // console.log(b);
+        // if(b.type == "cback-only"){
+        //   alert()
+        // }
          var sets = [];            
          $('input[id^=mainsets]').each(function(){
            sets.push(JSON.parse($(this).val()));
          });
-         _this.maindatas[0].mini_blocks = sets;
+         _this.maindatas[_this.block_index].mini_blocks = sets;
          console.log(_this.maindatas[_this.block_index].mini_blocks);
-         BlockUtils.setLocalBlocks(_this.maindatas);
+         //BlockUtils.setLocalBlocks(_this.maindatas);
          $(".slide-placeholder-animator").remove(); 
       },
      });
   }
 
   init() { 
-    console.log("init");
-    // let inter = setInterval(()=>{
-    //   clearInterval(inter);
-    //   $('textarea').height($("textarea").prop('scrollHeight'));
-    // },1000);
-
-    // $("textarea").keyup(function(e) { 
-    //   console.log("asd")
-    //   while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
-    //       $(this).height($(this).height()+1);
-    //   };
-    // });
+    console.log("init");  
     if(BlockUtils.getLocalBlocks() == undefined
     ||BlockUtils.getLocalBlocks() == null  ){ 
       this.initMaindatas();
@@ -107,7 +108,7 @@ export class AutomationComponent implements OnInit {
       this.maindatas = BlockUtils.getLocalBlocks();
       this.block = this.maindatas[0];
     } 
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    //BlockUtils.setLocalBlocks(this.maindatas); 
   } 
 
   initMaindatas() {
@@ -117,6 +118,14 @@ export class AutomationComponent implements OnInit {
           "block_name":"Welcome message",
           "mini_blocks":[ 
             ChatbotFunc.genText(`Hi, {{first name}}name}! Nice to meet you.\n \t \tYou successfully connected your bot created on https://retailgate.chatbotbuilder.com to your page.`)
+            ]
+        }
+      )
+      this.maindatas.push(
+        {
+          "block_name":"Default message",
+          "mini_blocks":[ 
+            ChatbotFunc.genText(`This block is trying to understand the user response.`)
             ]
         }
       )
@@ -134,7 +143,7 @@ export class AutomationComponent implements OnInit {
       }
     )
     console.log(this.maindatas);
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   } 
   
   onBlocks(block,i){
@@ -144,7 +153,7 @@ export class AutomationComponent implements OnInit {
   }
   onDelBlock(block_i){
     this.maindatas.splice(block_i,1);
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
   kTitleTxt(txt,min_block,mini_block_i){
     console.log(txt) 
@@ -155,12 +164,12 @@ export class AutomationComponent implements OnInit {
       this.maindatas[this.block_index].mini_blocks[mini_block_i].message.attachment.payload.text = txt;
     }
     console.log(this.maindatas); 
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   } 
   kBlockTitle(block_name){
     this.maindatas[this.block_index].block_name = block_name;
     console.log(this.maindatas); 
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
   kCarTxt(title,subtitle,url,elements_i,mini_block_i){
     let element = 
@@ -178,7 +187,7 @@ export class AutomationComponent implements OnInit {
         }
       element.default_action = defurl;
     }
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
 
 
@@ -214,37 +223,40 @@ export class AutomationComponent implements OnInit {
   }
 
   async getCloudblocks(){  
-    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    await loading.present();
-    console.log(this.user);
-    this.custHttps.get("getallblocks/"+this.user.clientID)
-    .subscribe(async (snap:any)=>{ 
-      await loading.dismiss();
-      snap = snap.response;
-      console.log(snap);
-      if(!snap){ 
-        return;
-      }
-      console.log(snap);
-      this.maindatas = snap;
-      BlockUtils.setLocalBlocks(this.maindatas);
-     
-      this.init();
-    }, 
-    async (errorCode: Response) => { 
-      console.log(errorCode) ;
-      this.toast.presentToast("Something went wrong please try again later");
-      await loading.dismiss();
-      setTimeout(() => { 
-        this.router.navigateByUrl("/");
-      }, 1800);
-    });
+    if(BlockUtils.getLocalBlocks() == undefined
+    ||BlockUtils.getLocalBlocks() == null  ){  
+      var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+      await loading.present();
+      console.log(this.user);
+      this.custHttps.get("getallblocks/"+this.user.clientID)
+      .subscribe(async (snap:any)=>{ 
+        await loading.dismiss();
+        snap = snap.response;
+        console.log(snap);
+        if(!snap){ 
+          return;
+        }
+        console.log(snap);
+        this.maindatas = snap;
+        //BlockUtils.setLocalBlocks(this.maindatas);
+       
+        this.init();
+      }, 
+      async (errorCode: Response) => { 
+        console.log(errorCode) ;
+        this.toast.presentToast("Something went wrong please try again later");
+        await loading.dismiss();
+        setTimeout(() => { 
+          this.router.navigateByUrl("/");
+        }, 1800);
+      });
+    }
   }
 
   onAddTxtMiniBlock(){
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genText("What do you want to do next?"));
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   onAddImgMiniBlock(){
@@ -252,7 +264,7 @@ export class AutomationComponent implements OnInit {
     console.log(this.block_index);
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genImageTemplate(""));
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   onAddCarMiniBlock(){
@@ -269,15 +281,21 @@ export class AutomationComponent implements OnInit {
       }];   
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genCarousel(element));
-    BlockUtils.setLocalBlocks(this.maindatas);
-  }
+    //BlockUtils.setLocalBlocks(this.maindatas);
   
+  }
+
+  onAddCbackMiniBlock(){ 
+    this.maindatas[this.block_index]
+    .mini_blocks.push(ChatbotFunc.genURLCback(""));
+  }
+
   onAddQreplyMiniBlock(){
     console.log(this.maindatas);
     console.log(this.block_index);
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genQuickReply("",[]));
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   onAddQReply(mini_block_i){
@@ -285,14 +303,14 @@ export class AutomationComponent implements OnInit {
     .message.quick_replies.push({ content_type:"text",
       title:"", payload:[] });
     console.log(this.maindatas);
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   kQreplyTxt(mini_block_i,qreplytxt){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.text =qreplytxt;
     console.log(this.maindatas);
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   onCMinBImg(file,miniblock_index){
@@ -306,7 +324,7 @@ export class AutomationComponent implements OnInit {
             if(this.enum_saveImg == "image"){
               this.maindatas[this.block_index]
               .mini_blocks[this.miniblock_index].message.attachment.payload.url = url;
-              BlockUtils.setLocalBlocks(this.maindatas);
+              //BlockUtils.setLocalBlocks(this.maindatas);
             }if(this.enum_saveImg == "carousel"){
               this.maindatas[this.block_index]
               .mini_blocks[this.miniblock_index]
@@ -359,7 +377,7 @@ export class AutomationComponent implements OnInit {
     };   
     this.maindatas[this.block_index]
     .mini_blocks[mini_block_i].message.attachment.payload.elements.push(element);
-     BlockUtils.setLocalBlocks(this.maindatas);
+     //BlockUtils.setLocalBlocks(this.maindatas);
   }
   drop(event){
     if (event.previousContainer === event.container) {
@@ -372,12 +390,12 @@ export class AutomationComponent implements OnInit {
         event.currentIndex);
     }
     this.maindatas[this.block_index].mini_blocks = event.container.data;
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   onDelMiniBlock(mini_block_i){
     this.maindatas[this.block_index].mini_blocks.splice(mini_block_i,1);
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   async addTextButton(ev: any,mini_block_index) {
@@ -427,17 +445,26 @@ export class AutomationComponent implements OnInit {
   onDelTxtBtn(mini_block_i,txtbtn_i){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.attachment.payload.buttons.splice(txtbtn_i,1);
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
+    const btns  =this.maindatas[this.block_index].mini_blocks[mini_block_i]
+    .message.attachment.payload.buttons;
+     
+    if(btns.length == 0){ 
+      const txt = this.maindatas[this.block_index]
+      .mini_blocks[mini_block_i].message.attachment.payload.text;
+      this.maindatas[this.block_index]
+      .mini_blocks[mini_block_i] = ChatbotFunc.genText(txt)
+    } 
   }
   onDelCarBtn(mini_block_i,element_i,button_index){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.attachment.payload.elements[element_i].buttons.splice(button_index,1);
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
   onDelQreply(mini_block_i,qreply_i){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.quick_replies.splice(qreply_i,1);
-    BlockUtils.setLocalBlocks(this.maindatas);
+    //BlockUtils.setLocalBlocks(this.maindatas);
   }
   async addCarButton(ev: any,mini_block_index,element_i) {
     console.log(this.block.mini_blocks[mini_block_index].type); 

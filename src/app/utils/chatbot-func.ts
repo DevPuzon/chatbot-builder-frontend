@@ -82,4 +82,12 @@ export class ChatbotFunc{
   // };  
     return response;
   }
+
+  static genURLCback(url) {
+    let response = {
+      type:"cback-only",
+      url:url
+    }    
+    return response;
+  }
 }

@@ -23,13 +23,14 @@ import {
   GoogleLoginProvider,
   FacebookLoginProvider
 } from 'angularx-social-login'; //https://github.com/abacritt/angularx-social-login 
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import { UserLoginComponent } from './Auth/user-login/user-login.component';
+import {DragDropModule} from '@angular/cdk/drag-drop'; 
+import {AutosizeModule} from 'ngx-autosize';
  
 @NgModule({
   declarations: declarations,
   entryComponents: entryComponents,
   imports: [
+    AutosizeModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // firestore
     AngularFireAuthModule, // auth

@@ -19,6 +19,7 @@ export class BlockUtils {
   }
    
   static setLocalBlocks(mblocks){   
+    console.log("save");
     let b = JSON.parse(JSON.stringify(mblocks));
     // localStorage.setItem("localblocks",JSON.stringify(this.reBtnsPayloadString(b)));
     localStorage.setItem("localblocks",JSON.stringify(b));

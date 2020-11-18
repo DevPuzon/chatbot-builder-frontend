@@ -31,6 +31,13 @@ export class WordMatchingContentComponent implements OnInit {
     if(!WmatchingutilsService.getWordMatch()){ 
       this.getCloudblocks();
     }
+    this.initRealtimeSave();
+  }  
+  
+  initRealtimeSave() {
+    setInterval(() => { 
+      WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    }, 3500);
   }
 
   init() {
@@ -55,7 +62,7 @@ export class WordMatchingContentComponent implements OnInit {
         return;
       }
       console.log(snap);
-      WmatchingutilsService.setWordMatch(snap); 
+      //WmatchingutilsService.setWordMatch(snap); 
       this.init();
     }, 
     async (errorCode: Response) => { 
@@ -96,7 +103,7 @@ export class WordMatchingContentComponent implements OnInit {
          console.log(sets);
         _this.wmatchingdtas[id_con].commands = sets;
         console.log(_this.wmatchingdtas[id_con]);
-        WmatchingutilsService.setWordMatch(_this.wmatchingdtas);
+        //WmatchingutilsService.setWordMatch(_this.wmatchingdtas);
         $(".slide-placeholder-animator").remove(); 
       },
      }); 
@@ -106,24 +113,36 @@ export class WordMatchingContentComponent implements OnInit {
   kWord(word,wm_i,$event){
     if(!word){return;}
     this.wmatchingdtas[wm_i].user_possible_words.push(word);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    //WmatchingutilsService.setWordMatch(this.wmatchingdtas);
     console.log($event);
     $event.target.value = "";
   }
   delWord(word_i,wm_i){
     this.wmatchingdtas[wm_i].user_possible_words.splice(word_i, 1);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    //WmatchingutilsService.setWordMatch(this.wmatchingdtas);
   }
   onDelComm(comm_i,wm_i){
     this.wmatchingdtas[wm_i].commands.splice(comm_i, 1);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    //WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+  }
+  async onEditComm(ev,comm_i,wm_i,txt_message){ 
+    const popover = await this.popoverController.create({
+      component: WmPropertiesComponent , 
+      cssClass: 'ion-popover',
+      event: ev,
+      componentProps:{wmatchingdtas_i:wm_i,
+        command_i:comm_i,txt_message:txt_message,
+        wmatchingdtas:this.wmatchingdtas}
+    });
+    return await popover.present();
+    //WmatchingutilsService.setWordMatch(this.wmatchingdtas);
   }
   onAddWordM(){
     this.wmatchingdtas.push({user_possible_words:[],commands:[ ]});
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    //WmatchingutilsService.setWordMatch(this.wmatchingdtas);
   }
   onDelConv(conv_i){
     this.wmatchingdtas.splice(conv_i,1);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    //WmatchingutilsService.setWordMatch(this.wmatchingdtas);
   }
 }

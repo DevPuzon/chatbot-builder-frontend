@@ -13,7 +13,7 @@
           <div *ngFor="let data of maindatas;index as i" >
             <div class="block-container" (click)="onBlocks(data,i)">
               <p class="block-title">{{data.block_name}}</p>
-              <img *ngIf="i!=0" style="cursor:pointer" (click)="onDelBlock(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+              <img *ngIf="i>1 " style="cursor:pointer" (click)="onDelBlock(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
             </div>
           </div>
         </div>
@@ -25,6 +25,7 @@
       </div>
       <app-word-matching-content></app-word-matching-content>
     </ion-col>
+    
     <ion-col size="12" size-sm="12" size-md="8" size-lg="8">
       <input  id="fUploadAuto"
       #fUploadAuto type="file"
@@ -34,7 +35,7 @@
       accept=".png, .jpg, .jpeg">
       <div class="builder-container" > 
         <!-- <h1 class="builder-block-title">{{block.block_name}}</h1> -->
-        <input [readonly]="block_index == 0" [(ngModel)]="block.block_name" (keyup)="kBlockTitle(block.block_name)" type="text" class="builder-block-title">
+        <input [readonly]="block_index == 0 || block_index == 1" [(ngModel)]="block.block_name" (keyup)="kBlockTitle(block.block_name)" type="text" class="builder-block-title">
          
         <div class="arrange-main slides-sub-arrange" > 
           <div *ngFor="let min_block of block.mini_blocks;index as i"
@@ -54,9 +55,9 @@
         </div> 
         
         <div class="slides-main-arrange" >
-          <div class=" slide" *ngFor="let min_block of block.mini_blocks;index as i" > 
-            <input  id="mainsets[]" type="hidden" [value]="min_block | json">
-            <div class="builder-block-container" >
+          <div class="slide" *ngFor="let min_block of block.mini_blocks;index as i" > 
+            <div class="builder-block-container"  *ngIf="min_block.type != 'cback-only'" >
+              <input  id="mainsets[]" type="hidden" [value]="min_block | json">
               <div>
                 <div>
                   <img class="logo-nresize" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABj0lEQVRIidWWPy8EQRjGn3du9hKFkIhIlD7C7SUqEf8ajY7u3J7beb+ABKFQCEqaS26buZYPoBENQrVXq7TEKbR2LjsaFBJ7s4fCU87zPO9vkslkBsghZt5g5o08nYJrUCm1CeAAwLzv+69xHF//GiAMw3UiqgI4AXALYKlcLo/EcXzZqysch9eklLMAHgE8G2PmrLXLzLzzIwAzV4ho1Rgz3Wg0Hj/Wtdadd8gKM1f6Blhrz5MkmdJad756WutOkiRT1trzrBkyy4yi6CHLb7VaLwBesjI9z+Cn+nMAMbNyDadpuggAQogz145M03Qix4bu3kF5Ov9cFIbhoXOYiKy1Ng9ACiHuXcP9HHIuKaW2lVLbeTr//6JlAur1+phSaug7v1qtDtdqtfG+AYVCYQHAdRAEo1+9IAhGi8Xiled581kzKMsEPh+cNSnlTLfbXQMAY0zked4FEZ02m829zE32ArTb7ZtSqTRgrT0G8EREA0KIXZfhToAPiO/7gwC2AEwCOIqiaN+lm0v9fFveAA3EkwkZ3V4jAAAAAElFTkSuQmCC">
@@ -70,7 +71,7 @@
                   <div id="min_block_{{i}}" class="txt-container block-card" 
                   *ngIf="min_block.type == 'button-text-only' || min_block.type == 'text-only'">
                     <div class="textarea-container"> 
-                      <textarea class="txt" #textminblock (keyup)="kTitleTxt(textminblock.value,min_block,i)" >{{min_block.type == 'text-only'? min_block.message.text : min_block.message.attachment.payload.text}} </textarea>
+                      <textarea  class="txt" #textminblock (keyup)="kTitleTxt(textminblock.value,min_block,i)" >{{min_block.type == 'text-only'? min_block.message.text : min_block.message.attachment.payload.text}} </textarea>
                       <!-- <textarea class="txt" *ngIf="min_block.type == 'text-only'" [(ngModel)]="min_block.message.text" > {{min_block.message.text}} </textarea>
                       <textarea class="txt" *ngIf="min_block.type == 'button-text-only'" [(ngModel)]="min_block.message.attachment.payload.text"  >{{min_block.message.attachment.payload.text}} </textarea> -->
                     </div>
@@ -203,14 +204,34 @@
                         <span class="tooltiptext">Add quick reply</span>
                       </div>
                     </div>
-                  </div>
+                  </div> 
                   <div class="line-bottom"> 
                   </div>
                 </div>
               </div> 
             </div> 
           </div>
-        </div>  
+        </div>   
+      
+        <div class="slide" *ngFor="let min_block of block.mini_blocks;index as i" >  
+          <div class="builder-block-container"  *ngIf="min_block.type == 'cback-only'"> 
+            <div> 
+              <div class="tooltip"> 
+                <img class="logo-del" (click)="onDelMiniBlock(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+                <span class="tooltiptext">Delete mini block</span>
+              </div>
+            </div>
+            <div> 
+              <!-- URL Callback -->
+              <div class="cback-container block-card">
+                <h2>URL Callback</h2>
+                <input class="cback-input" >
+              </div>
+              <div class="line-bottom"> 
+              </div>
+            </div>
+          </div> 
+        </div>
 
         <div class="mini-block" > 
           <h2>Add mini block</h2> 
@@ -241,6 +262,13 @@
               <div > 
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAE5ElEQVRogdWZbYhUVRjH/8dd2XbWMHJZS9iINl2qFW0rsJWCrZCkFCWKSJEoe5OyL0EfErQPvRgFSWYQREFFpRZBVGQgIhhFbqFEZbS1vhG10K6bRq67++vDeW73zDh7587O3J3tgWHunPu8/P8z9/zPc844ICfplP6f1lQffBiTdKJWSMq0mZKmSZKAHN76aospvQF9hjk3rdZgKrbgFxgGVtcaTykDVhtWgFxIILItwJT7ZQAHbALGAqx5BE4CQ3b9NtBQa9CRAQ2GCcN4shiBPmA+cNg+fwG0TAHw5wN7DNNxoDOcxGepEHAh8LWN9QKX1RD8pcCPhuUA0Grj4xMwhybgQxv/E+iuAfjFQL9h+BQ4N7iXTMCcokkDcAZ4cBLB3w2cttpbgLqC+6UJBM73EctWpgpFvtKMAI+M45eegAUsAQbNbwfQmAH4BuAtq/EXcGuCb3kELKgjCPwSmF1F8LOAvZb7ONBZwr98AhYYKtQvwOVVAD8XOGQ5/1OaTAhYcKhQQ8DSCsDfCAxYrjylyYyAJagDtlrcMLB2AuDvIRaHrRQoTdYE5gIHybdUCkW+PEf2QzmPY6WP0ErghMXsBlYR91A7SVAooBHYHjx+qywHlnNlZgSAemAzXqPHgGejnx1YABy1PF9RZCICF+HVC/NdYON1livKuxmoL4yviAAwO/imBoEVRXzmAD3mM2BAltnrOeJ1pAeYUyR+ReCzmwSZLosA0AUcM5+DwNyExDn8hBzlbBsBXsIfIowXH86tY0BXRQSA9cRK8WZS8YK4NmAD/nnfDjwBtKWMzVktrPb6sgngJ9vrNn4GeDxN8WoacD9xQ/cOMCMVAaAd+M7GjgCLUhasA57Cq8v1VSKxyDBgmNoTCQDLiVfGPaTsd4AWYBexPVwNApa7GfjM8g4Bt49HYIRYyp4m5coIdAO/WY5ow101AlajzjBF+EaKEQC/mNyWMqkDHsXPEYAPgBezIBDUvAW/Q4wsj8Ag6ZWiGd98AfwDrLPxTVkSsBptxOtFLlzxBp1zvSkSdEl6V1KrpF5JdzjnvilwWwKcknRE0mHn3M/VIuCc6wUG5c9HFRI4B7ipRPw1kp6UNF3STklrnXPhgfCAvS+zlyQJOCrpE0m7JA1VxMCwRheO8o/XT0t6zDm3tfAGvofplnSepBmS2iR1SFosqbkSxONYU72kUUk7EpxmSbrBrn+Vf2T2F3N0zo1I+rxwHN9mXyfpXkl3SYoUbq+k3ycE3dtoSQ/g6kAe36DCI0fgSuL9bx/QUUm+tEWXB/LVk1atEvI54HnL1w/MqxbWpKKXAPut6ADFW+pu4Hv8kWQPfgV9Bd8UdnL2AdUzlu8Q0DQZJBqAl63oGPACMD24v5Fk67f4heY/LVhPtmVOIAB6J/E2ch/xoWu0kG0EFuIPxB4CtpG/hx4DPsIf3rbgO4BRYP5kkmjHn+NE3+xSSqzEQCt+nxBtkP4GHsDvFwDemzQCBqgReM2KjwI/JREoiNtA3O+/amSGgQsmC38IaA3xvyYlCQRxVxF3stE2dF3WeMcDcwVegQDWlBE3j/h/AICPs8RZCkwTvuVNPBYpErcsIPBHVvgyNeD9gMTFtcZTtuFbjMhuThs3Zf4Pds59K+mAfUytRFOGgNk+e59ZUxQTNfwpYC9wbdqYfwGGoNnodknNsgAAAABJRU5ErkJggg==">
                 <h5>Quick Reply</h5>
+              </div>
+            </div>    
+            <div class="btn-mini-block-con cback-color"
+             (click)="onAddCbackMiniBlock()" >
+              <div > 
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFRElEQVRoge2ZaaxdUxTHf+v16WuLkAYpktbQGko1QiRi+ECoeYghYkzEkBBTE1OExBxDTB/EHPSDoiTUTD9QjapKixqK1vihiKGt9lGvfj7sfbmuc84971J9TfpPbs49e63933vtvdbZ66wDa7EWa7FGIwDUQcC2wGYVur8A70bEknak6ihgdIO/AH3AhxHxTf+mWzKYOtd66FXPrOAaqk6tyfW7eodaZmQthPoscBAwB/i0QrcH2B/oBsZFxEcFBlwFXA58DrxVwdUF7A1sDBwXEY92Nv006DJ1uTqshu4NefXOKJG/luW71uA6Nuve3cm8G+gChgHLImJ5Df2G/69bIm8swnf94Gq7cFXo7rDfPurggvYRHXDtoF7c0vYLsACYFhG9lb3zNtZZMdTLagboqBpcB9TgWaQeVsXT6Q48A7xe0H4OsHk/ueYArUE8DNgD2Bd4Up0QEdMKe3e4AxeUyGd3sAOTKnQmZp33ynS6gF5giFpnN9bL17KA723Rq8NV5eO3AguBHdWtihS6gdeACcDr6pcVZIOAA4GVFLsPmWtP0ra/U8EFsFe+vlqmEBGq84CtgE1Jxvwd6tbqhzWDc4V6XtmA6rrqKzW5VO+1zUmsPpF19yqSd0fEAnUnYDywYQVXH/B+RJTGS0QsU/cDtqc6rwL4NCI+b6PTFv8qD/mvoW4EXArsSIpPgJ2ATYDZwE+5bQnweERM/t8nWQZTIljXlRs4d8DsgHok8CQpqM8incZlGJd1v+j0IFsVaJwdL0fEB210F6o/AFt2tVH8P9GRNwwkAzrCGm/AQIqByaTkbc2Dukm+9qjH1ezzndZL4FYZ1KHA7cDp6mkRcb/6mzqW6sfoeGA48NlqM0DdBngsTwZSwgawMzClJs0tq8UA9QTgLlJKvRRYv0k8F3iJ9qnEoxHxWHcmXIf2ydxKUjL3bZvJBTCWlP4C/BgRb2fZEOAG4NwsmwQ8BzzS6B8RU2jaAfVB4BRgYkRMLxpwtPpRzdxjhXp+xeTXU6c16b+pbpFl26rv5Pal6om5/dDc9oJ6lLqrukETZ5d6uDq6aMxQXyQVrGYCX1UsbhfphWYIMD4i5hUYcD1wCTCf5N/XRMQK9XjgbpLLzCUVs+bnPhOAF1qoVgLTganAQxHxfemsTEWtpXWeSOr1ebUKy4vq9Cwfm++Hqvc07cid2Y2a+wxWz1ZvUh9Qn1eXNPX5Ub3Y9MQqHFT/+5f6kfl+Zr7/ST2mzhi5X7e6h/qw2pc5Zqn/qDutqsKW+booX/uAX+uSR0QfMAOYkd3yQWA34A1134j46924wx1oh1FZP9QL1F9N1ejb1J4WzuHqleo16oXqSeruNtVq1WHqlMw952/u1KEBU7Nftv6+bjagqd8u6sdZNtumJ4p6aski/KbOyAsw3ORWjRi7498a0O/Clrq+yadVF5tzHvWM3Pa4enJeiElNBmuqoF+tjjHF04o/FyELf7bYp1sncWMmbFdeH1fBcZJ/PWXuVc/L/68t0N1OvblJf7Z6f/5/H6Rz4BngYNLz+ZOK+feQCmCDKP/AcSVwBfAFMKtFPA+4LiL61DGk03cXUnD3ZNllJUZvCtwJHEFK8oaQ0okRjU9Mc0r8sBXLy1Y/DzRUfbqi/xvqlll3sHqLKbgLd6CFO0yfpJpxSOMjXxfpI19VZbmX9JFvadVAmW8kMIbi99zFEfFWk+5BwHXARRHxUhveLlIl++jcdFO7uQw4qBubAln1uTXunTiXNu/KtyNX51w6hulcUV08YCpz/YHpNF8GA6y42x+oTwE9fwAMPkxh9N2KtwAAAABJRU5ErkJggg==">
+                <h5>Url Callback</h5>
               </div>
             </div>   
             <!-- <div class="btn-mini-block-con img-color"

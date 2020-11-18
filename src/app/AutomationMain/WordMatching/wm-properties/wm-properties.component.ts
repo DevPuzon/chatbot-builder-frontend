@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { BlockUtils } from 'src/app/utils/block-utils';   
 import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
@@ -7,7 +7,8 @@ import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
   templateUrl: './wm-properties.component.html',
   styleUrls: ['./wm-properties.component.scss'],
 })
-export class WmPropertiesComponent implements OnInit {
+export class WmPropertiesComponent implements OnInit  {
+  @Input() txt_message= "";
   @Input() wmatchingdtas_i = 0;  
   @Input() command_i = 0;  
   @Input() wmatchingdtas  = new Array();
@@ -15,8 +16,9 @@ export class WmPropertiesComponent implements OnInit {
   maindatas= new Array(); 
   
   constructor(private popCtrl:PopoverController) { }
-
+ 
   ngOnInit() {
+    console.log( this.txt_message)
     this.init();
   }
   init() {
@@ -87,24 +89,27 @@ export class WmPropertiesComponent implements OnInit {
       } 
     }  
  
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    //WmatchingutilsService.setWordMatch(this.wmatchingdtas);
     console.log(JSON.stringify(this.wmatchingdtas));
   }
 
-  kMessage(txt_message){
-    if(txt_message !=""){
-      console.log(txt_message) ; 
+  kMessage(){
+    if(this.txt_message !=""){
+      console.log(this.txt_message) ; 
       this.wmatchingdta.commands[this.command_i] = {}; 
       this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].command_type= "text_message";
       this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i]={ 
         command_type:"text_message",
-        text_message : txt_message
+        text_message : this.txt_message
       }  
     }else{ 
       this.wmatchingdta.commands.splice(this.command_i,1);
     }
    
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    for(let i = 0 ; i < this.blocks.length;i++){
+      this.blocks[i].ischecked =false;
+    }
+    //WmatchingutilsService.setWordMatch(this.wmatchingdtas);
     console.log(JSON.stringify(this.wmatchingdtas));
 
   }

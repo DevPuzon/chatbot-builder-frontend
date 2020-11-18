@@ -95,11 +95,6 @@ ion-col{
                 width: 17px;
                 margin: 10px;
             }
-            .logo-del{ 
-                cursor: pointer;
-                width: 17px;
-                margin: 10px;
-            }
             .txt-container{
                 .textarea-container{
                     padding: 10px;
@@ -110,7 +105,7 @@ ion-col{
                         background-color: transparent;
                         font-size: 16px;
                         line-height: 1.32; 
-                        height: 89px;
+                        height: 189px;
                         padding: 7px 9px;
                         white-space: pre-wrap;
                         margin: 0;
@@ -180,6 +175,12 @@ ion-col{
             }
         }
     } 
+    
+    .logo-del{ 
+        cursor: pointer;
+        width: 17px;
+        margin: 10px;
+    }
 } 
 
 .buttons-container:hover  .del-btn-txt {
@@ -392,6 +393,15 @@ ion-col{
         }
     }
 }
+.cback-container{
+    padding: 8px; 
+    .cback-input{
+        padding: 4px;
+        width:100%;
+        border-radius: 4px;
+        border: 2px solid #007ACC;
+    }
+}
 .button-add{ 
     cursor: pointer;
     display: -webkit-inline-box;
@@ -452,6 +462,9 @@ ion-col{
 }
 .qreply-color{ 
     background: #44B0B0;
+} 
+.cback-color{ 
+    background: #350D36;
 }
 
 
