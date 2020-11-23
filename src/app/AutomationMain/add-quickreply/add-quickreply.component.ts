@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BlockUtils } from 'src/app/utils/block-utils';
-import { ChatbotFunc } from 'src/app/utils/chatbot-func';
+import { BlockUtils } from 'src/app/utils/block-utils'; 
 
 
 
@@ -31,7 +30,9 @@ export class AddQuickreplyComponent implements OnInit {
     console.log(this.maindatas); 
 
     console.log(this.mini_block_index); 
-    let localBlocks = BlockUtils.getQReplyButtonBlocks(this.block_index,this.mini_block_index,this.qreply_i);
+    // let localBlocks = BlockUtils.getQReplyButtonBlocks(this.block_index,this.mini_block_index,this.qreply_i);
+    
+    let localBlocks = this.mini_block.message.quick_replies[this.qreply_i].payload;
     
     console.log(localBlocks);
     if(localBlocks != null || localBlocks != undefined){
@@ -40,7 +41,7 @@ export class AddQuickreplyComponent implements OnInit {
       this.saveNoBlocks();
     }
     console.log(this.maindatas); 
-    ////BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas); 
   }
  
 
@@ -79,7 +80,7 @@ export class AddQuickreplyComponent implements OnInit {
     if(this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.quick_replies){
       this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
     .message.quick_replies[this.qreply_i].title = this.btn_name; 
-      ////BlockUtils.setLocalBlocks(this.maindatas);
+      BlockUtils.setLocalBlocks(this.maindatas);
     } 
   }
   
@@ -96,8 +97,16 @@ export class AddQuickreplyComponent implements OnInit {
       payload:this.blocks,
       title:this.btn_name
     } 
+    
+    const hasIsChecked = this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
+    .message.quick_replies[this.qreply_i].payload.find(o => o.ischecked === true);
+    if(hasIsChecked){
+      console.log(JSON.stringify(this.maindatas));
+      BlockUtils.setLocalBlocks(this.maindatas); 
+    }else{
 
+    } 
     console.log(JSON.stringify(this.maindatas));
-    //BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas); 
   } 
 }

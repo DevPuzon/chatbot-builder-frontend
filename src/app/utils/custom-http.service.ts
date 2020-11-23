@@ -12,7 +12,7 @@ export class CustomHttpService {
   // private base  ="https://fbchatbotexample012.herokuapp.com/"; 
   // private base  ="https://chatbot-builder-api.herokuapp.com/api/"; 
   private base = "https://api.retailgate.tech:20185/api/";
-  private static base = "https://api.retailgate.tech:20185/api/";
+  // private static base = "https://api.retailgate.tech:20185/api/";
   // private base  ="http://localhost:20184/api/";  
   private token  = "";
   constructor(private http:HttpClient,
@@ -164,14 +164,19 @@ export class CustomHttpService {
           reject();
           return;
         }
-        resolve(snap);
+        localStorage.setItem('-==0us',JSON.stringify(snap));
         localStorage.setItem("-=[]t",snap.token);
+        resolve(snap);
       }, 
       (err: Response) => { 
         console.log(err) ;
         reject(err);
         this.onLogoutUser();
       });
+      
+      // resolve({
+      //   clientID:1,
+      // });
     })
   }
   onLogoutUser(){// this.toast.presentToast("Something went wrong");

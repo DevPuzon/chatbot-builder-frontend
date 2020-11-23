@@ -86,7 +86,11 @@ export class ChatbotFunc{
   static genURLCback(url) {
     let response = {
       type:"cback-only",
-      url:url
+      message:{
+        url:url,
+        resolve_blocks:[],
+        reject_blocks:[]
+      }
     }    
     return response;
   }

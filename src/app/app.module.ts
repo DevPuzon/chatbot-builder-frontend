@@ -25,11 +25,13 @@ import {
 } from 'angularx-social-login'; //https://github.com/abacritt/angularx-social-login 
 import {DragDropModule} from '@angular/cdk/drag-drop'; 
 import {AutosizeModule} from 'ngx-autosize';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
  
 @NgModule({
   declarations: declarations,
   entryComponents: entryComponents,
   imports: [
+    PickerModule,
     AutosizeModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // firestore

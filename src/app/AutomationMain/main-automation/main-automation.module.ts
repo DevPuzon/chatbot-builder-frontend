@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -13,17 +13,21 @@ import { AddCarButtonComponent } from '../add-car-button/add-car-button.componen
 import { AddTextButtonPopupComponent } from '../add-text-button-popup/add-text-button-popup.component';
 import { WordMatchingContentComponent } from '../WordMatching/word-matching-content/word-matching-content.component';
 import { WmPropertiesComponent } from '../WordMatching/wm-properties/wm-properties.component';
+import { AddCbackResponseComponent } from '../add-cback-response/add-cback-response.component';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 @NgModule({ 
   imports: [
     CommonModule,
+    PickerModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     MainAutomationPageRoutingModule
   ],
   declarations: [MainAutomationPage,AutomationComponent,
     AddCarButtonComponent,AddQuickreplyComponent,
-    AddTextButtonPopupComponent,
+    AddTextButtonPopupComponent,AddCbackResponseComponent,
     WordMatchingContentComponent,WmPropertiesComponent]
 })
 export class MainAutomationPageModule {}

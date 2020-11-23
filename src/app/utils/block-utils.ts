@@ -19,12 +19,27 @@ export class BlockUtils {
   }
    
   static setLocalBlocks(mblocks){   
+    for(let i = 0 ; i <  mblocks.length ;i++){
+      const block_name = mblocks[i].block_name; 
+      if(block_name == ""){
+        mblocks[i].block_name = i+ ". Block";
+      }
+      const hasBlockIndex= mblocks.findIndex(o => o.block_name === block_name); 
+      console.log(hasBlockIndex);
+      console.log(i);
+      if(hasBlockIndex!= i && hasBlockIndex!= -1){
+        mblocks[i].block_name = block_name +" : copy";
+      }
+    }
+
     console.log("save");
+    console.log(mblocks);
     let b = JSON.parse(JSON.stringify(mblocks));
     // localStorage.setItem("localblocks",JSON.stringify(this.reBtnsPayloadString(b)));
     localStorage.setItem("localblocks",JSON.stringify(b));
     // console.log(JSON.stringify(mblocks));
     // return this.reBtnsPayloadParse(mblocks); 
+    return mblocks;
   }
 
   static getTxtButtonBlocks(block_index,mini_block_index,button_index){

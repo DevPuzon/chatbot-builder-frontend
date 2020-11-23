@@ -2,8 +2,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { LoadingController, PopoverController } from '@ionic/angular';
-import { AddTextButtonPopupComponent } from '../add-text-button-popup/add-text-button-popup.component';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'; 
+import { AddTextButtonPopupComponent } from '../add-text-button-popup/add-text-button-popup.component'; 
 import { BlockUtils } from 'src/app/utils/block-utils';
 import { UuidService } from 'src/app/utils/uuid.service';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
@@ -15,7 +14,9 @@ import { AddQuickreplyComponent } from '../add-quickreply/add-quickreply.compone
 import { AddCarButtonComponent } from '../add-car-button/add-car-button.component';
 import { AuthGuardService } from 'src/app/Auth/auth-guard.service';
 import { Router } from '@angular/router';
+import { AddCbackResponseComponent } from '../add-cback-response/add-cback-response.component';
  
+declare var EmojiPicker:any
 declare var $:any;
 @Component({
   selector: 'app-automation',
@@ -29,6 +30,7 @@ export class AutomationComponent implements OnInit {
   maindatas = new Array();
   block :any;
   user:any;
+  isShowMinBlock = true;
   constructor(private popoverController:PopoverController,
     private toast:ToastMessageService,
     private uuid:UuidService,
@@ -37,23 +39,51 @@ export class AutomationComponent implements OnInit {
     private loadingController:LoadingController,
     private custHttps:CustomHttpService) { }
 
-  async ngOnInit() { 
+  async ngOnInit() {   
+    this.user = JSON.parse(localStorage.getItem("-==0us"));
     this.initSortable();
-    this.init();  
-    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    await loading.present(); 
-    this.user = await this.custHttps.getUser();
-    console.log(this.user);
-    loading.dismiss();
-    this.getCloudblocks();
-    this.initRealtimeSave();
+    this.init();      
+    
+    $("#emojionearea1").emojioneArea({
+      pickerPosition: "left",
+      tonesStyle: "bullet"
+    });
+    $("#emojionearea2").emojioneArea({
+      pickerPosition: "bottom",
+      tonesStyle: "radio"
+    });
+    $("#emojionearea3").emojioneArea({
+      pickerPosition: "left",
+      filtersPosition: "bottom",
+      tonesStyle: "square"
+    });
+    $("#emojionearea4").emojioneArea({
+      pickerPosition: "bottom",
+      filtersPosition: "bottom",
+      tonesStyle: "checkbox"
+    });
+    $("#emojionearea5").emojioneArea({
+      pickerPosition: "top",
+      filtersPosition: "bottom",
+      tones: false,
+      autocomplete: false,
+      inline: true,
+      hidePickerOnBlur: false
+    });
   }  
-  
-  initRealtimeSave() {
-    setInterval(() => { 
-      BlockUtils.setLocalBlocks(this.maindatas);
-    }, 3500);
-  }
+
+  checkIsShowMinBlock() {
+    const mini_blocks = this.maindatas[this.block_index].mini_blocks;  
+    let isShow = mini_blocks.findIndex(o => o.type === 'cback-only'); 
+    if(isShow != -1){
+      this.isShowMinBlock = false;
+    }else{
+      this.isShowMinBlock = true;
+    }
+    console.log(isShow);
+    console.log(this.isShowMinBlock);
+  } 
+
   onNavMinblock(i){
     var elmnt = document.getElementById("min_block_"+i) ;
     console.log(elmnt);
@@ -71,29 +101,21 @@ export class AutomationComponent implements OnInit {
         });
         _this.maindatas[_this.block_index].mini_blocks = sets;
         console.log(_this.maindatas[_this.block_index].mini_blocks);
-        //BlockUtils.setLocalBlocks(_this.maindatas);
+        BlockUtils.setLocalBlocks(_this.maindatas);
         $(".slide-placeholder-animator").remove(); 
      },
     });
     
     $(".slides-main-arrange").sortable({ 
       stop: function(e, ui) {
-       var data = "";
-        // const a = _this.maindatas[_this.block_index].mini_blocks;
-        // const b = _this.maindatas[_this.block_index].mini_blocks[a.length-2];
-        // console.log(a);
-        // console.log(a.length);
-        // console.log(b);
-        // if(b.type == "cback-only"){
-        //   alert()
-        // }
+       var data = ""; 
          var sets = [];            
          $('input[id^=mainsets]').each(function(){
            sets.push(JSON.parse($(this).val()));
          });
          _this.maindatas[_this.block_index].mini_blocks = sets;
          console.log(_this.maindatas[_this.block_index].mini_blocks);
-         //BlockUtils.setLocalBlocks(_this.maindatas);
+         BlockUtils.setLocalBlocks(_this.maindatas);
          $(".slide-placeholder-animator").remove(); 
       },
      });
@@ -104,11 +126,28 @@ export class AutomationComponent implements OnInit {
     if(BlockUtils.getLocalBlocks() == undefined
     ||BlockUtils.getLocalBlocks() == null  ){ 
       this.initMaindatas();
+      this.getCloudblocks(); 
     }else{ 
       this.maindatas = BlockUtils.getLocalBlocks();
       this.block = this.maindatas[0];
     } 
-    //BlockUtils.setLocalBlocks(this.maindatas); 
+    
+    // setTimeout(() => { 
+    //   const mini_blocks =this.maindatas[this.block_index].mini_blocks;
+    //   for(let i = 0 ; i < mini_blocks.length ;i ++){
+    //     const type = mini_blocks[i].type;
+    //     if(type == "text-only" || type == "button-text-only"){
+    //       console.log( $("#min_block_text"+i));
+    //       $("#min_block_text"+i).emojioneArea({
+    //         pickerPosition: "bottom",
+    //         tonesStyle: "radio"
+    //       });
+    //     }
+    //   }
+    // }, 500);
+
+    this.checkIsShowMinBlock();
+    BlockUtils.setLocalBlocks(this.maindatas); 
   } 
 
   initMaindatas() {
@@ -143,17 +182,18 @@ export class AutomationComponent implements OnInit {
       }
     )
     console.log(this.maindatas);
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
   } 
   
   onBlocks(block,i){
     this.block = block; 
     this.block_index = i;
     console.log(this.block_index);
+    this.checkIsShowMinBlock();
   }
   onDelBlock(block_i){
     this.maindatas.splice(block_i,1);
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
   kTitleTxt(txt,min_block,mini_block_i){
     console.log(txt) 
@@ -164,13 +204,15 @@ export class AutomationComponent implements OnInit {
       this.maindatas[this.block_index].mini_blocks[mini_block_i].message.attachment.payload.text = txt;
     }
     console.log(this.maindatas); 
-    //BlockUtils.setLocalBlocks(this.maindatas);
-  } 
-  kBlockTitle(block_name){
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }  
+
+  kFocusOTitle(block_name){ 
     this.maindatas[this.block_index].block_name = block_name;
     console.log(this.maindatas); 
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
+
   kCarTxt(title,subtitle,url,elements_i,mini_block_i){
     let element = 
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
@@ -187,23 +229,29 @@ export class AutomationComponent implements OnInit {
         }
       element.default_action = defurl;
     }
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
 
 
   
   async onDeploy(){
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    await loading.present();
-    // let data = BlockUtils.getLocalBlocks();
-    
-    this.custHttps.post("setallblocks/"+this.user.clientID,BlockUtils.getLocalBlocks())
-    .subscribe(async (snap:any)=>{  
-      console.log(snap)  
-      if(!WmatchingutilsService.getWordMatch()){
+    await loading.present(); 
+
+    if(BlockUtils.getLocalBlocks() != null || BlockUtils.getLocalBlocks() != undefined || !BlockUtils.getLocalBlocks()){ 
+      this.custHttps.post("setallblocks/"+this.user.clientID,BlockUtils.getLocalBlocks())
+      .subscribe(async (snap:any)=>{  
         loading.dismiss();
-        return;
-      }
+        console.log(snap)  
+      }, 
+      (errorCode: Response) => { 
+        loading.dismiss();
+        console.log(errorCode) 
+        this.toast.presentToast("Something went wrong, please try again later.");
+      });  
+    }
+
+    if(WmatchingutilsService.getWordMatch()[0].user_possible_words.length != 0){
       console.log("word matching is not null");
       this.custHttps.post("setwordmatch/"+this.user.clientID,WmatchingutilsService.getWordMatch())
       .subscribe(async (snap:any)=>{  
@@ -213,50 +261,47 @@ export class AutomationComponent implements OnInit {
       (errorCode: Response) => { 
         loading.dismiss();
         console.log(errorCode) 
+        this.toast.presentToast("Something went wrong, please try again later.");
       });
-    }, 
-    (errorCode: Response) => { 
-      loading.dismiss();
-      console.log(errorCode) 
-    });
-    
+    }
+  }
+  
+  onClearAll(){
+
   }
 
   async getCloudblocks(){  
-    if(BlockUtils.getLocalBlocks() == undefined
-    ||BlockUtils.getLocalBlocks() == null  ){  
-      var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-      await loading.present();
-      console.log(this.user);
-      this.custHttps.get("getallblocks/"+this.user.clientID)
-      .subscribe(async (snap:any)=>{ 
-        await loading.dismiss();
-        snap = snap.response;
-        console.log(snap);
-        if(!snap){ 
-          return;
-        }
-        console.log(snap);
-        this.maindatas = snap;
-        //BlockUtils.setLocalBlocks(this.maindatas);
-       
-        this.init();
-      }, 
-      async (errorCode: Response) => { 
-        console.log(errorCode) ;
-        this.toast.presentToast("Something went wrong please try again later");
-        await loading.dismiss();
-        setTimeout(() => { 
-          this.router.navigateByUrl("/");
-        }, 1800);
-      });
-    }
+    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    await loading.present();
+    console.log(this.user);
+    this.custHttps.get("getallblocks/"+this.user.clientID)
+    .subscribe(async (snap:any)=>{ 
+      await loading.dismiss();
+      snap = snap.response;
+      console.log(snap);
+      if(!snap){ 
+        return;
+      }
+      console.log(snap);
+      this.maindatas = snap;  
+      BlockUtils.setLocalBlocks(this.maindatas); 
+      this.init();
+    }, 
+    async (errorCode: Response) => { 
+      console.log(errorCode) ;
+      this.toast.presentToast("Something went wrong please try again later");
+      await loading.dismiss();
+      setTimeout(() => { 
+        this.router.navigateByUrl("/");
+      }, 1800);
+    });
   }
 
   onAddTxtMiniBlock(){
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genText("What do you want to do next?"));
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas); 
+    this.checkIsShowMinBlock();
   }
 
   onAddImgMiniBlock(){
@@ -264,7 +309,8 @@ export class AutomationComponent implements OnInit {
     console.log(this.block_index);
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genImageTemplate(""));
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    this.checkIsShowMinBlock();
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   onAddCarMiniBlock(){
@@ -281,13 +327,16 @@ export class AutomationComponent implements OnInit {
       }];   
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genCarousel(element));
-    //BlockUtils.setLocalBlocks(this.maindatas);
-  
+    this.checkIsShowMinBlock();
+    BlockUtils.setLocalBlocks(this.maindatas); 
   }
 
   onAddCbackMiniBlock(){ 
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genURLCback(""));
+    this.checkIsShowMinBlock();
+    console.log(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   onAddQreplyMiniBlock(){
@@ -295,7 +344,8 @@ export class AutomationComponent implements OnInit {
     console.log(this.block_index);
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genQuickReply("",[]));
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    this.checkIsShowMinBlock(); 
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   onAddQReply(mini_block_i){
@@ -303,14 +353,18 @@ export class AutomationComponent implements OnInit {
     .message.quick_replies.push({ content_type:"text",
       title:"", payload:[] });
     console.log(this.maindatas);
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   kQreplyTxt(mini_block_i,qreplytxt){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.text =qreplytxt;
     console.log(this.maindatas);
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
+
+  kURLCback(){
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   onCMinBImg(file,miniblock_index){
@@ -324,7 +378,7 @@ export class AutomationComponent implements OnInit {
             if(this.enum_saveImg == "image"){
               this.maindatas[this.block_index]
               .mini_blocks[this.miniblock_index].message.attachment.payload.url = url;
-              //BlockUtils.setLocalBlocks(this.maindatas);
+              BlockUtils.setLocalBlocks(this.maindatas);
             }if(this.enum_saveImg == "carousel"){
               this.maindatas[this.block_index]
               .mini_blocks[this.miniblock_index]
@@ -377,25 +431,26 @@ export class AutomationComponent implements OnInit {
     };   
     this.maindatas[this.block_index]
     .mini_blocks[mini_block_i].message.attachment.payload.elements.push(element);
-     //BlockUtils.setLocalBlocks(this.maindatas);
-  }
-  drop(event){
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-    }
-    this.maindatas[this.block_index].mini_blocks = event.container.data;
-    //BlockUtils.setLocalBlocks(this.maindatas);
-  }
+     BlockUtils.setLocalBlocks(this.maindatas);
+  } 
 
   onDelMiniBlock(mini_block_i){
     this.maindatas[this.block_index].mini_blocks.splice(mini_block_i,1);
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    this.checkIsShowMinBlock();
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
+
+  async onActionCback(ev,status,mini_block_i){ 
+    const popover = await this.popoverController.create({
+      component: AddCbackResponseComponent , 
+      cssClass: 'ion-popover',
+      event: ev,
+      componentProps:{maindatas:this.maindatas, 
+        status_title:status,
+        mini_block_index:mini_block_i, 
+        block_index:this.block_index}
+    });
+    return await popover.present();
   }
 
   async addTextButton(ev: any,mini_block_index) {
@@ -445,7 +500,7 @@ export class AutomationComponent implements OnInit {
   onDelTxtBtn(mini_block_i,txtbtn_i){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.attachment.payload.buttons.splice(txtbtn_i,1);
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
     const btns  =this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.attachment.payload.buttons;
      
@@ -459,12 +514,12 @@ export class AutomationComponent implements OnInit {
   onDelCarBtn(mini_block_i,element_i,button_index){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.attachment.payload.elements[element_i].buttons.splice(button_index,1);
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
   onDelQreply(mini_block_i,qreply_i){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.quick_replies.splice(qreply_i,1);
-    //BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
   }
   async addCarButton(ev: any,mini_block_index,element_i) {
     console.log(this.block.mini_blocks[mini_block_index].type); 

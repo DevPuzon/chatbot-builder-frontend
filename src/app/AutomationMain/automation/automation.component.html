@@ -1,6 +1,36 @@
 <ion-content>
   <ion-row>
     <ion-col style="height: 100vh; overflow: auto;" size="12" size-sm="12" size-md="4" size-lg="4">
+      <!-- <div class="row">
+        <div class="span6">
+          <textarea id="emojionearea1">Default :smile:</textarea>
+        </div>
+        <div class="span6">
+          <input type="text" id="emojionearea2" value="inline :+1:"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span6">
+          <div id="emojionearea3">Support autocompleting, insert ":" </div>
+        </div>
+        <div class="span6">
+          <input type="text" id="emojionearea4" value=":smiley_cat:"/>
+        </div>
+      </div>
+      <div class="span6">
+          <textarea id="emojionearea5">Disable tones, disable autocomplete :dog::cat:</textarea>
+      </div> -->
+
+      <ion-toolbar class="toolbar" color="primary">   
+        <img slot="start"  class="toolbar-icon" src="../../../assets/icon/favicon.png"> 
+        <ion-title>Retailgate</ion-title>
+        <ion-buttons slot="end">
+          <ion-button  >
+            <ion-icon slot="icon-only"
+            name="menu-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons> 
+      </ion-toolbar>
       <div class="blocks-word-main-con"> 
         <h1>Blocks</h1>
         <div class="btn-deploy-con" (click)="onDeploy()">
@@ -8,6 +38,11 @@
             <ion-icon name="rocket-outline" slot="start"></ion-icon>
             Deploy
           </ion-button>
+          <ion-buttons>
+            <ion-button class="cust-color" color="danger" (click)="onClearAll()">
+              Clear All
+            </ion-button>
+          </ion-buttons>
         </div>
         <div class="blocks-container" >
           <div *ngFor="let data of maindatas;index as i" >
@@ -35,7 +70,10 @@
       accept=".png, .jpg, .jpeg">
       <div class="builder-container" > 
         <!-- <h1 class="builder-block-title">{{block.block_name}}</h1> -->
-        <input [readonly]="block_index == 0 || block_index == 1" [(ngModel)]="block.block_name" (keyup)="kBlockTitle(block.block_name)" type="text" class="builder-block-title">
+        <input [readonly]="block_index == 0 || block_index == 1" 
+        [(ngModel)]="block.block_name" 
+        (focusout)="kFocusOTitle(block.block_name)"
+         type="text" class="builder-block-title">
          
         <div class="arrange-main slides-sub-arrange" > 
           <div *ngFor="let min_block of block.mini_blocks;index as i"
@@ -54,9 +92,9 @@
           </div>   
         </div> 
         
-        <div class="slides-main-arrange" >
-          <div class="slide" *ngFor="let min_block of block.mini_blocks;index as i" > 
-            <div class="builder-block-container"  *ngIf="min_block.type != 'cback-only'" >
+        <div class="slides-main-arrange" > 
+          <div class="slide" *ngFor="let min_block of block.mini_blocks;index as i"> 
+            <div class="builder-block-container"   *ngIf="min_block.type != 'cback-only'">
               <input  id="mainsets[]" type="hidden" [value]="min_block | json">
               <div>
                 <div>
@@ -85,7 +123,7 @@
                           <div class="button-subtitle func" *ngIf="btn.type =='postback'">
                             <ion-row>
                               <ion-col size="auto" *ngFor="let payload of btn.payload" >
-                                <p  *ngIf="payload.ischecked">{{payload.block_name}} </p></ion-col>
+                                <p class="block-style" *ngIf="payload.ischecked">{{payload.block_name}} </p></ion-col>
                               </ion-row>
                           </div> 
                           <div class="tooltip"> 
@@ -154,7 +192,7 @@
                             <div class="button-subtitle func" *ngIf="btn.type =='postback'" (click)="onBtnCarEdit($event,i,x,btn.title,btn.url,ie)">
                               <ion-row>
                                 <ion-col size="auto" *ngFor="let payload of btn.payload" >
-                                  <p  *ngIf="payload.ischecked">{{payload.block_name}} </p></ion-col>
+                                  <p  class="block-style" *ngIf="payload.ischecked">{{payload.block_name}} </p></ion-col>
                                 </ion-row>
                             </div> 
                             <div class="tooltip"> 
@@ -189,7 +227,7 @@
                             <div class="button-subtitle func" (click)="onQreplyEdit($event,i,qreply_i,qreply.title)" >
                               <ion-row>
                                 <ion-col size="auto" *ngFor="let payload of qreply.payload" >
-                                  <p *ngIf="payload.ischecked">{{payload.block_name}}  </p></ion-col>
+                                  <p  class="block-style" *ngIf="payload.ischecked">{{payload.block_name}}  </p></ion-col>
                               </ion-row>
                             </div> 
                             <div class="tooltip"> 
@@ -212,8 +250,9 @@
             </div> 
           </div>
         </div>   
-      
-        <div class="slide" *ngFor="let min_block of block.mini_blocks;index as i" >  
+
+        <div class="slide" *ngFor="let min_block of block.mini_blocks;index as i" >
+          
           <div class="builder-block-container"  *ngIf="min_block.type == 'cback-only'"> 
             <div> 
               <div class="tooltip"> 
@@ -221,11 +260,36 @@
                 <span class="tooltiptext">Delete mini block</span>
               </div>
             </div>
-            <div> 
+            <div>  
               <!-- URL Callback -->
               <div class="cback-container block-card">
                 <h2>URL Callback</h2>
-                <input class="cback-input" >
+                <input [(ngModel)]="min_block.message.url" (keyup)="kURLCback()"
+                 class="cback-input" >
+                <div class="cback-block" (click)="onActionCback($event,'resolve',i)">
+                  <h3>Resolve block</h3>
+                </div>
+                <div class="list-block"  *ngIf="min_block.message.resolve_blocks.length != 0">
+                  <ion-row >
+                    <div *ngFor="let res_block of min_block.message.resolve_blocks">
+                      <ion-col *ngIf="res_block.ischecked" >
+                        <p class="block-style">{{res_block.block_name}}</p>
+                      </ion-col>
+                    </div>
+                  </ion-row>
+                </div>
+                <div class="cback-block" (click)="onActionCback($event,'reject',i)">
+                  <h3>Reject block</h3>
+                </div>
+                <div class="list-block" *ngIf="min_block.message.reject_blocks.length != 0">
+                  <ion-row>
+                    <div *ngFor="let rej_block of min_block.message.reject_blocks">
+                      <ion-col  *ngIf="rej_block.ischecked">
+                        <p class="block-style" >{{rej_block.block_name}}</p>
+                      </ion-col> 
+                    </div>
+                  </ion-row>
+                </div>
               </div>
               <div class="line-bottom"> 
               </div>
@@ -233,7 +297,7 @@
           </div> 
         </div>
 
-        <div class="mini-block" > 
+        <div class="mini-block" *ngIf="isShowMinBlock" > 
           <h2>Add mini block</h2> 
           <div class="mini-blocks-con" > 
             <div class="btn-mini-block-con txt-color"
