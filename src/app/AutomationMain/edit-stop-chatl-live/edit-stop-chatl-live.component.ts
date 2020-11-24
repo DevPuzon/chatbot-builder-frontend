@@ -1,19 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BlockUtils } from 'src/app/utils/block-utils'; 
-
-
-
 @Component({
-  selector: 'app-add-quickreply',
-  templateUrl: './add-quickreply.component.html',
-  styleUrls: ['./add-quickreply.component.scss'],
+  selector: 'app-edit-stop-chatl-live',
+  templateUrl: './edit-stop-chatl-live.component.html',
+  styleUrls: ['./edit-stop-chatl-live.component.scss'],
 })
-export class AddQuickreplyComponent implements OnInit {
+export class EditStopChatlLiveComponent implements OnInit {
   @Input() maindatas :any; 
   @Input() block_index = 0 ;
-  @Input() mini_block_index  = 0 ;  
-  @Input() qreply_i  = 0 ;   
+  @Input() mini_block_index  = 0 ;   
   @Input() btn_name ="";  
   
   mini_block :any;  
@@ -22,17 +19,16 @@ export class AddQuickreplyComponent implements OnInit {
  
   constructor(private formBuilder:FormBuilder) { 
   }
-  // .quick_replies[this.qreply_i].payload;
-  ngOnInit() {   
+  
+  ngOnInit() {    
+    console.log("EditStopChatlLiveComponent");
     this.mini_block = this.maindatas[this.block_index].
     mini_blocks[this.mini_block_index]; 
 
     console.log(this.maindatas); 
 
-    console.log(this.mini_block_index); 
-    // let localBlocks = BlockUtils.getQReplyButtonBlocks(this.block_index,this.mini_block_index,this.qreply_i);
-    
-    let localBlocks = this.mini_block.message.quick_replies[this.qreply_i].payload;
+    console.log(this.mini_block_index);  
+    let localBlocks = this.mini_block.message.attachment.payload.buttons[0].payload.blocks
     
     console.log(localBlocks);
     if(localBlocks != null || localBlocks != undefined){
@@ -77,9 +73,10 @@ export class AddQuickreplyComponent implements OnInit {
   } 
   
   kBtnTitle(){ 
-    if(this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.quick_replies){
+    if(this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment){
+      
       this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
-    .message.quick_replies[this.qreply_i].title = this.btn_name; 
+    .message.attachment.payload.text = this.btn_name; 
       BlockUtils.setLocalBlocks(this.maindatas);
     } 
   }
@@ -89,23 +86,11 @@ export class AddQuickreplyComponent implements OnInit {
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
     } 
     console.log(this.blocks);  
-   
+    console.log(this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
+      .message.attachment);
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
-    .message.quick_replies[this.qreply_i]  =
-    {
-      content_type:"text",
-      payload:this.blocks,
-      title:this.btn_name
-    } 
-    
-    const hasIsChecked = this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
-    .message.quick_replies[this.qreply_i].payload.find(o => o.ischecked === true);
-    // if(hasIsChecked){
-    //   console.log(JSON.stringify(this.maindatas));
-    //   BlockUtils.setLocalBlocks(this.maindatas); 
-    // }else{
-
-    // } 
+    .message.attachment.payload.buttons[0].payload.blocks= this.blocks;
+     
     console.log(JSON.stringify(this.maindatas));
     BlockUtils.setLocalBlocks(this.maindatas); 
   } 

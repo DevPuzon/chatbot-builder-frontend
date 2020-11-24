@@ -1,26 +1,10 @@
-.content{
-    display: flex;
-    padding: 4px;
-    .container{
-        padding: 10px;
-        width: 400px;
-    }
+.container{
+    padding: 10px;
 }
-
-.input-button-title{ 
-    height: 220px; 
-    width: 100%;
-    overflow: hidden;
-    background-color: transparent;
-    font-size: 16px;
-    line-height: 1.32; 
-    height: 189px;
-    padding: 7px 9px;
-    white-space: pre-wrap;
-    margin: 0;
+.input-button-title{
+    padding: 8px;
     border-radius: 7px;
-    top: 0;resize: none; 
-    border: 0;
+    width: 100%;
 }
 .c-blocks-container{
     .input-button-title{

@@ -15,8 +15,8 @@ import { AddCarButtonComponent } from '../add-car-button/add-car-button.componen
 import { AuthGuardService } from 'src/app/Auth/auth-guard.service';
 import { Router } from '@angular/router';
 import { AddCbackResponseComponent } from '../add-cback-response/add-cback-response.component';
+import { EditStopChatlLiveComponent } from '../edit-stop-chatl-live/edit-stop-chatl-live.component';
  
-declare var EmojiPicker:any
 declare var $:any;
 @Component({
   selector: 'app-automation',
@@ -39,43 +39,17 @@ export class AutomationComponent implements OnInit {
     private loadingController:LoadingController,
     private custHttps:CustomHttpService) { }
 
-  async ngOnInit() {   
+  async ngOnInit() {  
     this.user = JSON.parse(localStorage.getItem("-==0us"));
     this.initSortable();
-    this.init();      
-    
-    $("#emojionearea1").emojioneArea({
-      pickerPosition: "left",
-      tonesStyle: "bullet"
-    });
-    $("#emojionearea2").emojioneArea({
-      pickerPosition: "bottom",
-      tonesStyle: "radio"
-    });
-    $("#emojionearea3").emojioneArea({
-      pickerPosition: "left",
-      filtersPosition: "bottom",
-      tonesStyle: "square"
-    });
-    $("#emojionearea4").emojioneArea({
-      pickerPosition: "bottom",
-      filtersPosition: "bottom",
-      tonesStyle: "checkbox"
-    });
-    $("#emojionearea5").emojioneArea({
-      pickerPosition: "top",
-      filtersPosition: "bottom",
-      tones: false,
-      autocomplete: false,
-      inline: true,
-      hidePickerOnBlur: false
-    });
+    this.init();     
   }  
-
+  
   checkIsShowMinBlock() {
     const mini_blocks = this.maindatas[this.block_index].mini_blocks;  
     let isShow = mini_blocks.findIndex(o => o.type === 'cback-only'); 
-    if(isShow != -1){
+    let isLChatShow = mini_blocks.findIndex(o => o.type === 'livechat-only');
+    if(isShow != -1 || isLChatShow != -1){
       this.isShowMinBlock = false;
     }else{
       this.isShowMinBlock = true;
@@ -83,7 +57,6 @@ export class AutomationComponent implements OnInit {
     console.log(isShow);
     console.log(this.isShowMinBlock);
   } 
-
   onNavMinblock(i){
     var elmnt = document.getElementById("min_block_"+i) ;
     console.log(elmnt);
@@ -132,20 +105,6 @@ export class AutomationComponent implements OnInit {
       this.block = this.maindatas[0];
     } 
     
-    // setTimeout(() => { 
-    //   const mini_blocks =this.maindatas[this.block_index].mini_blocks;
-    //   for(let i = 0 ; i < mini_blocks.length ;i ++){
-    //     const type = mini_blocks[i].type;
-    //     if(type == "text-only" || type == "button-text-only"){
-    //       console.log( $("#min_block_text"+i));
-    //       $("#min_block_text"+i).emojioneArea({
-    //         pickerPosition: "bottom",
-    //         tonesStyle: "radio"
-    //       });
-    //     }
-    //   }
-    // }, 500);
-
     this.checkIsShowMinBlock();
     BlockUtils.setLocalBlocks(this.maindatas); 
   } 
@@ -195,6 +154,21 @@ export class AutomationComponent implements OnInit {
     this.maindatas.splice(block_i,1);
     BlockUtils.setLocalBlocks(this.maindatas);
   }
+  showEmojiPicker = false; 
+  toggleEmojiPicker() {
+    console.log(this.showEmojiPicker);
+        this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmojiTextBtnOnly(event,txt,min_block,mini_block_i) { 
+    let message =txt;
+    console.log(message);
+    console.log(`${event.emoji.native}`)
+    const text = `${message}${event.emoji.native}`; 
+    console.log(text);
+    this.kTitleTxt(text,min_block,mini_block_i);
+    // this.showEmojiPicker = false;
+  } 
   kTitleTxt(txt,min_block,mini_block_i){
     console.log(txt) 
     console.log(txt);
@@ -261,11 +235,9 @@ export class AutomationComponent implements OnInit {
       (errorCode: Response) => { 
         loading.dismiss();
         console.log(errorCode) 
-        this.toast.presentToast("Something went wrong, please try again later.");
       });
     }
   }
-  
   onClearAll(){
 
   }
@@ -334,6 +306,13 @@ export class AutomationComponent implements OnInit {
   onAddCbackMiniBlock(){ 
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genURLCback(""));
+    this.checkIsShowMinBlock();
+    console.log(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
+  onAddLChatMiniBlock(){ 
+    this.maindatas[this.block_index]
+    .mini_blocks.push(ChatbotFunc.genLChat());
     this.checkIsShowMinBlock();
     console.log(this.maindatas);
     BlockUtils.setLocalBlocks(this.maindatas);
@@ -492,6 +471,19 @@ export class AutomationComponent implements OnInit {
       componentProps:{maindatas:this.maindatas, 
         mini_block_index:mini_block_index,
         qreply_i:qreply_i,
+        btn_name:qreply_title, 
+        block_index:this.block_index}
+    });
+    return await popover.present();
+  } 
+  async onLChatEdit(ev: any,mini_block_index,qreply_title) { 
+    console.log("onLChatEdit");
+    const popover = await this.popoverController.create({
+      component: EditStopChatlLiveComponent , 
+      cssClass: 'ion-popover',
+      event: ev,
+      componentProps:{maindatas:this.maindatas, 
+        mini_block_index:mini_block_index, 
         btn_name:qreply_title, 
         block_index:this.block_index}
     });

@@ -93,6 +93,23 @@ export class WmPropertiesComponent implements OnInit  {
     console.log(JSON.stringify(this.wmatchingdtas));
   }
 
+  
+  showEmojiPicker = false; 
+  toggleEmojiPicker() {
+    console.log(this.showEmojiPicker);
+        this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmojiTextBtnOnly(event) { 
+    let message ="";
+    console.log(message);
+    console.log(`${event.emoji.native}`)
+    const text = `${message}${event.emoji.native}`; 
+    console.log(text);
+    this.txt_message = this.txt_message + text;
+    this.kMessage();
+    // this.showEmojiPicker = false;
+  } 
   kMessage(){
     if(this.txt_message !=""){
       console.log(this.txt_message) ; 

@@ -31,6 +31,8 @@ export class UserLoginComponent implements OnInit {
     this.authService.authState.subscribe((user) => {
       console.log(user);
     });
+    localStorage.removeItem("localblocks");
+    localStorage.removeItem("word_matching");
   }
 
   imgPass = "eye";
@@ -55,7 +57,7 @@ export class UserLoginComponent implements OnInit {
     this.cusHttp.postNoToken("login", this.form.value)
     .subscribe(async (snap:any)=>{ 
       await loading.dismiss();   
-      localStorage.setItem("-=[]t",snap.token);
+      localStorage.setItem("-=[]t",snap.token); 
       console.log(snap);
       this.cusHttp.getUser()
       .then(()=>{

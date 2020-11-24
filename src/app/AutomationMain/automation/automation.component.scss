@@ -110,28 +110,8 @@ ion-col{
                 width: 17px;
                 margin: 10px;
             }
-            .txt-container{
-                .textarea-container{
-                    padding: 10px;
-                    .txt{
-                        height: 250px; 
-                        width: 100%;
-                        overflow: hidden;
-                        background-color: transparent;
-                        font-size: 16px;
-                        line-height: 1.32; 
-                        height: 189px;
-                        padding: 7px 9px;
-                        white-space: pre-wrap;
-                        margin: 0;
-                        border-radius: 7px;
-                        top: 0;resize: none; 
-                        border: 0;
-                    }
-                }
-                .button-add:hover{   
-                    background-color: #F4F4F4;
-                }
+            .button-add:hover{   
+                background-color: #F4F4F4;
             }
     
             .img-container{  
@@ -196,6 +176,25 @@ ion-col{
         width: 17px;
         margin: 10px;
     }
+    
+    .textarea-container{
+        padding: 10px;
+        .txt{
+            height: 250px; 
+            width: 100%;
+            overflow: hidden;
+            background-color: transparent;
+            font-size: 16px;
+            line-height: 1.32; 
+            height: 189px;
+            padding: 7px 9px;
+            white-space: pre-wrap;
+            margin: 0;
+            border-radius: 7px;
+            top: 0;resize: none; 
+            border: 0;
+        }
+    }
 } 
 
 .buttons-container:hover  .del-btn-txt {
@@ -220,6 +219,10 @@ ion-col{
             margin-top: 10px;
             margin-bottom: 0px;
         } 
+        .input{
+            border:0px;
+            text-align:center;
+        }
         .button-main{ 
             display: flex;
             margin: 2px;
@@ -478,6 +481,9 @@ ion-col{
 } 
 .cback-color{ 
     background: #350D36;
+}
+.lchat-color{ 
+    background: #853D47;
 }
 
 

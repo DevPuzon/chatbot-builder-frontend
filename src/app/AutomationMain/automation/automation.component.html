@@ -1,26 +1,6 @@
 <ion-content>
   <ion-row>
-    <ion-col style="height: 100vh; overflow: auto;" size="12" size-sm="12" size-md="4" size-lg="4">
-      <!-- <div class="row">
-        <div class="span6">
-          <textarea id="emojionearea1">Default :smile:</textarea>
-        </div>
-        <div class="span6">
-          <input type="text" id="emojionearea2" value="inline :+1:"/>
-        </div>
-      </div>
-      <div class="row">
-        <div class="span6">
-          <div id="emojionearea3">Support autocompleting, insert ":" </div>
-        </div>
-        <div class="span6">
-          <input type="text" id="emojionearea4" value=":smiley_cat:"/>
-        </div>
-      </div>
-      <div class="span6">
-          <textarea id="emojionearea5">Disable tones, disable autocomplete :dog::cat:</textarea>
-      </div> -->
-
+    <ion-col style="height: 100vh; overflow: auto;" size="12" size-sm="12" size-md="4" size-lg="4">  
       <ion-toolbar class="toolbar" color="primary">   
         <img slot="start"  class="toolbar-icon" src="../../../assets/icon/favicon.png"> 
         <ion-title>Retailgate</ion-title>
@@ -73,8 +53,7 @@
         <input [readonly]="block_index == 0 || block_index == 1" 
         [(ngModel)]="block.block_name" 
         (focusout)="kFocusOTitle(block.block_name)"
-         type="text" class="builder-block-title">
-         
+         type="text" class="builder-block-title"> 
         <div class="arrange-main slides-sub-arrange" > 
           <div *ngFor="let min_block of block.mini_blocks;index as i"
            class="arrange slide" (click)="onNavMinblock(i)"
@@ -90,11 +69,10 @@
               min_block.type == 'quickreply-only'?'Quick Reply':''}}</h5> 
             <input  id="subsets[]" type="hidden" [value]="min_block | json">
           </div>   
-        </div> 
-        
+        </div>  
         <div class="slides-main-arrange" > 
           <div class="slide" *ngFor="let min_block of block.mini_blocks;index as i"> 
-            <div class="builder-block-container"   *ngIf="min_block.type != 'cback-only'">
+            <div class="builder-block-container"   *ngIf="min_block.type != 'cback-only' && min_block.type != 'livechat-only'  ">
               <input  id="mainsets[]" type="hidden" [value]="min_block | json">
               <div>
                 <div>
@@ -110,12 +88,20 @@
                   *ngIf="min_block.type == 'button-text-only' || min_block.type == 'text-only'">
                     <div class="textarea-container"> 
                       <textarea  class="txt" #textminblock (keyup)="kTitleTxt(textminblock.value,min_block,i)" >{{min_block.type == 'text-only'? min_block.message.text : min_block.message.attachment.payload.text}} </textarea>
-                      <!-- <textarea class="txt" *ngIf="min_block.type == 'text-only'" [(ngModel)]="min_block.message.text" > {{min_block.message.text}} </textarea>
-                      <textarea class="txt" *ngIf="min_block.type == 'button-text-only'" [(ngModel)]="min_block.message.attachment.payload.text"  >{{min_block.message.attachment.payload.text}} </textarea> -->
+                      <!-- <ion-buttons>
+                        <ion-button (click) ="toggleEmojiPicker()" style="margin-left: auto;">
+                          <ion-icon slot="icon-only"
+                          name="{{showEmojiPicker ? 'close-outline' : 'happy-outline'}}"></ion-icon>
+                        </ion-button>
+                      </ion-buttons>   -->
+                      <emoji-mart class="emoji-mart" set="facebook" *ngIf="showEmojiPicker"
+                      (emojiSelect)="addEmojiTextBtnOnly($event,textminblock.value,min_block,i)" 
+                      title="Pick your emoji.…"></emoji-mart>  
                     </div>
                     <div class="buttons-container"
                     *ngIf="min_block.type == 'button-text-only'">
-                      <div [class]="btn.title == '' ? 'err-button':'button'" *ngFor="let btn of min_block.message.attachment.payload.buttons; index as x"
+                      <div [class]="btn.title == '' ? 'err-button':'button'"
+                       *ngFor="let btn of min_block.message.attachment.payload.buttons; index as x"
                       (click)="onBtnTxtEdit($event,i,x,btn.title,btn.url)">
                         <p class="button-title">{{btn.title == '' ? 'Enter button name':btn.title}}</p>
                         <div class="button-main">
@@ -144,8 +130,7 @@
                         <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
                         <p class="add-button-txt">ADD BUTTON (OPTIONAL)</p>
                       </div>
-                    </div>
-                    
+                    </div> 
                   </div>  
                   <!-- IMAGE -->
                   <div id="min_block_{{i}}" class="img-container block-card"
@@ -251,18 +236,53 @@
           </div>
         </div>   
 
-        <div class="slide" *ngFor="let min_block of block.mini_blocks;index as i" >
-          
-          <div class="builder-block-container"  *ngIf="min_block.type == 'cback-only'"> 
+        <div class="slide" *ngFor="let min_block of block.mini_blocks;index as i" > 
+          <div class="builder-block-container"  *ngIf="min_block.type == 'cback-only' ||
+           min_block.type == 'livechat-only'"> 
             <div> 
               <div class="tooltip"> 
                 <img class="logo-del" (click)="onDelMiniBlock(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
                 <span class="tooltiptext">Delete mini block</span>
               </div>
             </div>
-            <div>  
+            <div>   
+              <!-- Live Chat -->
+              <div id="min_block_{{i}}"  class="txt-container block-card" 
+              *ngIf="min_block.type == 'livechat-only'">
+                <div class="textarea-container"> 
+                  <textarea  class="txt"  #lchatminblock (keyup)="kTitleTxt(lchatminblock.value,min_block,i)"  > {{min_block.message.attachment.payload.text }} </textarea>
+                  <!-- <ion-buttons>
+                    <ion-button (click) ="toggleEmojiPicker()"
+                      style="margin-left: auto;">
+                      <ion-icon slot="icon-only"
+                      name="{{showEmojiPicker ? 'close-outline' : 'happy-outline'}}"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>   -->
+                  <emoji-mart class="emoji-mart" set="facebook" *ngIf="showEmojiPicker"
+                  (emojiSelect)="addEmojiTextBtnOnly($event,lchatminblock.value,min_block,i)" 
+                  title="Pick your emoji.…"></emoji-mart>  
+                </div>
+                <div class="buttons-container"
+                *ngIf="min_block.type == 'livechat-only'">
+                  <div 
+                  [class]="btn.title == '' ? 'err-button':'button'"
+                  *ngFor="let btn of min_block.message.attachment.payload.buttons; index as x"
+                  (click)="onLChatEdit($event,i,btn.title)">
+                    <p class="button-title">{{btn.title == '' ? 'Enter button name':btn.title}}</p>
+                    <div class="button-main"> 
+                      <div class="button-subtitle func" 
+                      *ngIf="btn.type =='postback'">
+                        <ion-row>
+                          <ion-col size="auto" *ngFor="let payload of btn.payload.blocks" >
+                            <p class="block-style" *ngIf="payload.ischecked">{{payload.block_name}} </p></ion-col>
+                        </ion-row>
+                      </div>  
+                    </div>
+                  </div>
+                </div> 
+              </div>  
               <!-- URL Callback -->
-              <div class="cback-container block-card">
+              <div *ngIf="min_block.type == 'cback-only' "  class="cback-container block-card">
                 <h2>URL Callback</h2>
                 <input [(ngModel)]="min_block.message.url" (keyup)="kURLCback()"
                  class="cback-input" >
@@ -334,14 +354,14 @@
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFRElEQVRoge2ZaaxdUxTHf+v16WuLkAYpktbQGko1QiRi+ECoeYghYkzEkBBTE1OExBxDTB/EHPSDoiTUTD9QjapKixqK1vihiKGt9lGvfj7sfbmuc84971J9TfpPbs49e63933vtvdbZ66wDa7EWa7FGIwDUQcC2wGYVur8A70bEknak6ihgdIO/AH3AhxHxTf+mWzKYOtd66FXPrOAaqk6tyfW7eodaZmQthPoscBAwB/i0QrcH2B/oBsZFxEcFBlwFXA58DrxVwdUF7A1sDBwXEY92Nv006DJ1uTqshu4NefXOKJG/luW71uA6Nuve3cm8G+gChgHLImJ5Df2G/69bIm8swnf94Gq7cFXo7rDfPurggvYRHXDtoF7c0vYLsACYFhG9lb3zNtZZMdTLagboqBpcB9TgWaQeVsXT6Q48A7xe0H4OsHk/ueYArUE8DNgD2Bd4Up0QEdMKe3e4AxeUyGd3sAOTKnQmZp33ynS6gF5giFpnN9bL17KA723Rq8NV5eO3AguBHdWtihS6gdeACcDr6pcVZIOAA4GVFLsPmWtP0ra/U8EFsFe+vlqmEBGq84CtgE1Jxvwd6tbqhzWDc4V6XtmA6rrqKzW5VO+1zUmsPpF19yqSd0fEAnUnYDywYQVXH/B+RJTGS0QsU/cDtqc6rwL4NCI+b6PTFv8qD/mvoW4EXArsSIpPgJ2ATYDZwE+5bQnweERM/t8nWQZTIljXlRs4d8DsgHok8CQpqM8incZlGJd1v+j0IFsVaJwdL0fEB210F6o/AFt2tVH8P9GRNwwkAzrCGm/AQIqByaTkbc2Dukm+9qjH1ezzndZL4FYZ1KHA7cDp6mkRcb/6mzqW6sfoeGA48NlqM0DdBngsTwZSwgawMzClJs0tq8UA9QTgLlJKvRRYv0k8F3iJ9qnEoxHxWHcmXIf2ydxKUjL3bZvJBTCWlP4C/BgRb2fZEOAG4NwsmwQ8BzzS6B8RU2jaAfVB4BRgYkRMLxpwtPpRzdxjhXp+xeTXU6c16b+pbpFl26rv5Pal6om5/dDc9oJ6lLqrukETZ5d6uDq6aMxQXyQVrGYCX1UsbhfphWYIMD4i5hUYcD1wCTCf5N/XRMQK9XjgbpLLzCUVs+bnPhOAF1qoVgLTganAQxHxfemsTEWtpXWeSOr1ebUKy4vq9Cwfm++Hqvc07cid2Y2a+wxWz1ZvUh9Qn1eXNPX5Ub3Y9MQqHFT/+5f6kfl+Zr7/ST2mzhi5X7e6h/qw2pc5Zqn/qDutqsKW+booX/uAX+uSR0QfMAOYkd3yQWA34A1134j46924wx1oh1FZP9QL1F9N1ejb1J4WzuHqleo16oXqSeruNtVq1WHqlMw952/u1KEBU7Nftv6+bjagqd8u6sdZNtumJ4p6aski/KbOyAsw3ORWjRi7498a0O/Clrq+yadVF5tzHvWM3Pa4enJeiElNBmuqoF+tjjHF04o/FyELf7bYp1sncWMmbFdeH1fBcZJ/PWXuVc/L/68t0N1OvblJf7Z6f/5/H6Rz4BngYNLz+ZOK+feQCmCDKP/AcSVwBfAFMKtFPA+4LiL61DGk03cXUnD3ZNllJUZvCtwJHEFK8oaQ0okRjU9Mc0r8sBXLy1Y/DzRUfbqi/xvqlll3sHqLKbgLd6CFO0yfpJpxSOMjXxfpI19VZbmX9JFvadVAmW8kMIbi99zFEfFWk+5BwHXARRHxUhveLlIl++jcdFO7uQw4qBubAln1uTXunTiXNu/KtyNX51w6hulcUV08YCpz/YHpNF8GA6y42x+oTwE9fwAMPkxh9N2KtwAAAABJRU5ErkJggg==">
                 <h5>Url Callback</h5>
               </div>
-            </div>   
-            <!-- <div class="btn-mini-block-con img-color"
-             (click)="onAddTxtMiniBlock()" >
-              <div  > 
-                <img src="data:image/png;base64,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">
-                <h5>Image</h5>
+            </div>    
+            <div class="btn-mini-block-con lchat-color"
+             (click)="onAddLChatMiniBlock()" >
+              <div > 
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAB7klEQVRoge2ZO07DQBRFZwCFkGQfUJAFwF5oULIBCkjDR+yAGtFErAQUeiiI+AixB0SkQNChYBxGjmN77GfiQb6VP+P77tGM9TKOUpUqVapUKgEN4BR4BibIa2K8T4A16fBrwE0BoedpkBdiKXTeU0pt5TF01LZSal/MzUxtoAOgJmb+W6MG9Kw6T5Lm9poXD2/VqVl1Jnm8dMiY6Q2t9exwOUnVCr8D3qkCWLRKBxDRK9I3Pvupvww673qaxle6GUhQfOMrwwxEjIttfF70AdNUx+b0S2u9EtzzYglprT+s02X7nhcAcaoAFq1/B/AVHBT9czqqZhaFAV6t470iIIznnnXpRdL8JKGV2xpbz7WAvsOzto5SZktufPxs6gcuAEAbGGYMfw3UxQDMwDpwDDwR/1llDHSAkWPoifE+ShveCSDBpBaVyGgEdDObJ9cuFGAItAXzRtUuDKAPNAWzzqstDjACOoIZk2qLAtwBG4L50taFPN+RjNE5oW0d0AUOgUbutNE17Q3No6R5E7ic82LHqQ+0LB+Xr+CpGl9agDpwlQEA4B7YdARI3fhcIFb5WT4PwKcjxDuwmwCQqfEVJmAHeIsJvJzssmAB68CttwBKTd+fM28BAkUsKb8AlJpZUv4BKDX9d/TCW4BKvuobfT/nQg1mmhwAAAAASUVORK5CYII=">
+                <h5>Live chat</h5>
               </div>
-            </div>   -->
+            </div>    
           </div> 
         </div>
       </div>

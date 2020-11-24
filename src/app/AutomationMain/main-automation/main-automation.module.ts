@@ -15,6 +15,7 @@ import { WordMatchingContentComponent } from '../WordMatching/word-matching-cont
 import { WmPropertiesComponent } from '../WordMatching/wm-properties/wm-properties.component';
 import { AddCbackResponseComponent } from '../add-cback-response/add-cback-response.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { EditStopChatlLiveComponent } from '../edit-stop-chatl-live/edit-stop-chatl-live.component';
 
 @NgModule({ 
   imports: [
@@ -28,6 +29,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
   declarations: [MainAutomationPage,AutomationComponent,
     AddCarButtonComponent,AddQuickreplyComponent,
     AddTextButtonPopupComponent,AddCbackResponseComponent,
+    EditStopChatlLiveComponent,
     WordMatchingContentComponent,WmPropertiesComponent]
 })
 export class MainAutomationPageModule {}

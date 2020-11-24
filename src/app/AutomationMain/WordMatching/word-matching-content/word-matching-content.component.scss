@@ -2,6 +2,13 @@ ion-col{
     padding: 0px;
 } 
 
+.popover-content{
+    width:400px;
+    max-width:500px;
+}
+ion-popover {
+	--width: 400px;
+}
 .blocks-word-main-con{
     padding: 10px;
     margin: 15px;

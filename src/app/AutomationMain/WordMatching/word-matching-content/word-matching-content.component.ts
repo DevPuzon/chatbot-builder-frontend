@@ -69,7 +69,7 @@ export class WordMatchingContentComponent implements OnInit {
   async onSCommand(ev,wmatchingdtas_i){
     const popover = await this.popoverController.create({
       component: WmPropertiesComponent , 
-      cssClass: 'ion-popover',
+      cssClass: 'contact-popover',
       event: ev,
       componentProps:{wmatchingdtas_i:wmatchingdtas_i,
         command_i:this.wmatchingdtas[wmatchingdtas_i].commands.length,
