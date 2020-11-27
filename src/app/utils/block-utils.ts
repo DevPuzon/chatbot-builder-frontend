@@ -62,26 +62,37 @@ export class BlockUtils {
           this.fixLChatBlocks(mini_block,block_names);
         }
         if(mini_block.type == "cback-only"){
-          const resolve_blocks = mini_block.message.resolve_blocks;
-          if(resolve_blocks || resolve_blocks != null || resolve_blocks != undefined || resolve_blocks.length > 0){
-            for(let k = 0 ; k  < resolve_blocks.length; k++){
-              const resolve_block = resolve_blocks[k];
-              resolve_block.block_name = block_names[k];
-            }
-          }
-          const reject_blocks = mini_block.message.reject_blocks;
-          if(reject_blocks || reject_blocks != null || reject_blocks != undefined || reject_blocks.length > 0){
-            for(let k = 0 ; k  < reject_blocks.length; k++){
-              const reject_block = reject_blocks[k];
-              reject_block.block_name = block_names[k];
-            }
-          }
+          this.fixCbackBlocks(mini_block,block_names);
         }
       }
     }
     console.log("getPrettyBlocks");
     console.log(ret);
     return ret
+  }
+  static fixCbackBlocks(mini_block,block_names) {  
+    const resolve_blocks = mini_block.message.resolve_blocks;
+    if(resolve_blocks || resolve_blocks != null || resolve_blocks != undefined || resolve_blocks.length > 0){
+      for(let k = 0 ; k  < resolve_blocks.length; k++){
+        const resolve_block = resolve_blocks[k];
+        if(block_names[k]){
+          resolve_block.block_name = block_names[k]; 
+        }else{
+          resolve_blocks.splice(k,1);
+        }
+      }
+    }
+    const reject_blocks = mini_block.message.reject_blocks;
+    if(reject_blocks || reject_blocks != null || reject_blocks != undefined || reject_blocks.length > 0){
+      for(let k = 0 ; k  < reject_blocks.length; k++){
+        const reject_block = reject_blocks[k];
+        if(block_names[k]){
+          reject_block.block_name = block_names[k]; 
+        }else{
+          reject_blocks.splice(k,1);
+        }
+      }
+    }
   }
   static fixLChatBlocks(mini_block,block_names) { 
     const buttons= mini_block.message.attachment.payload.buttons; 
@@ -91,8 +102,12 @@ export class BlockUtils {
         const blocks = buttons[k].payload.blocks; 
         if(blocks || blocks != null || blocks != undefined || blocks.length > 0){
           for(let l = 0 ; l < blocks.length;l++){
-            const block = blocks[l];
-            block.block_name = block_names[l];
+            const block = blocks[l]; 
+            if(block_names[l]){
+              block.block_name = block_names[l];
+            }else{
+              blocks.splice(l,1);
+            }
           }
         }
       }
@@ -105,8 +120,12 @@ export class BlockUtils {
         const payloads =quick_replies[k].payload; 
         if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
           for(let l = 0 ;l<payloads.length ;l++){
-            const payload = payloads[l];
-            payload.block_name = block_names[l];
+            const payload = payloads[l]; 
+            if(block_names[l]){
+              payload.block_name = block_names[l];
+            }else{
+              payloads.splice(l,1);
+            }
           }
         }
       }
@@ -122,8 +141,12 @@ export class BlockUtils {
             const payloads = buttons[l].payload; 
             if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
               for(let m =0;m<payloads.length;m++){
-                const payload = payloads[m];
-                payload.block_name = block_names[m];
+                const payload = payloads[m]; 
+                if(block_names[m]){
+                  payload.block_name = block_names[m];
+                }else{
+                  payloads.splice(m,1);
+                }
               }
             }
           }
@@ -138,13 +161,18 @@ export class BlockUtils {
         const payloads = buttons[k].payload; 
         if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
           for( var l = 0 ; l < payloads.length ; l++){
-            const payload = payloads[l];
-            payload.block_name = block_names[l];
+            const payload = payloads[l]; 
+            if(block_names[l]){
+              payload.block_name = block_names[l];
+            }else{
+              payloads.splice(l,1);
+            }
           }
         }
       }
     }
   }
+  
   static getMainBlocks(blocks) {
     let ret =[];
     for(var i = 0 ; i < blocks.length;i++){

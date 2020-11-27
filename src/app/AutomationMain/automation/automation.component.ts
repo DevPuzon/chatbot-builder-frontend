@@ -150,6 +150,7 @@ export class AutomationComponent implements OnInit {
     this.block_index = i;
     console.log(this.block_index);
     this.checkIsShowMinBlock();
+    BlockUtils.cleanBlocks(this.maindatas);
   }
   onDelBlock(block_i){
     this.maindatas.splice(block_i,1);

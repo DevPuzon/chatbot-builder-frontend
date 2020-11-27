@@ -24,8 +24,12 @@ export class WmatchingutilsService {
             const block_properties = commands[k].block_properties;
             if(block_properties || block_properties != null || block_properties != undefined || block_properties.length > 0){
               for(let l = 0 ; l < block_properties.length ; l ++){
-                const block_property = block_properties[l];
-                block_property.block_name = block_names[l];
+                const block_property = block_properties[l]; 
+                if(block_names[l]){
+                  block_property.block_name = block_names[l]; 
+                }else{
+                  block_properties.splice(l,1);
+                }
               }
             }
           }

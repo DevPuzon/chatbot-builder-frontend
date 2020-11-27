@@ -41,6 +41,9 @@ export class WordMatchingContentComponent implements OnInit {
     }
     WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
     console.log(this.wmatchingdtas);
+    setInterval(()=>{
+      WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
+    },1000);
   }
 
   async getCloudblocks(){  
