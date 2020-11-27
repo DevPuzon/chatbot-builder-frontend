@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, PopoverController, ToastController } from '@ionic/angular';
 import { CustomHttpService } from 'src/app/utils/custom-http.service';
@@ -14,7 +14,8 @@ declare var $:any;
 })
 export class WordMatchingContentComponent implements OnInit {
 
-  wmatchingdtas = new Array();
+  @Input() maindatas = new Array();
+  @Input() wmatchingdtas = new Array();
   constructor(private popoverController:PopoverController,
     private custHttps:CustomHttpService,
     private router:Router,
@@ -31,13 +32,14 @@ export class WordMatchingContentComponent implements OnInit {
   }   
   
   init() {
+    console.log(this.maindatas);
     if(WmatchingutilsService.getWordMatch() != null){ 
       this.wmatchingdtas = WmatchingutilsService.getWordMatch();
     }else{
       this.wmatchingdtas.push({user_possible_words:[],commands:[]});
       this.getCloudblocks();
     }
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas); 
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
     console.log(this.wmatchingdtas);
   }
 
@@ -54,7 +56,7 @@ export class WordMatchingContentComponent implements OnInit {
         return;
       } 
       this.wmatchingdtas = snap;
-      WmatchingutilsService.setWordMatch(this.wmatchingdtas); 
+      WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
       this.init();
     }, 
     async (errorCode: Response) => { 
@@ -73,6 +75,7 @@ export class WordMatchingContentComponent implements OnInit {
       event: ev,
       componentProps:{wmatchingdtas_i:wmatchingdtas_i,
         command_i:this.wmatchingdtas[wmatchingdtas_i].commands.length,
+        maindatas:this.maindatas,
         wmatchingdtas:this.wmatchingdtas}
     });
     return await popover.present();
@@ -95,7 +98,7 @@ export class WordMatchingContentComponent implements OnInit {
          console.log(sets);
         _this.wmatchingdtas[id_con].commands = sets;
         console.log(_this.wmatchingdtas[id_con]);
-        WmatchingutilsService.setWordMatch(_this.wmatchingdtas);
+        WmatchingutilsService.setWordMatch(_this.wmatchingdtas,this.maindatas); 
         $(".slide-placeholder-animator").remove(); 
       },
      }); 
@@ -105,36 +108,37 @@ export class WordMatchingContentComponent implements OnInit {
   kWord(word,wm_i,$event){
     if(!word){return;}
     this.wmatchingdtas[wm_i].user_possible_words.push(word);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
     console.log($event);
     $event.target.value = "";
   }
   delWord(word_i,wm_i){
     this.wmatchingdtas[wm_i].user_possible_words.splice(word_i, 1);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   onDelComm(comm_i,wm_i){
     this.wmatchingdtas[wm_i].commands.splice(comm_i, 1);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   async onEditComm(ev,comm_i,wm_i,txt_message){ 
     const popover = await this.popoverController.create({
-      component: WmPropertiesComponent , 
-      cssClass: 'ion-popover',
+      component: WmPropertiesComponent ,
+      cssClass: 'contact-popover',
       event: ev,
       componentProps:{wmatchingdtas_i:wm_i,
         command_i:comm_i,txt_message:txt_message,
+        maindatas:this.maindatas,
         wmatchingdtas:this.wmatchingdtas}
     });
     return await popover.present();
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   onAddWordM(){
     this.wmatchingdtas.push({user_possible_words:[],commands:[ ]});
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   onDelConv(conv_i){
     this.wmatchingdtas.splice(conv_i,1);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
 }

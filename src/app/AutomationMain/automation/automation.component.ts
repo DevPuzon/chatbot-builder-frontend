@@ -31,15 +31,16 @@ export class AutomationComponent implements OnInit {
   block :any;
   user:any;
   isShowMinBlock = true;
+  wmatchingdtas = new Array();
   constructor(private popoverController:PopoverController,
     private toast:ToastMessageService,
     private uuid:UuidService,
     private router :Router,
-    private storage :AngularFireStorage,  
+    // private storage :AngularFireStorage,  
     private loadingController:LoadingController,
     private custHttps:CustomHttpService) { }
 
-  async ngOnInit() {  
+  async ngOnInit() {   
     this.user = JSON.parse(localStorage.getItem("-==0us"));
     this.initSortable();
     this.init();     
@@ -169,9 +170,7 @@ export class AutomationComponent implements OnInit {
     this.kTitleTxt(text,min_block,mini_block_i);
     // this.showEmojiPicker = false;
   } 
-  kTitleTxt(txt,min_block,mini_block_i){
-    console.log(txt) 
-    console.log(txt);
+  kTitleTxt(txt,min_block,mini_block_i){ 
     if(min_block.type == 'text-only'){
       this.maindatas[this.block_index].mini_blocks[mini_block_i].message.text = txt;
     }else{
@@ -209,14 +208,15 @@ export class AutomationComponent implements OnInit {
 
   
   async onDeploy(){
+    const localBlocks = BlockUtils.getLocalBlocks();
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present(); 
-
-    if(BlockUtils.getLocalBlocks() != null || BlockUtils.getLocalBlocks() != undefined || !BlockUtils.getLocalBlocks()){ 
-      this.custHttps.post("setallblocks/"+this.user.clientID,BlockUtils.getLocalBlocks())
+    if(localBlocks != null ||localBlocks != undefined || !localBlocks){ 
+      this.custHttps.post("setallblocks/"+this.user.clientID,localBlocks)
       .subscribe(async (snap:any)=>{  
         loading.dismiss();
         console.log(snap)  
+        this.toast.presentToast("Deployed successfully"); 
       }, 
       (errorCode: Response) => { 
         loading.dismiss();
@@ -224,22 +224,67 @@ export class AutomationComponent implements OnInit {
         this.toast.presentToast("Something went wrong, please try again later.");
       });  
     }
-
-    if(WmatchingutilsService.getWordMatch()[0].user_possible_words.length != 0){
+    const localWordMatch = WmatchingutilsService.getWordMatch();
+    
+    if(localWordMatch[0].user_possible_words.length != 0){
       console.log("word matching is not null");
-      this.custHttps.post("setwordmatch/"+this.user.clientID,WmatchingutilsService.getWordMatch())
+      this.custHttps.post("setwordmatch/"+this.user.clientID,localWordMatch)
       .subscribe(async (snap:any)=>{  
         console.log(snap) 
         loading.dismiss();
+        this.toast.presentToast("Deployed successfully"); 
       }, 
       (errorCode: Response) => { 
         loading.dismiss();
         console.log(errorCode) 
       });
     }
+    setTimeout(() => {
+      loading.dismiss(); 
+    }, 1200);
   }
-  onClearAll(){
 
+  async onClearAll(){
+    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    await loading.present(); 
+    const localBlocks = BlockUtils.getLocalBlocks();
+    if(localBlocks != null ||localBlocks != undefined || !localBlocks){  
+      this.custHttps.del("delblocks",this.user.clientID)
+      .subscribe(async (snap:any)=>{ 
+        loading.dismiss(); 
+        console.log(snap)  
+        this.toast.presentToast("Cleared successfully"); 
+        localStorage.removeItem("localblocks");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }, 
+      (errorCode: Response) => { 
+        loading.dismiss();
+        console.log(errorCode) 
+      });
+    }
+    const localWordMatch = WmatchingutilsService.getWordMatch();
+    
+    if(localWordMatch[0].user_possible_words.length != 0){  
+      this.custHttps.del("delwordmatch",this.user.clientID)
+      .subscribe(async (snap:any)=>{  
+        loading.dismiss();
+        console.log(snap)  
+        this.toast.presentToast("Cleared successfully"); 
+        localStorage.removeItem("word_matching")
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }, 
+      (errorCode: Response) => { 
+        loading.dismiss();
+        console.log(errorCode) 
+      });
+    }
+    setTimeout(() => {
+      loading.dismiss();
+    }, 1300);
   }
 
   async getCloudblocks(){  
@@ -349,24 +394,21 @@ export class AutomationComponent implements OnInit {
   onCMinBImg(file,miniblock_index){
     if (file) {     
       BlobService.resize(file,140).then((data)=>{
-        //console.log(data); 
-        BlobService.bitmapToBlob(data)
-        .then(data=>{ 
-          console.log(data);
-          this.saveImage(data).then((url)=>{ 
-            if(this.enum_saveImg == "image"){
-              this.maindatas[this.block_index]
-              .mini_blocks[this.miniblock_index].message.attachment.payload.url = url;
-              BlockUtils.setLocalBlocks(this.maindatas);
-            }if(this.enum_saveImg == "carousel"){
-              this.maindatas[this.block_index]
-              .mini_blocks[this.miniblock_index]
-              .message.attachment.payload
-              .elements[this.car_elem_i].image_url = url;
-              console.log(JSON.stringify(this.maindatas));
-            }
-          })
-        }) 
+        //console.log(data);  
+        console.log(data);
+        this.saveImage(data).then((url)=>{ 
+          if(this.enum_saveImg == "image"){
+            this.maindatas[this.block_index]
+            .mini_blocks[this.miniblock_index].message.attachment.payload.url = url;
+            BlockUtils.setLocalBlocks(this.maindatas);
+          }if(this.enum_saveImg == "carousel"){
+            this.maindatas[this.block_index]
+            .mini_blocks[this.miniblock_index]
+            .message.attachment.payload
+            .elements[this.car_elem_i].image_url = url;
+            console.log(JSON.stringify(this.maindatas));
+          }
+        })
       });
     }
   }
@@ -375,14 +417,23 @@ export class AutomationComponent implements OnInit {
     return new Promise<any>(async (resolve)=>{ 
       var loading = await this.loadingController.create({ message: "Please wait ...."  });
       await loading.present(); 
-      const filePath = 'ChatBot/Images/'+ this.uuid.makeid(12); 
-      this.storage.upload(filePath,file).then((data1) => { 
-        this.storage.ref(data1.metadata.fullPath)
-        .getDownloadURL().subscribe(url => {  
-          loading.dismiss();
-          resolve(url);
-        }) 
-      });
+      // const filePath = 'ChatBot/Images/'+ this.uuid.makeid(12); 
+      // this.storage.upload(filePath,file).then((data1) => { 
+      //   this.storage.ref(data1.metadata.fullPath)
+      //   .getDownloadURL().subscribe(url => {  
+      //     loading.dismiss();
+      //     resolve(url);
+      //   }) 
+      // });
+      const data = {base64: file, filename: this.uuid.makeid(12).toString()};
+      this.custHttps.post("upimg",data).subscribe((snap:any)=>{
+        loading.dismiss();
+        if(!snap){return;}
+        resolve(snap.url);
+      },(err)=>{
+        loading.dismiss(); 
+        this.toast.presentToast("Something went wrong please try again.");
+      })
     })
   }
 

@@ -11,7 +11,14 @@
   <div class="c-blocks-container"  *ngIf="is_block">
     <h4>Redirect to block</h4> 
     <ion-row  class="choices-block"> 
-      <ion-col *ngFor="let block of blocks;index as i" (click)="onCheckBtnBlock(i)"> 
+      <ion-col size="12">
+        <ion-searchbar
+       mode="ios"  #search
+          (ionInput)="onInput(search.value)"
+          (ionCancel)="onCancel()">
+        </ion-searchbar>
+      </ion-col>
+      <ion-col *ngFor="let block of show_blocks;index as i" (click)="onCheckBtnBlock(block.block_name)"> 
         <div [class]="block.ischecked ? 'has-block':'non-block'">
           <p class="txt-block">{{block.block_name}}</p>
         </div>

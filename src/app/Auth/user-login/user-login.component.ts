@@ -31,8 +31,6 @@ export class UserLoginComponent implements OnInit {
     this.authService.authState.subscribe((user) => {
       console.log(user);
     });
-    localStorage.removeItem("localblocks");
-    localStorage.removeItem("word_matching");
   }
 
   imgPass = "eye";
@@ -61,7 +59,11 @@ export class UserLoginComponent implements OnInit {
       console.log(snap);
       this.cusHttp.getUser()
       .then(()=>{
-        this.router.navigateByUrl("t"); 
+        localStorage.removeItem("localblocks");
+        localStorage.removeItem("word_matching");
+        setTimeout(() => {
+          this.router.navigateByUrl("t"); 
+        }, 800);
       }).catch(()=>{
         this.toast.presentToast("Something went wrong");
       });

@@ -509,5 +509,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   ion-backdrop{
     height: 140%;
   }
-  .popover-content{ width: auto;; }
+  .popover-content{ 
+    top: auto;
+    width: auto;; }
 }  

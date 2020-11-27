@@ -103,7 +103,7 @@ export class ChatbotFunc{
             type: "template",
             payload: {
               template_type: "button",
-              text: " You started a chat session with our operator.\n\nTo stop this chat just press the StopChat button, or send a \"stop chat\" message.",
+              text: "You started a chat session with our operator.\n\nTo stop this chat just press the StopChat button, or send a stop chat message.",
               buttons: [
                 {
                   type: "postback",

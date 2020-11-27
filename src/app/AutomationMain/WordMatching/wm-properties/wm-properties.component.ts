@@ -13,7 +13,7 @@ export class WmPropertiesComponent implements OnInit  {
   @Input() command_i = 0;  
   @Input() wmatchingdtas  = new Array();
   wmatchingdta :any;
-  maindatas= new Array(); 
+  @Input() maindatas= new Array(); 
   
   constructor(private popCtrl:PopoverController) { }
  
@@ -22,9 +22,8 @@ export class WmPropertiesComponent implements OnInit  {
     this.init();
   }
   init() {
-    console.log(this.command_i);
-    this.wmatchingdta = this.wmatchingdtas[this.wmatchingdtas_i];
-    this.maindatas = BlockUtils.getLocalBlocks();
+    console.log(this.maindatas);
+    this.wmatchingdta = this.wmatchingdtas[this.wmatchingdtas_i]; 
     console.log(this.wmatchingdta);
     
     let local_block_p =WmatchingutilsService.getBlockProperties(this.wmatchingdta.commands[this.command_i]);
@@ -89,7 +88,7 @@ export class WmPropertiesComponent implements OnInit  {
       } 
     }  
  
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
     console.log(JSON.stringify(this.wmatchingdtas));
   }
 
@@ -126,7 +125,7 @@ export class WmPropertiesComponent implements OnInit  {
     for(let i = 0 ; i < this.blocks.length;i++){
       this.blocks[i].ischecked =false;
     }
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
     console.log(JSON.stringify(this.wmatchingdtas));
 
   }

@@ -22,6 +22,7 @@ export class AddTextButtonPopupComponent implements OnInit {
   is_block = true;
  
   blocks = new Array();
+  show_blocks = new Array();
  
   constructor(private formBuilder:FormBuilder) { 
   }
@@ -44,6 +45,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       this.saveNoBlocks();
     }
     BlockUtils.setLocalBlocks(this.maindatas); 
+    this.show_blocks= this.blocks;
   }
 
   onCheckButton() {
@@ -116,17 +118,21 @@ export class AddTextButtonPopupComponent implements OnInit {
   //   "title":"Visit Messenger"
   // }
   // [{"block_name":"name","ischecked":false}]
-  onCheckBtnBlock(index){
+  onCheckBtnBlock(block_name){
+    const index = this.blocks.findIndex(o=>o.block_name === block_name);
     if(index != null){
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
     }
 
-    console.log(this.blocks);
-    // "type":"postback",
-    // "payload":'[{"block_name":"name","block_index":0,"ischecked":false}]',
-    // "title":"Default Block"
+    console.log(this.blocks); 
     let buttons = new Array();
     let func;
+    let text = ""
+    if(this.mini_block.message.text){
+      text =this.mini_block.message.text;
+    }else{
+      text =this.mini_block.message.attachment.payload.text;
+    }
     console.log(this.button_index);
     if(this.mini_block.type == "button-text-only"){
       buttons = this.mini_block.message.attachment.payload.buttons; 
@@ -136,7 +142,7 @@ export class AddTextButtonPopupComponent implements OnInit {
         payload:this.blocks,
         title:this.btn_name
       }
-     func = ChatbotFunc.genButtonTemplate(this.mini_block.message.attachment.payload.text,buttons);
+     func = ChatbotFunc.genButtonTemplate(text,buttons);
     }else{
       buttons[this.button_index] =
       {
@@ -144,8 +150,8 @@ export class AddTextButtonPopupComponent implements OnInit {
         payload:this.blocks,
         title:this.btn_name
       }
-      func = ChatbotFunc.genButtonTemplate(this.mini_block.message.text,buttons);
-    }
+      func = ChatbotFunc.genButtonTemplate(text,buttons);
+    } 
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func;
     console.log(this.maindatas);
     BlockUtils.setLocalBlocks(this.maindatas); 
@@ -156,12 +162,15 @@ export class AddTextButtonPopupComponent implements OnInit {
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
     }
 
-    console.log(this.blocks);
-    // "type":"postback",
-    // "payload":'[{"block_name":"name","block_index":0,"ischecked":false}]',
-    // "title":"Default Block"
+    console.log(this.blocks); 
     let buttons = new Array();
     let func;
+    let text = ""
+    if(this.mini_block.message.text){
+      text =this.mini_block.message.text;
+    }else{
+      text =this.mini_block.message.attachment.payload.text;
+    }
     console.log(this.button_index);
     if(this.mini_block.type == "button-text-only"){
       buttons = this.mini_block.message.attachment.payload.buttons; 
@@ -171,7 +180,7 @@ export class AddTextButtonPopupComponent implements OnInit {
         url:this.txt_URL, 
         title:this.btn_name
       }
-     func = ChatbotFunc.genButtonTemplate(this.mini_block.message.attachment.payload.text,buttons);
+     func = ChatbotFunc.genButtonTemplate(text,buttons);
     }else{
       buttons[this.button_index] =
       {
@@ -179,10 +188,37 @@ export class AddTextButtonPopupComponent implements OnInit {
         url:this.txt_URL, 
         title:this.btn_name
       }
-      func = ChatbotFunc.genButtonTemplate(this.mini_block.message.text,buttons);
+      func = ChatbotFunc.genButtonTemplate(text,buttons);
     }
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func;
     console.log(this.maindatas);
     BlockUtils.setLocalBlocks(this.maindatas); 
+  }
+  
+  onInput(txt){
+    if(txt ==""){
+      this.show_blocks = this.blocks;
+    }else{  
+      let arr_map = this.blocks.map(el => el.block_name);
+      console.log(arr_map);
+      const search_bools = this.search(arr_map,txt);
+      this.show_blocks = new Array(); 
+      for(let i = 0 ; i < search_bools.length ;i++){
+        if(search_bools[i]){
+          this.show_blocks.push(this.blocks[i]);
+        }
+      }
+    }
+  }
+  onCancel(){
+    this.show_blocks = this.blocks;
+  }
+  search(arr_map,text){
+    let ret = [];
+    for(let i = 0 ; i < arr_map.length;i++){
+      const map = arr_map[i].toLowerCase();
+      ret.push(map.includes(text.toLowerCase()));
+    }
+    return ret;
   }
 }

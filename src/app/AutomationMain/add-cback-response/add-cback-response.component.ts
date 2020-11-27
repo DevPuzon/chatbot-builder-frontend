@@ -15,6 +15,7 @@ export class AddCbackResponseComponent implements OnInit {
   mini_block :any;  
  
   blocks = new Array();
+  show_blocks = new Array();
  
   constructor() { 
   }
@@ -42,6 +43,7 @@ export class AddCbackResponseComponent implements OnInit {
       this.saveNoBlocks();
     }
     console.log(this.maindatas);  
+    this.show_blocks= this.blocks;
   }
  
 
@@ -52,7 +54,7 @@ export class AddCbackResponseComponent implements OnInit {
         block_name:this.maindatas[i].block_name,
         block_index:i,
         ischecked:false
-      })
+      }) 
     }
     console.log(this.blocks);
   }  
@@ -71,11 +73,12 @@ export class AddCbackResponseComponent implements OnInit {
       } 
       this.blocks[i]=bblock;
     }
-    console.log(this.blocks);
+    console.log(this.blocks); 
   } 
     
   
-  onCheckBtnBlock(index){
+  onCheckBtnBlock(block_name){
+    const index = this.blocks.findIndex(o=>o.block_name === block_name);
     if(index != null){
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
     } 
@@ -90,7 +93,34 @@ export class AddCbackResponseComponent implements OnInit {
       this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message
       .reject_blocks = this.blocks;
     }
-    
+     
     BlockUtils.setLocalBlocks(this.maindatas);
   } 
+
+  onInput(txt){
+    if(txt ==""){
+      this.show_blocks = this.blocks;
+    }else{  
+      let arr_map = this.blocks.map(el => el.block_name);
+      console.log(arr_map);
+      const search_bools = this.search(arr_map,txt);
+      this.show_blocks = new Array(); 
+      for(let i = 0 ; i < search_bools.length ;i++){
+        if(search_bools[i]){
+          this.show_blocks.push(this.blocks[i]);
+        }
+      }
+    }
+  }
+  onCancel(){
+    this.show_blocks = this.blocks;
+  }
+  search(arr_map,text){
+    let ret = [];
+    for(let i = 0 ; i < arr_map.length;i++){
+      const map = arr_map[i].toLowerCase();
+      ret.push(map.includes(text.toLowerCase()));
+    }
+    return ret;
+  }
 }

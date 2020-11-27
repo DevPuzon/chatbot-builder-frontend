@@ -38,7 +38,7 @@
           </ion-button>
         </div>
       </div>
-      <app-word-matching-content></app-word-matching-content>
+      <app-word-matching-content [maindatas]="maindatas" [wmatchingdtas]="wmatchingdtas"></app-word-matching-content>
     </ion-col>
     
     <ion-col size="12" size-sm="12" size-md="8" size-lg="8">
@@ -87,7 +87,7 @@
                   <div id="min_block_{{i}}" class="txt-container block-card" 
                   *ngIf="min_block.type == 'button-text-only' || min_block.type == 'text-only'">
                     <div class="textarea-container"> 
-                      <textarea  class="txt" #textminblock (keyup)="kTitleTxt(textminblock.value,min_block,i)" >{{min_block.type == 'text-only'? min_block.message.text : min_block.message.attachment.payload.text}} </textarea>
+                      <textarea class="txt" #textminblock (keyup)="kTitleTxt(textminblock.value,min_block,i)" >{{min_block.type == 'text-only'? min_block.message.text : min_block.message.attachment.payload.text}} </textarea>
                       <!-- <ion-buttons>
                         <ion-button (click) ="toggleEmojiPicker()" style="margin-left: auto;">
                           <ion-icon slot="icon-only"
@@ -289,7 +289,7 @@
                 <div class="cback-block" (click)="onActionCback($event,'resolve',i)">
                   <h3>Resolve block</h3>
                 </div>
-                <div class="list-block"  *ngIf="min_block.message.resolve_blocks.length != 0">
+                <div class="list-block"  *ngIf="min_block.message.resolve_blocks.length > 0 ">
                   <ion-row >
                     <div *ngFor="let res_block of min_block.message.resolve_blocks">
                       <ion-col *ngIf="res_block.ischecked" >

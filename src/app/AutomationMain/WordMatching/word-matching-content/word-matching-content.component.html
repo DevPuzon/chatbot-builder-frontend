@@ -1,58 +1,57 @@
-
-      <div class="blocks-word-main-con">
-        <h1>Word matching</h1>
-        <ion-row *ngFor="let wmatchingdta of wmatchingdtas;index as i">
-          <ion-col size="12" style="display: flex;">
-            <h3 style="margin: 0px; width: -webkit-fill-available;">{{i+1}}.</h3>
-            <img style="cursor:pointer" (click)="onDelConv(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
-          </ion-col>
-          <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6">
-            <p class="say">User say.</p>
-            <input (keyup.enter)="kWord(wordkey.value,i,$event)" #wordkey class="word-input" type="text" placeholder="Please hit enter to add word.">
-            <ion-row  class="choices-block"> 
-              <ion-col size="12"  *ngFor="let word of wmatchingdta.user_possible_words;index as ie" > 
-                <div class="non-block">
-                  <p class="txt-block">{{word}}</p>
-                  <img (click)="delWord(ie,i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACLklEQVRIidWVvW8TQRTEf89nQgFS7BYMBbIQXCIXoaOkoYxDdJsOJIrQh4gAlQsQ2EbpUuAiEnTeA3TpaPgLUFJEia1ISQMWdIldUARkHs3FOsfnD9xlqtt582Z2b/f24KxDBhU9z5sA5kRkFpgBMmGpAWwBgaoGvu///u8AY8y8iJRU9dqQSR6IyJNqtfpppADP8xwRKQKPhxifxhvXdVcKhcLfKJnoSRzPHGC5Vqu96vGLDowx88CHMcyjmLPWBieDzgo8z5sQkVJMgxWRLHAY4Q5Dzo/Rl8PD0R0AzPXZUHdycvIbsBThlkLuZow+m0gkZnsCRCQfIwaYbjabT62174DPqvrFWvv+6OjoGTAd16CqnYDOHhhj9oDrfUKOVXWm3W7/AnAc54KIbAHn++j3rLU3ulYAXOojJjRadxynkcvlvotIZYA5wOWTh55jOiJ0SL3zLUQDfgxoOAYettvtzPb29hVVfRRy/fAzLmBzQMML3/dryWTybTKZXPd9vw68HKD/GhcQxAgBdlKpVNEY8wC4C9wxxtxPpVKvgZ24BlXd6AlQ1QA4iNHXWq3WVWA1wq2GXD1Gv59OpzsBXVfFwsLCPVX92GclI0FE8tVqtRPgRIu7u7v1qampi8DtMf2L1tq1KNFzTF3XXRGR8hjmJdd1n58mB/1w8kAZyA4x3heR5ehrGSkAYHFx8Vyr1cqr6qyI3FLVDICINFR1U1WDdDq9UalU/gyZxBnGP2+juUbleEnvAAAAAElFTkSuQmCC">
+<div class="blocks-word-main-con">
+  <h1>Word matching</h1>
+  <ion-row *ngFor="let wmatchingdta of wmatchingdtas;index as i">
+    <ion-col size="12" style="display: flex;">
+      <h3 style="margin: 0px; width: -webkit-fill-available;">{{i+1}}.</h3>
+      <img style="cursor:pointer" (click)="onDelConv(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+    </ion-col>
+    <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6">
+      <p class="say">User say.</p>
+      <input (keyup.enter)="kWord(wordkey.value,i,$event)" #wordkey class="word-input" type="text" placeholder="Please hit enter to add word.">
+      <ion-row  class="choices-block"> 
+        <ion-col size="12"  *ngFor="let word of wmatchingdta.user_possible_words;index as ie" > 
+          <div class="non-block">
+            <p class="txt-block">{{word}}</p>
+            <img (click)="delWord(ie,i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACLklEQVRIidWVvW8TQRTEf89nQgFS7BYMBbIQXCIXoaOkoYxDdJsOJIrQh4gAlQsQ2EbpUuAiEnTeA3TpaPgLUFJEia1ISQMWdIldUARkHs3FOsfnD9xlqtt582Z2b/f24KxDBhU9z5sA5kRkFpgBMmGpAWwBgaoGvu///u8AY8y8iJRU9dqQSR6IyJNqtfpppADP8xwRKQKPhxifxhvXdVcKhcLfKJnoSRzPHGC5Vqu96vGLDowx88CHMcyjmLPWBieDzgo8z5sQkVJMgxWRLHAY4Q5Dzo/Rl8PD0R0AzPXZUHdycvIbsBThlkLuZow+m0gkZnsCRCQfIwaYbjabT62174DPqvrFWvv+6OjoGTAd16CqnYDOHhhj9oDrfUKOVXWm3W7/AnAc54KIbAHn++j3rLU3ulYAXOojJjRadxynkcvlvotIZYA5wOWTh55jOiJ0SL3zLUQDfgxoOAYettvtzPb29hVVfRRy/fAzLmBzQMML3/dryWTybTKZXPd9vw68HKD/GhcQxAgBdlKpVNEY8wC4C9wxxtxPpVKvgZ24BlXd6AlQ1QA4iNHXWq3WVWA1wq2GXD1Gv59OpzsBXVfFwsLCPVX92GclI0FE8tVqtRPgRIu7u7v1qampi8DtMf2L1tq1KNFzTF3XXRGR8hjmJdd1n58mB/1w8kAZyA4x3heR5ehrGSkAYHFx8Vyr1cqr6qyI3FLVDICINFR1U1WDdDq9UalU/gyZxBnGP2+juUbleEnvAAAAAElFTkSuQmCC">
+          </div>
+        </ion-col> 
+      </ion-row>
+    </ion-col>
+    <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6">
+      <p class="say">Bot reply.</p>
+      <p (click)="onSCommand($event,i)" class="word-input" style="cursor: pointer;">Select command</p>
+      <ion-row id="{{i}}comms" class="choices-block wm-slides-sub-arrange " >  
+        <ion-col class="bot-reply-col" size="12"
+          *ngFor="let command of wmatchingdta.commands;index as ie"   >  
+          <!-- <input  id="{{i}}sets[]" type="hidden" value="{{command | json}}"> -->
+          <div class="del-command">
+          <div class="tooltip"> 
+            <img class="logo-del" (click)="onDelComm(ie,i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+            <span class="tooltiptext">Delete command</span>
+          </div>
+          </div>
+          <div (click)="onEditComm($event,ie,i,command.text_message)"> 
+          <div *ngIf="command.command_type == 'block'">
+            <ion-row>
+              <ion-col size="auto" *ngFor="let block_property of command.block_properties;index as ie"> 
+                <div class="non-block" *ngIf="block_property.ischecked">
+                  <p class="txt-block">{{block_property.block_name}}</p> 
                 </div>
-              </ion-col> 
+              </ion-col>
             </ion-row>
-          </ion-col>
-          <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6">
-            <p class="say">Bot reply.</p>
-            <p (click)="onSCommand($event,i)" class="word-input" style="cursor: pointer;">Select command</p>
-            <ion-row id="{{i}}comms" class="choices-block wm-slides-sub-arrange " >  
-              <ion-col class="bot-reply-col" size="12"
-               *ngFor="let command of wmatchingdta.commands;index as ie"   >  
-               <input  id="{{i}}sets[]" type="hidden" [value]="command | json">
-               <div class="del-command">
-                <div class="tooltip"> 
-                  <img class="logo-del" (click)="onDelComm(ie,i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
-                  <span class="tooltiptext">Delete command</span>
-                </div>
-               </div>
-               <div (click)="onEditComm($event,ie,i,command.text_message)"> 
-                <div *ngIf="command.command_type == 'block'">
-                  <ion-row>
-                    <ion-col size="auto" *ngFor="let block_property of command.block_properties;index as ie"> 
-                      <div class="non-block" *ngIf="block_property.ischecked">
-                        <p class="txt-block">{{block_property.block_name}}</p> 
-                      </div>
-                    </ion-col>
-                  </ion-row>
-                </div>
-                  <div class="box sb7" *ngIf="command.command_type == 'text_message'" >
-                    {{command.text_message}}
-                  </div>
-               </div>
-              </ion-col>  
-            </ion-row>
-          </ion-col>
-          <ion-col size="12" class="line-bottom"></ion-col>
-        </ion-row>
-        <div class="blocks-container"  > 
-          <ion-button (click)="onAddWordM()" color="primary" fill="outline" style="width:100% ;height: 40px;"> 
-            Add Word matching
-          </ion-button>
-        </div>
-      </div>
+          </div>
+            <div class="box sb7" *ngIf="command.command_type == 'text_message'" >
+              {{command.text_message}}
+            </div>
+          </div>
+        </ion-col>  
+      </ion-row>
+    </ion-col>
+    <ion-col size="12" class="line-bottom"></ion-col>
+  </ion-row>
+  <div class="blocks-container"  > 
+    <ion-button (click)="onAddWordM()" color="primary" fill="outline" style="width:100% ;height: 40px;"> 
+      Add Word matching
+    </ion-button>
+  </div>
+</div>

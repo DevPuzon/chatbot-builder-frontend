@@ -8,7 +8,7 @@
             <p class="title"><b>JOIN NOW</b></p>
             <p class="desc"><b>Many opportunity waiting for you.</b></p>
           </div>
-          <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()">
+          <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()"  (keyup.enter)="onSubmit()">
             <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
               <ion-label position="stacked">Messenger ID</ion-label>
               <ion-input formControlName="clientID" placeholder="Please provide your messenger ID."></ion-input>

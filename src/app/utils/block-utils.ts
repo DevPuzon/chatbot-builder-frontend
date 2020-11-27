@@ -12,8 +12,9 @@ export class BlockUtils {
     if(localStorage.getItem("localblocks") == null || localStorage.getItem("localblocks") == "" || localStorage.getItem("localblocks") == undefined){
       return null;
     }
-    ret = JSON.parse(localStorage.getItem("localblocks"))
+    ret = JSON.parse(localStorage.getItem("localblocks"));
     // ret = this.reBtnsPayloadParse(JSON.parse(localStorage.getItem("localblocks")))
+    this.cleanBlocks(ret);
     console.log(ret);
     return  ret;
   }
@@ -33,13 +34,123 @@ export class BlockUtils {
     }
 
     console.log("save");
-    console.log(mblocks);
-    let b = JSON.parse(JSON.stringify(mblocks));
-    // localStorage.setItem("localblocks",JSON.stringify(this.reBtnsPayloadString(b)));
-    localStorage.setItem("localblocks",JSON.stringify(b));
-    // console.log(JSON.stringify(mblocks));
-    // return this.reBtnsPayloadParse(mblocks); 
+    console.log(mblocks); 
+    this.cleanBlocks(mblocks);
+    localStorage.setItem("localblocks",JSON.stringify(mblocks)); 
     return mblocks;
+  }
+  static cleanBlocks(mblocks) { 
+    const block_names  = this.getMainBlocks(mblocks);
+    mblocks = this.getPrettyBlocks(block_names,mblocks); 
+  }
+  static getPrettyBlocks(block_names: any[], mblocks: any) {
+    let ret = mblocks;
+    for(var i = 0 ; i < ret.length;i++){
+      const mini_blocks = ret[i].mini_blocks;
+      for(var j = 0 ; j < mini_blocks.length;j++){
+        const mini_block = mini_blocks[j];
+        if(mini_block.type == "button-text-only"){
+          this.fixBtbTextBlocks(mini_block,block_names);
+        }
+        if(mini_block.type == "carousel-only"){
+          this.fixCarBlocks(mini_block,block_names);
+        }
+        if(mini_block.type == "quickreply-only"){
+          this.fixQRepBlocks(mini_block,block_names);
+        }
+        if(mini_block.type == "livechat-only"){
+          this.fixLChatBlocks(mini_block,block_names);
+        }
+        if(mini_block.type == "cback-only"){
+          const resolve_blocks = mini_block.message.resolve_blocks;
+          if(resolve_blocks || resolve_blocks != null || resolve_blocks != undefined || resolve_blocks.length > 0){
+            for(let k = 0 ; k  < resolve_blocks.length; k++){
+              const resolve_block = resolve_blocks[k];
+              resolve_block.block_name = block_names[k];
+            }
+          }
+          const reject_blocks = mini_block.message.reject_blocks;
+          if(reject_blocks || reject_blocks != null || reject_blocks != undefined || reject_blocks.length > 0){
+            for(let k = 0 ; k  < reject_blocks.length; k++){
+              const reject_block = reject_blocks[k];
+              reject_block.block_name = block_names[k];
+            }
+          }
+        }
+      }
+    }
+    console.log("getPrettyBlocks");
+    console.log(ret);
+    return ret
+  }
+  static fixLChatBlocks(mini_block,block_names) { 
+    const buttons= mini_block.message.attachment.payload.buttons; 
+    
+    if(buttons || buttons != null || buttons != undefined || buttons.length > 0){
+      for(let k = 0 ; k < buttons.length;k++){
+        const blocks = buttons[k].payload.blocks; 
+        if(blocks || blocks != null || blocks != undefined || blocks.length > 0){
+          for(let l = 0 ; l < blocks.length;l++){
+            const block = blocks[l];
+            block.block_name = block_names[l];
+          }
+        }
+      }
+    }
+  }
+  static fixQRepBlocks(mini_block,block_names) { 
+    const quick_replies  = mini_block.message.quick_replies;
+    if(quick_replies || quick_replies != null || quick_replies != undefined || quick_replies.length > 0){
+      for(let k =0 ; k < quick_replies.length;k++){
+        const payloads =quick_replies[k].payload; 
+        if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
+          for(let l = 0 ;l<payloads.length ;l++){
+            const payload = payloads[l];
+            payload.block_name = block_names[l];
+          }
+        }
+      }
+    }
+  }
+  static fixCarBlocks(mini_block,block_names) {
+    const elements = mini_block.message.attachment.payload.elements;
+    if(elements || elements != null || elements != undefined || elements.length > 0){
+      for(let k = 0 ; k < elements.length;k++){
+        const buttons = elements[k].buttons; 
+        if(buttons || buttons != null || buttons != undefined || buttons.length > 0){
+          for(let l= 0 ; l < buttons.length;l++){
+            const payloads = buttons[l].payload; 
+            if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
+              for(let m =0;m<payloads.length;m++){
+                const payload = payloads[m];
+                payload.block_name = block_names[m];
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  static fixBtbTextBlocks(mini_block,block_names) {
+    const buttons = mini_block.message.attachment.payload.buttons;
+    if(buttons || buttons != null || buttons != undefined || buttons.length > 0){
+      for(var k = 0 ; k < buttons.length ; k++){
+        const payloads = buttons[k].payload; 
+        if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
+          for( var l = 0 ; l < payloads.length ; l++){
+            const payload = payloads[l];
+            payload.block_name = block_names[l];
+          }
+        }
+      }
+    }
+  }
+  static getMainBlocks(blocks) {
+    let ret =[];
+    for(var i = 0 ; i < blocks.length;i++){
+      ret.push(blocks[i].block_name);
+    }
+    return ret ;
   }
 
   static getTxtButtonBlocks(block_index,mini_block_index,button_index){
