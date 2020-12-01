@@ -16,6 +16,7 @@ export class EditStopChatlLiveComponent implements OnInit {
   mini_block :any;  
  
   blocks = new Array();
+  show_blocks = new Array();
  
   constructor(private formBuilder:FormBuilder) { 
   }
@@ -38,6 +39,7 @@ export class EditStopChatlLiveComponent implements OnInit {
     }
     console.log(this.maindatas); 
     BlockUtils.setLocalBlocks(this.maindatas); 
+    this.show_blocks= this.blocks;
   }
  
 
@@ -81,7 +83,8 @@ export class EditStopChatlLiveComponent implements OnInit {
     } 
   }
   
-  onCheckBtnBlock(index){
+  onCheckBtnBlock(block_name){
+    const index = this.blocks.findIndex(o=>o.block_name === block_name);
     if(index != null){
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
     } 
@@ -94,4 +97,31 @@ export class EditStopChatlLiveComponent implements OnInit {
     console.log(JSON.stringify(this.maindatas));
     BlockUtils.setLocalBlocks(this.maindatas); 
   } 
+  
+  onInput(txt){
+    if(txt ==""){
+      this.show_blocks = this.blocks;
+    }else{  
+      let arr_map = this.blocks.map(el => el.block_name);
+      console.log(arr_map);
+      const search_bools = this.search(arr_map,txt);
+      this.show_blocks = new Array(); 
+      for(let i = 0 ; i < search_bools.length ;i++){
+        if(search_bools[i]){
+          this.show_blocks.push(this.blocks[i]);
+        }
+      }
+    }
+  }
+  onCancel(){
+    this.show_blocks = this.blocks;
+  }
+  search(arr_map,text){
+    let ret = [];
+    for(let i = 0 ; i < arr_map.length;i++){
+      const map = arr_map[i].toLowerCase();
+      ret.push(map.includes(text.toLowerCase()));
+    }
+    return ret;
+  }
 }

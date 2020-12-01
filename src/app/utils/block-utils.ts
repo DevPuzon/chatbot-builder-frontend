@@ -25,16 +25,11 @@ export class BlockUtils {
       if(block_name == ""){
         mblocks[i].block_name = i+ ". Block";
       }
-      const hasBlockIndex= mblocks.findIndex(o => o.block_name === block_name); 
-      console.log(hasBlockIndex);
-      console.log(i);
+      const hasBlockIndex= mblocks.findIndex(o => o.block_name === block_name);  
       if(hasBlockIndex!= i && hasBlockIndex!= -1){
         mblocks[i].block_name = block_name +" : copy";
       }
-    }
-
-    console.log("save");
-    console.log(mblocks); 
+    } 
     this.cleanBlocks(mblocks);
     localStorage.setItem("localblocks",JSON.stringify(mblocks)); 
     return mblocks;
@@ -65,9 +60,7 @@ export class BlockUtils {
           this.fixCbackBlocks(mini_block,block_names);
         }
       }
-    }
-    console.log("getPrettyBlocks");
-    console.log(ret);
+    } 
     return ret
   }
   static fixCbackBlocks(mini_block,block_names) {  
