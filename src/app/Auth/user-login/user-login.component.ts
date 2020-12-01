@@ -56,12 +56,12 @@ export class UserLoginComponent implements OnInit {
     .subscribe(async (snap:any)=>{ 
       await loading.dismiss();   
       localStorage.setItem("-=[]t",snap.token); 
+      localStorage.removeItem("localblocks");
+      localStorage.removeItem("word_matching");
       console.log(snap);
       setTimeout(() => { 
         this.cusHttp.getUser()
         .then(()=>{
-          localStorage.removeItem("localblocks");
-          localStorage.removeItem("word_matching");
           setTimeout(() => {
             this.router.navigateByUrl("t"); 
           }, 800);
