@@ -8,8 +8,8 @@ res.sendFile(path.join(__dirname+
 '/www/index.html'));});
 // app.listen(process.env.PORT || 8080);
 
-let port = process.env.PORT || 8080;
+let port = 20180;
 
-app.listen(port, ()=>{
+app.listen(port,'0.0.0.0', ()=>{
    console.log(`App is running at the port ${port}`) ;
 });

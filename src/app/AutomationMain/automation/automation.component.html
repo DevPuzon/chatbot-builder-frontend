@@ -259,16 +259,7 @@
               *ngIf="min_block.type == 'livechat-only'">
                 <div class="textarea-container"> 
                   <textarea  class="txt"  #lchatminblock (keyup)="kTitleTxt(lchatminblock.value,min_block,i)"  > {{min_block.message.attachment.payload.text }} </textarea>
-                  <!-- <ion-buttons>
-                    <ion-button (click) ="toggleEmojiPicker()"
-                      style="margin-left: auto;">
-                      <ion-icon slot="icon-only"
-                      name="{{showEmojiPicker ? 'close-outline' : 'happy-outline'}}"></ion-icon>
-                    </ion-button>
-                  </ion-buttons>   -->
-                  <emoji-mart class="emoji-mart" set="facebook" [hidden]="!showEmojiPicker"
-                  (emojiSelect)="addEmojiTextBtnOnly($event,lchatminblock.value,min_block,i)" 
-                  title="Pick your emoji.…"></emoji-mart>  
+                
                 </div>
                 <div class="buttons-container"
                 *ngIf="min_block.type == 'livechat-only'">

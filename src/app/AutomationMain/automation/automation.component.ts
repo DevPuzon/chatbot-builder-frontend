@@ -467,7 +467,7 @@ export class AutomationComponent implements OnInit {
     //BlockUtils.setLocalBlocks(this.maindatas);
   }
 
-   onCMinBImg(file,miniblock_index){
+   onCMinBImg(file){
     if (file) {   
       BlobService.resize(file,600).then((data)=>{
         BlobService.bitmapToBlob(data).then((data)=>{ 
