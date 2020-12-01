@@ -240,49 +240,49 @@ export class AutomationComponent implements OnInit {
             console.log("ondeploy");
             var loading = await  this.loadingController.create({ message: "Please wait ...."  });
             await loading.present(); 
-            this.custHttps.post("deploy/"+this.user.clientID,{
-              blocks:'',
-              word_matches:''
-             }).subscribe(async (snap:any)=>{  
-              loading.dismiss();
-              console.log(snap)   
-            }, 
-            (errorCode: Response) => { 
-              loading.dismiss();
-              console.log(errorCode) 
-              this.toast.presentToast("Something went wrong, please try again later.");
-            });  
-            // const localBlocks = BlockUtils.getLocalBlocks();
-            // if(localBlocks != null ||localBlocks != undefined || !localBlocks){ 
-            //   this.custHttps.post("setallblocks/"+this.user.clientID,localBlocks)
-            //   .subscribe(async (snap:any)=>{  
-            //     loading.dismiss();
-            //     console.log(snap)   
-            //   }, 
-            //   (errorCode: Response) => { 
-            //     loading.dismiss();
-            //     console.log(errorCode) 
-            //     this.toast.presentToast("Something went wrong, please try again later.");
-            //   });  
-            // }
-            // const localWordMatch = WmatchingutilsService.getWordMatch();
+            // this.custHttps.post("deploy/"+this.user.clientID,{
+            //   blocks:'',
+            //   word_matches:''
+            //  }).subscribe(async (snap:any)=>{  
+            //   loading.dismiss();
+            //   console.log(snap)   
+            // }, 
+            // (errorCode: Response) => { 
+            //   loading.dismiss();
+            //   console.log(errorCode) 
+            //   this.toast.presentToast("Something went wrong, please try again later.");
+            // });  
+            const localBlocks = BlockUtils.getLocalBlocks();
+            if(localBlocks != null ||localBlocks != undefined || !localBlocks){ 
+              this.custHttps.post("setallblocks/"+this.user.clientID,localBlocks)
+              .subscribe(async (snap:any)=>{  
+                loading.dismiss();
+                console.log(snap)   
+              }, 
+              (errorCode: Response) => { 
+                loading.dismiss();
+                console.log(errorCode) 
+                this.toast.presentToast("Something went wrong, please try again later.");
+              });  
+            }
+            const localWordMatch = WmatchingutilsService.getWordMatch();
             
-            // if(localWordMatch[0].user_possible_words.length != 0){
-            //   console.log("word matching is not null");
-            //   this.custHttps.post("setwordmatch/"+this.user.clientID,localWordMatch)
-            //   .subscribe(async (snap:any)=>{  
-            //     console.log(snap) 
-            //     loading.dismiss();
-            //   }, 
-            //   (errorCode: Response) => { 
-            //     loading.dismiss();
-            //     console.log(errorCode) 
-            //   });
-            // }
-            // setTimeout(() => {
-            //   this.toast.presentToast("Deployed successfully"); 
-            //   loading.dismiss(); 
-            // }, 1200);
+            if(localWordMatch[0].user_possible_words.length != 0){
+              console.log("word matching is not null");
+              this.custHttps.post("setwordmatch/"+this.user.clientID,localWordMatch)
+              .subscribe(async (snap:any)=>{  
+                console.log(snap) 
+                loading.dismiss();
+              }, 
+              (errorCode: Response) => { 
+                loading.dismiss();
+                console.log(errorCode) 
+              });
+            }
+            setTimeout(() => {
+              this.toast.presentToast("Deployed successfully"); 
+              loading.dismiss(); 
+            }, 1200);
           }
         }
       ]
