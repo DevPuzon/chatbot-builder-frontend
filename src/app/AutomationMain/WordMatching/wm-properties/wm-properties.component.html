@@ -31,7 +31,7 @@
   </div>
     
   <emoji-mart class="emoji-mart" set="facebook" 
-   *ngIf="showEmojiPicker" 
+  [hidden]="!showEmojiPicker" 
   (emojiSelect)="addEmojiTextBtnOnly($event)" 
   title="Pick your emoji.…"></emoji-mart> 
 </div>

@@ -16,6 +16,7 @@ import { WmPropertiesComponent } from '../WordMatching/wm-properties/wm-properti
 import { AddCbackResponseComponent } from '../add-cback-response/add-cback-response.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EditStopChatlLiveComponent } from '../edit-stop-chatl-live/edit-stop-chatl-live.component';
+import { MenuComponent } from '../menu/menu.component';
 
 @NgModule({ 
   imports: [
@@ -29,7 +30,7 @@ import { EditStopChatlLiveComponent } from '../edit-stop-chatl-live/edit-stop-ch
   declarations: [MainAutomationPage,AutomationComponent,
     AddCarButtonComponent,AddQuickreplyComponent,
     AddTextButtonPopupComponent,AddCbackResponseComponent,
-    EditStopChatlLiveComponent,
+    EditStopChatlLiveComponent,MenuComponent,
     WordMatchingContentComponent,WmPropertiesComponent]
 })
 export class MainAutomationPageModule {}

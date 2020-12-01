@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { AddCbackResponseComponent } from '../add-cback-response/add-cback-response.component';
 import { EditStopChatlLiveComponent } from '../edit-stop-chatl-live/edit-stop-chatl-live.component';
 import { UploadtostService } from 'src/app/utils/uploadtost.service';
+import { MenuComponent } from '../menu/menu.component';
  
 declare var $:any;
 @Component({
@@ -49,7 +50,13 @@ export class AutomationComponent implements OnInit {
       BlockUtils.setLocalBlocks(this.maindatas);
     },1000);
   }  
-  
+  async onMenu(ev){ 
+    const popover = await this.popoverController.create({
+      component: MenuComponent ,  
+      event: ev 
+    });
+    return await popover.present();
+  }
   checkIsShowMinBlock() {
     const mini_blocks = this.maindatas[this.block_index].mini_blocks;  
     let isShow = mini_blocks.findIndex(o => o.type === 'cback-only'); 
@@ -215,8 +222,7 @@ export class AutomationComponent implements OnInit {
 
 
   
-  async onDeploy(){
-    
+  async onDeploy(){ 
     const alert = await this.alertController.create({ 
       header: 'Deploy',
       message: 'Do you want to <strong>deploy</strong>?',
@@ -232,39 +238,51 @@ export class AutomationComponent implements OnInit {
           text: 'Yes',
           handler: async () => { 
             console.log("ondeploy");
-            const localBlocks = BlockUtils.getLocalBlocks();
             var loading = await  this.loadingController.create({ message: "Please wait ...."  });
             await loading.present(); 
-            if(localBlocks != null ||localBlocks != undefined || !localBlocks){ 
-              this.custHttps.post("setallblocks/"+this.user.clientID,localBlocks)
-              .subscribe(async (snap:any)=>{  
-                loading.dismiss();
-                console.log(snap)   
-              }, 
-              (errorCode: Response) => { 
-                loading.dismiss();
-                console.log(errorCode) 
-                this.toast.presentToast("Something went wrong, please try again later.");
-              });  
-            }
-            const localWordMatch = WmatchingutilsService.getWordMatch();
+            this.custHttps.post("deploy/"+this.user.clientID,{
+              blocks:'',
+              word_matches:''
+             }).subscribe(async (snap:any)=>{  
+              loading.dismiss();
+              console.log(snap)   
+            }, 
+            (errorCode: Response) => { 
+              loading.dismiss();
+              console.log(errorCode) 
+              this.toast.presentToast("Something went wrong, please try again later.");
+            });  
+            // const localBlocks = BlockUtils.getLocalBlocks();
+            // if(localBlocks != null ||localBlocks != undefined || !localBlocks){ 
+            //   this.custHttps.post("setallblocks/"+this.user.clientID,localBlocks)
+            //   .subscribe(async (snap:any)=>{  
+            //     loading.dismiss();
+            //     console.log(snap)   
+            //   }, 
+            //   (errorCode: Response) => { 
+            //     loading.dismiss();
+            //     console.log(errorCode) 
+            //     this.toast.presentToast("Something went wrong, please try again later.");
+            //   });  
+            // }
+            // const localWordMatch = WmatchingutilsService.getWordMatch();
             
-            if(localWordMatch[0].user_possible_words.length != 0){
-              console.log("word matching is not null");
-              this.custHttps.post("setwordmatch/"+this.user.clientID,localWordMatch)
-              .subscribe(async (snap:any)=>{  
-                console.log(snap) 
-                loading.dismiss();
-              }, 
-              (errorCode: Response) => { 
-                loading.dismiss();
-                console.log(errorCode) 
-              });
-            }
-            setTimeout(() => {
-              this.toast.presentToast("Deployed successfully"); 
-              loading.dismiss(); 
-            }, 1200);
+            // if(localWordMatch[0].user_possible_words.length != 0){
+            //   console.log("word matching is not null");
+            //   this.custHttps.post("setwordmatch/"+this.user.clientID,localWordMatch)
+            //   .subscribe(async (snap:any)=>{  
+            //     console.log(snap) 
+            //     loading.dismiss();
+            //   }, 
+            //   (errorCode: Response) => { 
+            //     loading.dismiss();
+            //     console.log(errorCode) 
+            //   });
+            // }
+            // setTimeout(() => {
+            //   this.toast.presentToast("Deployed successfully"); 
+            //   loading.dismiss(); 
+            // }, 1200);
           }
         }
       ]
@@ -530,6 +548,7 @@ export class AutomationComponent implements OnInit {
     });
     return await popover.present();
   }
+
   async onBtnTxtEdit(ev: any,mini_block_index,button_index,btn_name,txt_URL) { 
     console.log(btn_name);
     const popover = await this.popoverController.create({
@@ -571,6 +590,7 @@ export class AutomationComponent implements OnInit {
     });
     return await popover.present();
   } 
+  
   onDelTxtBtn(mini_block_i,txtbtn_i){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.attachment.payload.buttons.splice(txtbtn_i,1);
@@ -585,16 +605,19 @@ export class AutomationComponent implements OnInit {
       .mini_blocks[mini_block_i] = ChatbotFunc.genText(txt)
     } 
   }
+
   onDelCarBtn(mini_block_i,element_i,button_index){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.attachment.payload.elements[element_i].buttons.splice(button_index,1);
     //BlockUtils.setLocalBlocks(this.maindatas);
   }
+
   onDelQreply(mini_block_i,qreply_i){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.quick_replies.splice(qreply_i,1);
     //BlockUtils.setLocalBlocks(this.maindatas);
   }
+
   async addCarButton(ev: any,mini_block_index,element_i) {
     console.log(this.block.mini_blocks[mini_block_index].type); 
     const popover = await this.popoverController.create({

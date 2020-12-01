@@ -57,16 +57,18 @@ export class UserLoginComponent implements OnInit {
       await loading.dismiss();   
       localStorage.setItem("-=[]t",snap.token); 
       console.log(snap);
-      this.cusHttp.getUser()
-      .then(()=>{
-        localStorage.removeItem("localblocks");
-        localStorage.removeItem("word_matching");
-        setTimeout(() => {
-          this.router.navigateByUrl("t"); 
-        }, 800);
-      }).catch(()=>{
-        this.toast.presentToast("Something went wrong");
-      });
+      setTimeout(() => { 
+        this.cusHttp.getUser()
+        .then(()=>{
+          localStorage.removeItem("localblocks");
+          localStorage.removeItem("word_matching");
+          setTimeout(() => {
+            this.router.navigateByUrl("t"); 
+          }, 800);
+        }).catch(()=>{
+          this.toast.presentToast("Something went wrong");
+        });
+      }, 700);
     }, 
     async (err: Response) => { 
       await loading.dismiss();   

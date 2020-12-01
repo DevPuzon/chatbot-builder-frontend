@@ -5,7 +5,7 @@
         <img slot="start"  class="toolbar-icon" src="../../../assets/icon/favicon.png"> 
         <ion-title>Retailgate</ion-title>
         <ion-buttons slot="end">
-          <ion-button  >
+          <ion-button (click)="onMenu($event)" >
             <ion-icon slot="icon-only"
             name="menu-outline"></ion-icon>
           </ion-button>
@@ -102,7 +102,7 @@
                           name="{{showEmojiPickers[i] ? 'close-outline' : 'happy-outline'}}"></ion-icon>
                         </ion-button>
                       </ion-buttons>  
-                      <emoji-mart class="emoji-mart" set="facebook" *ngIf="showEmojiPickers[i]"
+                      <emoji-mart class="emoji-mart" set="facebook"  [hidden]="!showEmojiPickers[i]"
                       (emojiSelect)="addEmojiTextBtnOnly($event,textminblock.value,min_block,i)" 
                       title="Pick your emoji.…"></emoji-mart>  
                     </div>
@@ -266,7 +266,7 @@
                       name="{{showEmojiPicker ? 'close-outline' : 'happy-outline'}}"></ion-icon>
                     </ion-button>
                   </ion-buttons>   -->
-                  <emoji-mart class="emoji-mart" set="facebook" *ngIf="showEmojiPicker"
+                  <emoji-mart class="emoji-mart" set="facebook" [hidden]="!showEmojiPicker"
                   (emojiSelect)="addEmojiTextBtnOnly($event,lchatminblock.value,min_block,i)" 
                   title="Pick your emoji.…"></emoji-mart>  
                 </div>
