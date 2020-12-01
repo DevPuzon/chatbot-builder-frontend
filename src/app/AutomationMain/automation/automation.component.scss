@@ -130,6 +130,7 @@ ion-col{
                 text-align-last: center;
                 .img-con-sub{
                     img{
+                        height: inherit;
                         width: 60px;
                     }
                 } 
@@ -150,9 +151,6 @@ ion-col{
                         border-bottom: 1px solid #C7C7C7;
                         display: flex ;
                         height: 350px;
-                        .upimg{
-                            height: -webkit-fill-available;
-                        }
                         div{ 
                             img{
                                 width: 60px;
@@ -207,6 +205,9 @@ ion-col{
     }
 } 
 
+.upimg{
+    height: -webkit-fill-available;
+}
 .buttons-container:hover  .del-btn-txt {
     display: block;
 }
