@@ -1,7 +1,7 @@
 
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { LoadingController, PopoverController } from '@ionic/angular';
+import { AlertController, LoadingController, PopoverController } from '@ionic/angular';
 import { AddTextButtonPopupComponent } from '../add-text-button-popup/add-text-button-popup.component'; 
 import { BlockUtils } from 'src/app/utils/block-utils';
 import { UuidService } from 'src/app/utils/uuid.service';
@@ -37,17 +37,17 @@ export class AutomationComponent implements OnInit {
   constructor(private popoverController:PopoverController,
     private toast:ToastMessageService, 
     private router :Router,
+    private alertController:AlertController,
     private storage :AngularFireStorage,  
     private loadingController:LoadingController,
-    private custHttps:CustomHttpService) { }
-
+    private custHttps:CustomHttpService) { } 
   async ngOnInit() {   
     this.user = JSON.parse(localStorage.getItem("-==0us"));
     this.initSortable();
     this.init();    
     setInterval(()=>{
       BlockUtils.setLocalBlocks(this.maindatas);
-    },1000); 
+    },1000);
   }  
   
   checkIsShowMinBlock() {
@@ -216,80 +216,121 @@ export class AutomationComponent implements OnInit {
 
   
   async onDeploy(){
-    console.log("ondeploy");
-    const localBlocks = BlockUtils.getLocalBlocks();
-    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    await loading.present(); 
-    if(localBlocks != null ||localBlocks != undefined || !localBlocks){ 
-      this.custHttps.post("setallblocks/"+this.user.clientID,localBlocks)
-      .subscribe(async (snap:any)=>{  
-        loading.dismiss();
-        console.log(snap)   
-      }, 
-      (errorCode: Response) => { 
-        loading.dismiss();
-        console.log(errorCode) 
-        this.toast.presentToast("Something went wrong, please try again later.");
-      });  
-    }
-    const localWordMatch = WmatchingutilsService.getWordMatch();
     
-    if(localWordMatch[0].user_possible_words.length != 0){
-      console.log("word matching is not null");
-      this.custHttps.post("setwordmatch/"+this.user.clientID,localWordMatch)
-      .subscribe(async (snap:any)=>{  
-        console.log(snap) 
-        loading.dismiss();
-      }, 
-      (errorCode: Response) => { 
-        loading.dismiss();
-        console.log(errorCode) 
-      });
-    }
-    setTimeout(() => {
-      this.toast.presentToast("Deployed successfully"); 
-      loading.dismiss(); 
-    }, 1200);
+    const alert = await this.alertController.create({ 
+      header: 'Deploy',
+      message: 'Do you want to <strong>deploy</strong>?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: async () => { 
+            console.log("ondeploy");
+            const localBlocks = BlockUtils.getLocalBlocks();
+            var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+            await loading.present(); 
+            if(localBlocks != null ||localBlocks != undefined || !localBlocks){ 
+              this.custHttps.post("setallblocks/"+this.user.clientID,localBlocks)
+              .subscribe(async (snap:any)=>{  
+                loading.dismiss();
+                console.log(snap)   
+              }, 
+              (errorCode: Response) => { 
+                loading.dismiss();
+                console.log(errorCode) 
+                this.toast.presentToast("Something went wrong, please try again later.");
+              });  
+            }
+            const localWordMatch = WmatchingutilsService.getWordMatch();
+            
+            if(localWordMatch[0].user_possible_words.length != 0){
+              console.log("word matching is not null");
+              this.custHttps.post("setwordmatch/"+this.user.clientID,localWordMatch)
+              .subscribe(async (snap:any)=>{  
+                console.log(snap) 
+                loading.dismiss();
+              }, 
+              (errorCode: Response) => { 
+                loading.dismiss();
+                console.log(errorCode) 
+              });
+            }
+            setTimeout(() => {
+              this.toast.presentToast("Deployed successfully"); 
+              loading.dismiss(); 
+            }, 1200);
+          }
+        }
+      ]
+    }); 
+    await alert.present();
   }
 
   async onClearAll(){
     console.log("onClearAll");
-    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    await loading.present(); 
-    const localBlocks = BlockUtils.getLocalBlocks();
-    if(localBlocks != null ||localBlocks != undefined || !localBlocks){  
-      this.custHttps.del("delblocks",this.user.clientID)
-      .subscribe(async (snap:any)=>{ 
-        loading.dismiss(); 
-        console.log(snap)  
-        localStorage.removeItem("localblocks");
-        console.log("onClearAll1"); 
-      }, 
-      (errorCode: Response) => { 
-        loading.dismiss();
-        console.log(errorCode) 
-      });
-    }
-    const localWordMatch = WmatchingutilsService.getWordMatch(); 
-    if(localWordMatch[0].user_possible_words.length != 0){  
-      this.custHttps.del("delwordmatch",this.user.clientID)
-      .subscribe(async (snap:any)=>{  
-        loading.dismiss();
-        console.log(snap)  
-        localStorage.removeItem("word_matching");
-        console.log("onClearAll2"); 
-      }, 
-      (errorCode: Response) => { 
-        loading.dismiss();
-        console.log(errorCode) 
-      });
-    }
-    setTimeout(() => {
-      loading.dismiss();
-      this.toast.presentToast("Cleared successfully"); 
-      window.location.reload();
-    }, 2300);
+    
+    const alert = await this.alertController.create({ 
+      header: 'Clear',
+      message: 'Do you want to <strong>clear</strong>?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: async () => { 
+              var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+              await loading.present(); 
+              const localBlocks = BlockUtils.getLocalBlocks();
+              if(localBlocks != null ||localBlocks != undefined || !localBlocks){  
+                this.custHttps.del("delblocks",this.user.clientID)
+                .subscribe(async (snap:any)=>{ 
+                  loading.dismiss(); 
+                  console.log(snap)  
+                  console.log("onClearAll1"); 
+                }, 
+                (errorCode: Response) => { 
+                  loading.dismiss();
+                  console.log(errorCode) 
+                });
+              }
+              const localWordMatch = WmatchingutilsService.getWordMatch(); 
+              if(localWordMatch[0].user_possible_words.length != 0){  
+                this.custHttps.del("delwordmatch",this.user.clientID)
+                .subscribe(async (snap:any)=>{  
+                  loading.dismiss();
+                  console.log(snap)  
+                  console.log("onClearAll2"); 
+                }, 
+                (errorCode: Response) => { 
+                  loading.dismiss();
+                  console.log(errorCode) 
+                });
+              }
+              setTimeout(() => {
+                loading.dismiss();
+                this.toast.presentToast("Cleared successfully"); 
+                localStorage.removeItem("word_matching");
+                localStorage.removeItem("localblocks");
+                window.location.reload();
+              }, 2300);
+          }
+        }
+      ]
+    }); 
+    await alert.present();
   }
+   
 
   async getCloudblocks(){  
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
@@ -309,9 +350,9 @@ export class AutomationComponent implements OnInit {
       this.init();
     }, 
     async (errorCode: Response) => { 
+      await loading.dismiss();
       console.log(errorCode) ;
       this.toast.presentToast("Something went wrong please try again later");
-      await loading.dismiss();
       setTimeout(() => { 
         this.router.navigateByUrl("/");
       }, 1800);
@@ -396,63 +437,34 @@ export class AutomationComponent implements OnInit {
   }
 
    onCMinBImg(file,miniblock_index){
-    if (file) {  
-      UploadtostService.uploadFile(file);
-      // BlobService.resize(file,500).then((data)=>{
-      //   //console.log(data);  
-      //   console.log(data);
-      //   this.saveImage(data).then((url)=>{ 
-      //     if(this.enum_saveImg == "image"){
-      //       this.maindatas[this.block_index]
-      //       .mini_blocks[this.miniblock_index].message.attachment.payload.url = url;
-      //       //BlockUtils.setLocalBlocks(this.maindatas);
-      //     }if(this.enum_saveImg == "carousel"){
-      //       this.maindatas[this.block_index]
-      //       .mini_blocks[this.miniblock_index]
-      //       .message.attachment.payload
-      //       .elements[this.car_elem_i].image_url = url;
-      //       console.log(JSON.stringify(this.maindatas));
-      //       //BlockUtils.setLocalBlocks(this.maindatas);
-      //     }
-      //   })
-      // }); 
-      // this.saveImage(file).then((url)=>{ 
-      //   if(this.enum_saveImg == "image"){
-      //     this.maindatas[this.block_index]
-      //     .mini_blocks[this.miniblock_index].message.attachment.payload.url = url;
-      //     //BlockUtils.setLocalBlocks(this.maindatas);
-      //   }if(this.enum_saveImg == "carousel"){
-      //     this.maindatas[this.block_index]
-      //     .mini_blocks[this.miniblock_index]
-      //     .message.attachment.payload
-      //     .elements[this.car_elem_i].image_url = url;
-      //     console.log(JSON.stringify(this.maindatas));
-      //   }
-      // })
+    if (file) {   
+      BlobService.resize(file,600).then((data)=>{
+        BlobService.bitmapToBlob(data).then((data)=>{ 
+          this.saveImage(data).then((url)=>{ 
+            if(this.enum_saveImg == "image"){
+              this.maindatas[this.block_index]
+              .mini_blocks[this.miniblock_index].message.attachment.payload.url = url;
+              //BlockUtils.setLocalBlocks(this.maindatas);
+            }if(this.enum_saveImg == "carousel"){
+              this.maindatas[this.block_index]
+              .mini_blocks[this.miniblock_index]
+              .message.attachment.payload
+              .elements[this.car_elem_i].image_url = url;
+              console.log(JSON.stringify(this.maindatas));
+            }
+          })
+        })
+      })
     }
   }
   
   async saveImage(file){ 
     return new Promise<any>(async (resolve)=>{ 
       var loading = await this.loadingController.create({ message: "Please wait ...."  });
-      await loading.present(); 
-      const filePath = 'ChatBot/Images/'+ UuidService.makeid(12); 
-      this.storage.upload(filePath,file).then((data1) => { 
-        this.storage.ref(data1.metadata.fullPath)
-        .getDownloadURL().subscribe(url => {  
-          loading.dismiss();
-          resolve(url);
-        }) 
-      });
-      // const data = {base64: file, filename: UuidService.makeid(12).toString()};
-      // this.custHttps.post("upimg",data).subscribe((snap:any)=>{
-      //   loading.dismiss();
-      //   if(!snap){return;}
-      //   resolve(snap.url);
-      // },(err)=>{
-      //   loading.dismiss(); 
-      //   this.toast.presentToast("Something went wrong please try again.");
-      // })
+      await loading.present();  
+      const data = await UploadtostService.uploadFile(file);
+      await loading.dismiss();  
+      resolve(data.Location);
     })
   }
 

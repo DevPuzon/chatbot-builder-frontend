@@ -14,10 +14,9 @@ export class UploadtostService {
   static AWS_REGION = environment.AWS_REGION;
   static S3_BUCKET = environment.S3_BUCKET;
   static uploadFile(file) {
-    console.log("uploadFile");
-    console.log(file);
-    const contentType = file.type;
-    const bucket = new S3(
+    return new Promise<any>((resolve)=>{  
+      const contentType = file.type;
+      const bucket = new S3(
           {
               accessKeyId: this.ACCESS_KEY_ID,
               secretAccessKey: this.SECRET_ACCESS_KEY,
@@ -37,6 +36,7 @@ export class UploadtostService {
               return false;
           }
           console.log('Successfully uploaded file.', data);
+          resolve(data);
           return true;
       });
 //for upload progress   
@@ -50,5 +50,6 @@ export class UploadtostService {
           console.log('Successfully uploaded file.', data);
           return true;
       });*/
-}
+    });
+  }
 }

@@ -11,8 +11,11 @@ export class WmatchingutilsService {
     localStorage.setItem("word_matching",JSON.stringify(data));
   }
   static cleanWordMatch(data) { 
-    const block_names = this.getMainBlocks(); 
-    if(block_names.length <= 0){
+    const block_names = this.getMainBlocks();  
+    if(!block_names){
+      return;
+    }
+    if( block_names.length == 0){
       return;
     } 
     for(let i = 0 ;i< data.length ;i ++){ 
