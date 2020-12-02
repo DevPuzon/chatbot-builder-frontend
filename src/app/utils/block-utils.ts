@@ -116,7 +116,8 @@ export class BlockUtils {
             const payload = payloads[l]; 
             if(block_names[l]){
               payload.block_name = block_names[l];
-            }else{
+            }
+            else{
               payloads.splice(l,1);
             }
           }
@@ -153,14 +154,24 @@ export class BlockUtils {
       for(var k = 0 ; k < buttons.length ; k++){
         const payloads = buttons[k].payload; 
         if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
+          console.log("-----------------");
+          console.log(payloads);
           for( var l = 0 ; l < payloads.length ; l++){
             const payload = payloads[l]; 
-            if(block_names[l]){
-              payload.block_name = block_names[l];
-            }else{
+            // console.log(block_names[l]);
+            // if(block_names[l]){
+            //   payload.block_name = block_names[l];
+            // }else{
+            //   console.log("delete");
+            //   console.log(payload);
+            //   payloads.splice(l,1);
+            // } 
+            if(block_names[l] == payloads[l+1].block_name){
               payloads.splice(l,1);
             }
           }
+          console.log(payloads);
+          console.log("/////////////////////-----------------");
         }
       }
     }

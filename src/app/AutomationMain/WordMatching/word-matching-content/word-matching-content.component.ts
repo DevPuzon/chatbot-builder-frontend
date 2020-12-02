@@ -40,11 +40,11 @@ export class WordMatchingContentComponent implements OnInit {
       this.wmatchingdtas.push({user_possible_words:[],commands:[]});  
     }
     //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
-    console.log(this.wmatchingdtas);
+    // console.log(this.wmatchingdtas);
     setInterval(()=>{
       WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
       WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
-    },1000);
+    },3000);
     this.onInput("");
   }
   
@@ -152,6 +152,7 @@ export class WordMatchingContentComponent implements OnInit {
     //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   onAddWordM(){
+    console.log(this.wmatchingdtas);
     this.wmatchingdtas.push({user_possible_words:[],commands:[ ]});
     //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }

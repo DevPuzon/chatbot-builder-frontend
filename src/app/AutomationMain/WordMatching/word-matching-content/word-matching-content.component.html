@@ -5,6 +5,7 @@
      (ionInput)="onInput(searchWord.value)"
      (ionCancel)="onInput('')">
    </ion-searchbar>
+   
   <ion-row *ngFor="let wmatchingdta of wmatchingdtas;index as i" > 
     <ion-col size="12" style="display: flex;" *ngIf="user_word_bools[i]">
       <h3 style="margin: 0px; width: -webkit-fill-available;">{{i+1}}.</h3>

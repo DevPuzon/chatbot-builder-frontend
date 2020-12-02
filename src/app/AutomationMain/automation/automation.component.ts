@@ -35,6 +35,7 @@ export class AutomationComponent implements OnInit {
   isShowMinBlock = true;
   showEmojiPickers = new Array(); 
   wmatchingdtas = new Array();
+  delay=3000;
   constructor(private popoverController:PopoverController,
     private toast:ToastMessageService, 
     private router :Router,
@@ -47,8 +48,8 @@ export class AutomationComponent implements OnInit {
     this.initSortable();
     this.init();    
     setInterval(()=>{
-      BlockUtils.setLocalBlocks(this.maindatas);
-    },1000);
+      BlockUtils.setLocalBlocks(this.maindatas); 
+    }, this.delay);
   }  
   async onMenu(ev){ 
     const popover = await this.popoverController.create({
@@ -191,9 +192,27 @@ export class AutomationComponent implements OnInit {
     this.checkIsShowMinBlock();
     BlockUtils.cleanBlocks(this.maindatas);
   }
-  onDelBlock(block_i){
-    this.maindatas.splice(block_i,1);
-    //BlockUtils.setLocalBlocks(this.maindatas);
+  async onDelBlock(block_i){ 
+    const alert = await this.alertController.create({ 
+      header: 'Delete',
+      message: 'Do you want to <strong>delete</strong>?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: async () => {  
+            this.maindatas.splice(block_i,1);
+          }
+        }
+      ]
+    }); 
+    await alert.present(); 
   }
 
   onEmojiPicker(i) { 
@@ -265,19 +284,21 @@ export class AutomationComponent implements OnInit {
             console.log("ondeploy");
             var loading = await  this.loadingController.create({ message: "Please wait ...."  });
             await loading.present(); 
-            this.custHttps.post("deploy/"+this.user.clientID+"/"+this.user.clientID,{
-              blocks:BlockUtils.getLocalBlocks(),
-              word_matches:WmatchingutilsService.getWordMatch()
-             }).subscribe(async (snap:any)=>{  
-              loading.dismiss();
-              console.log(snap)
-              localStorage.setItem("dep_version",snap.version);   
-            }, 
-            (errorCode: Response) => { 
-              loading.dismiss();
-              console.log(errorCode) 
-              this.toast.presentToast("Something went wrong, please try again later.");
-            });   
+            setTimeout(() => { 
+              this.custHttps.post("deploy/"+this.user.clientID+"/"+this.user.clientID,{
+                blocks:BlockUtils.getLocalBlocks(),
+                word_matches:WmatchingutilsService.getWordMatch()
+              }).subscribe(async (snap:any)=>{  
+                loading.dismiss();
+                console.log(snap)
+                localStorage.setItem("dep_version",snap.version);   
+              }, 
+              (errorCode: Response) => { 
+                loading.dismiss();
+                console.log(errorCode) 
+                this.toast.presentToast("Something went wrong, please try again later.");
+              });   
+            }, this.delay);
           }
         }
       ]
