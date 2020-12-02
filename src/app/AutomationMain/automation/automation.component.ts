@@ -120,14 +120,15 @@ export class AutomationComponent implements OnInit {
 
   init() { 
     console.log("init");  
-    if(BlockUtils.getLocalBlocks() == undefined
-    ||BlockUtils.getLocalBlocks() == null  ){ 
-      this.initMaindatas();
-      this.getCloudblocks(); 
-    }else{ 
+    this.getCVersion();
+
+    if(BlockUtils.getLocalBlocks() != undefined
+    ||BlockUtils.getLocalBlocks() != null  ){  
       this.maindatas = BlockUtils.getLocalBlocks();
       this.block = this.maindatas[0];
-    } 
+    } else{
+      this.initMaindatas();
+    }
     
     this.checkIsShowMinBlock();
     //BlockUtils.setLocalBlocks(this.maindatas); 
@@ -135,6 +136,18 @@ export class AutomationComponent implements OnInit {
       this.showEmojiPickers[i] = false;
     }
   } 
+  getCVersion() { 
+    this.custHttps.getId("getversion",this.user.clientID)
+    .subscribe((snap:any)=>{
+      console.log(snap);
+      const version = snap.version;
+      const localversion = localStorage.getItem("dep_version");
+      if(version != localversion){
+        localStorage.setItem("dep_version",version);
+        this.getCloudblocks();  
+      }
+    })
+  }
 
   initMaindatas() {
     if(this.maindatas.length == 0){
@@ -252,50 +265,19 @@ export class AutomationComponent implements OnInit {
             console.log("ondeploy");
             var loading = await  this.loadingController.create({ message: "Please wait ...."  });
             await loading.present(); 
-            this.custHttps.post("deploy/"+this.user.clientID,{
+            this.custHttps.post("deploy/"+this.user.clientID+"/"+this.user.clientID,{
               blocks:BlockUtils.getLocalBlocks(),
               word_matches:WmatchingutilsService.getWordMatch()
              }).subscribe(async (snap:any)=>{  
               loading.dismiss();
-              console.log(snap)   
+              console.log(snap)
+              localStorage.setItem("dep_version",snap.version);   
             }, 
             (errorCode: Response) => { 
               loading.dismiss();
               console.log(errorCode) 
               this.toast.presentToast("Something went wrong, please try again later.");
-            });  
-
-            // const localBlocks = BlockUtils.getLocalBlocks();
-            // if(localBlocks != null ||localBlocks != undefined || !localBlocks){ 
-            //   this.custHttps.post("setallblocks/"+this.user.clientID,localBlocks)
-            //   .subscribe(async (snap:any)=>{  
-            //     loading.dismiss();
-            //     console.log(snap)   
-            //   }, 
-            //   (errorCode: Response) => { 
-            //     loading.dismiss();
-            //     console.log(errorCode) 
-            //     this.toast.presentToast("Something went wrong, please try again later.");
-            //   });  
-            // }
-            // const localWordMatch = WmatchingutilsService.getWordMatch();
-            
-            // if(localWordMatch[0].user_possible_words.length != 0){
-            //   console.log("word matching is not null");
-            //   this.custHttps.post("setwordmatch/"+this.user.clientID,localWordMatch)
-            //   .subscribe(async (snap:any)=>{  
-            //     console.log(snap) 
-            //     loading.dismiss();
-            //   }, 
-            //   (errorCode: Response) => { 
-            //     loading.dismiss();
-            //     console.log(errorCode) 
-            //   });
-            // }
-            // setTimeout(() => {
-            //   this.toast.presentToast("Deployed successfully"); 
-            //   loading.dismiss(); 
-            // }, 1200);
+            });   
           }
         }
       ]
@@ -364,6 +346,7 @@ export class AutomationComponent implements OnInit {
    
 
   async getCloudblocks(){  
+    //BLOCKS
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present();
     console.log(this.user);
@@ -376,9 +359,7 @@ export class AutomationComponent implements OnInit {
         return;
       }
       console.log(snap);
-      this.maindatas = snap;  
-      //BlockUtils.setLocalBlocks(this.maindatas); 
-      this.init();
+      this.maindatas = snap;    
     }, 
     async (errorCode: Response) => { 
       await loading.dismiss();
@@ -388,6 +369,25 @@ export class AutomationComponent implements OnInit {
         this.router.navigateByUrl("/");
       }, 1800);
     });
+
+    //WORDMATCH
+    this.custHttps.get("wordmatch/"+this.user.clientID)
+    .subscribe(async (snap:any)=>{  
+      snap = snap.response;
+      console.log(snap);
+      if(!snap){ 
+        return;
+      } 
+      this.wmatchingdtas = snap; 
+    }, 
+    async (errorCode: Response) => { 
+      console.log(errorCode) ;
+      this.toast.presentToast("Something went wrong please try again later");
+      await loading.dismiss();
+      setTimeout(() => { 
+        this.router.navigateByUrl("/");
+      }, 1800);
+    }); 
   }
 
   onAddTxtMiniBlock(){

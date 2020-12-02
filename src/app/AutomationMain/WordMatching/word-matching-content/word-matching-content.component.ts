@@ -37,8 +37,7 @@ export class WordMatchingContentComponent implements OnInit {
     if(WmatchingutilsService.getWordMatch() != null){ 
       this.wmatchingdtas = WmatchingutilsService.getWordMatch();
     }else{
-      this.wmatchingdtas.push({user_possible_words:[],commands:[]});
-      this.getCloudblocks();
+      this.wmatchingdtas.push({user_possible_words:[],commands:[]});  
     }
     //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
     console.log(this.wmatchingdtas);
@@ -48,31 +47,44 @@ export class WordMatchingContentComponent implements OnInit {
     },1000);
     this.onInput("");
   }
+  
+  getCVersion(){ 
+    this.custHttps.getId("getversion",this.user.clientID)
+    .subscribe((snap:any)=>{
+      console.log(snap);
+      const version = snap.version;
+      const localversion = localStorage.getItem("dep_version");
+      if(version != localversion){
+        localStorage.setItem("dep_version",version);
+        this.getCloudblocks();  
+      }
+    })
+  }
 
   async getCloudblocks(){  
-    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    await loading.present();
+    // var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    // await loading.present();
     
-    this.custHttps.get("wordmatch/"+this.user.clientID)
-    .subscribe(async (snap:any)=>{ 
-      await loading.dismiss();
-      snap = snap.response;
-      console.log(snap);
-      if(!snap){ 
-        return;
-      } 
-      this.wmatchingdtas = snap;
-      //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
-      this.init();
-    }, 
-    async (errorCode: Response) => { 
-      console.log(errorCode) ;
-      this.toast.presentToast("Something went wrong please try again later");
-      await loading.dismiss();
-      setTimeout(() => { 
-        this.router.navigateByUrl("/");
-      }, 1800);
-    });
+    // this.custHttps.get("wordmatch/"+this.user.clientID)
+    // .subscribe(async (snap:any)=>{ 
+    //   await loading.dismiss();
+    //   snap = snap.response;
+    //   console.log(snap);
+    //   if(!snap){ 
+    //     return;
+    //   } 
+    //   this.wmatchingdtas = snap;
+    //   //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    //   this.init();
+    // }, 
+    // async (errorCode: Response) => { 
+    //   console.log(errorCode) ;
+    //   this.toast.presentToast("Something went wrong please try again later");
+    //   await loading.dismiss();
+    //   setTimeout(() => { 
+    //     this.router.navigateByUrl("/");
+    //   }, 1800);
+    // });
   }
   async onSCommand(ev,wmatchingdtas_i){
     const popover = await this.popoverController.create({
