@@ -113,14 +113,28 @@ export class BlockUtils {
         const payloads =quick_replies[k].payload; 
         if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
           for(let l = 0 ;l<payloads.length ;l++){
-            const payload = payloads[l]; 
+            // const payload = payloads[l]; 
+            // if(block_names[l]){
+            //   payload.block_name = block_names[l];
+            // }
+            // else{
+            //   payloads.splice(l,1);
+            // }
+            
+            const payload = payloads[l+1]; 
+            if(payload){  
+              // console.log(block_names[l] +"=="+ payload.block_name);
+              if(block_names[l] == payload.block_name){ 
+                payloads.splice(l,1);
+              }
+            } 
+            else if(block_names.length  < payloads.length){ 
+              payloads.splice(payloads.length-1,1);
+            }
             if(block_names[l]){
-              payload.block_name = block_names[l];
-            }
-            else{
-              payloads.splice(l,1);
-            }
-          }
+              payloads[l].block_name = block_names[l];
+            } 
+          } 
         }
       }
     }
@@ -134,13 +148,19 @@ export class BlockUtils {
           for(let l= 0 ; l < buttons.length;l++){
             const payloads = buttons[l].payload; 
             if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
-              for(let m =0;m<payloads.length;m++){
-                const payload = payloads[m]; 
-                if(block_names[m]){
-                  payload.block_name = block_names[m];
-                }else{
-                  payloads.splice(m,1);
+              for(let m =0;m<payloads.length;m++){ 
+                const payload = payloads[m+1]; 
+                if(payload){   
+                  if(block_names[m] == payload.block_name  ){ 
+                    payloads.splice(m,1);
+                  }
+                } 
+                else if(block_names.length  < payloads.length){ 
+                  payloads.splice(payloads.length-1,1);
                 }
+                if(block_names[m]){
+                  payloads[m].block_name = block_names[m];
+                } 
               }
             }
           }
@@ -155,30 +175,18 @@ export class BlockUtils {
         const payloads = buttons[k].payload; 
         if(payloads || payloads != null || payloads != undefined || payloads.length > 0){ 
           for( var l = 0 ; l < payloads.length ; l++){
-            const payload = payloads[l+1];
-            console.log(payload);
-            console.log(payloads);
-            console.log( block_names.length + 1 +"="+ payloads.length);
-            if(payload){ 
-              // console.log(block_names[l]);
-              // if(block_names[l]){
-              //   payload.block_name = block_names[l];
-              // }else{
-              //   console.log("delete");
-              //   console.log(payload);
-              //   payloads.splice(l,1);
-              // } 
-              console.log(block_names[l]+"--"+payload.block_name);
+            const payload = payloads[l+1]; 
+            if(payload){  
               if(block_names[l] == payload.block_name  ){ 
                 payloads.splice(l,1);
               }
             } 
             else if(block_names.length  < payloads.length){ 
-              payloads.splice(l,1);
+              payloads.splice(payloads.length-1,1);
             }
-            // if(block_names[l]){
-            //   payloads[l].block_name = block_names[l];
-            // } 
+            if(block_names[l]){
+              payloads[l].block_name = block_names[l];
+            } 
           } 
         }
       }
