@@ -110,7 +110,7 @@ export class AddCbackResponseComponent implements OnInit {
           this.show_blocks.push(this.blocks[i]);
         }
       }
-    }
+    } 
   }
   onCancel(){
     this.show_blocks = this.blocks;

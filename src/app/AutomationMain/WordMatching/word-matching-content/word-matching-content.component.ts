@@ -39,12 +39,12 @@ export class WordMatchingContentComponent implements OnInit {
     }else{
       this.wmatchingdtas.push({user_possible_words:[],commands:[]});  
     }
-    //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
     // console.log(this.wmatchingdtas);
-    setInterval(()=>{
-      WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
-      WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
-    },3000);
+    // setInterval(()=>{
+    //   WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
+    //   WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
+    // },3000);
     this.onInput("");
   }
   
@@ -74,7 +74,7 @@ export class WordMatchingContentComponent implements OnInit {
     //     return;
     //   } 
     //   this.wmatchingdtas = snap;
-    //   //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    //   WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
     //   this.init();
     // }, 
     // async (errorCode: Response) => { 
@@ -126,17 +126,17 @@ export class WordMatchingContentComponent implements OnInit {
   kWord(word,wm_i,$event){
     if(!word){return;}
     this.wmatchingdtas[wm_i].user_possible_words.push(word);
-    //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
     console.log($event);
     $event.target.value = "";
   }
   delWord(word_i,wm_i){
     this.wmatchingdtas[wm_i].user_possible_words.splice(word_i, 1);
-    //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   onDelComm(comm_i,wm_i){
     this.wmatchingdtas[wm_i].commands.splice(comm_i, 1);
-    //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   async onEditComm(ev,comm_i,wm_i,txt_message){ 
     const popover = await this.popoverController.create({
@@ -149,16 +149,17 @@ export class WordMatchingContentComponent implements OnInit {
         wmatchingdtas:this.wmatchingdtas}
     });
     return await popover.present();
-    //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   onAddWordM(){
     console.log(this.wmatchingdtas);
     this.wmatchingdtas.push({user_possible_words:[],commands:[ ]});
-    //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    this.onInput("");
   }
   onDelConv(conv_i){
     this.wmatchingdtas.splice(conv_i,1);
-    //WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   onInput(txt){ 
     this.user_word_bools = new Array();
