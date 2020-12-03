@@ -214,7 +214,12 @@ export class AutomationComponent implements OnInit {
           text: 'Yes',
           handler: async () => {  
             this.maindatas.splice(block_i,1);
-            BlockUtils.setLocalBlocks(this.maindatas);
+            this.onBlocks(this.maindatas[0], 0);
+            await BlockUtils.setLocalBlocks(this.maindatas);
+
+            this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
+            WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
+            console.log(this.wmatchingdtas);
           }
         }
       ]
@@ -246,10 +251,14 @@ export class AutomationComponent implements OnInit {
     BlockUtils.setLocalBlocks(this.maindatas);
   }  
 
-  kFocusOTitle(block_name){ 
+  async kFocusOTitle(block_name){ 
     this.maindatas[this.block_index].block_name = block_name;
     console.log(this.maindatas); 
-    BlockUtils.setLocalBlocks(this.maindatas);
+    await BlockUtils.setLocalBlocks(this.maindatas);
+
+    this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
+    console.log(this.wmatchingdtas);
   }
 
   kCarTxt(title,subtitle,url,elements_i,mini_block_i){

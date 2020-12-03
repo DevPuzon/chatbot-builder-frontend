@@ -61,7 +61,7 @@
         <!-- <h1 class="builder-block-title">{{block.block_name}}</h1> -->
         <input [readonly]="block_index == 0 || block_index == 1" 
         [(ngModel)]="block.block_name" 
-        (focusout)="kFocusOTitle(block.block_name)"
+        (keyup)="kFocusOTitle(block.block_name)"
          type="text" class="builder-block-title"> 
         <div class="arrange-main slides-sub-arrange" > 
           <div *ngFor="let min_block of block.mini_blocks;index as i"

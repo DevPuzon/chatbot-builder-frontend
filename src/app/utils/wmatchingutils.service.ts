@@ -12,12 +12,18 @@ export class WmatchingutilsService {
   }
   static cleanWordMatch(data) { 
     const block_names = this.getMainBlocks();  
+    console.log(block_names);
+    if(!data){
+      return false;
+    }
     if(!block_names){
-      return;
+      return false;
     }
     if( block_names.length == 0){
-      return;
+      return false;
     } 
+    console.log('block_names');
+    console.log(data);
     for(let i = 0 ;i< data.length ;i ++){ 
       const commands = data[i].commands; 
       if(commands || commands != null || commands != undefined || commands.length > 0){ 
@@ -26,13 +32,25 @@ export class WmatchingutilsService {
             const block_properties = commands[k].block_properties;
             if(block_properties || block_properties != null || block_properties != undefined || block_properties.length > 0){
               if(block_properties.find(o=>o.ischecked === true)){
-                for(let l = 0 ; l < block_properties.length ; l ++){
-                  const block_property = block_properties[l]; 
-                  if(block_names[l]){
-                    block_property.block_name = block_names[l]; 
-                  }else{
-                    block_properties.splice(l,1);
-                  }
+                for(let l = 0 ; l < block_properties.length ; l ++){ 
+                  // console.log(block_property);
+                  // if(block_names[l]){
+                  //   block_property.block_name = block_names[l]; 
+                  // }else{
+                  //   block_properties.splice(l,1);
+                  // }
+                  
+                  const block_property = block_properties[l+1]; 
+                  if(block_property){   
+                    if(block_names[l] == block_property.block_name  ){ 
+                      block_properties.splice(l,1);
+                    }
+                  } 
+                  else if(block_names.length  < block_properties.length){ 
+                    block_properties.splice(block_properties.length-1,1);
+                  }else {
+                    block_properties[l].block_name = block_names[l];
+                  } 
                 }
               }else{
                 commands.splice(k,1);
@@ -41,7 +59,7 @@ export class WmatchingutilsService {
           }
         } 
       }
-    }  
+    }   
   }
   
   static getMainBlocks() {

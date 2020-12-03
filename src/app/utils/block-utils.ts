@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { resolve } from 'dns';
 
 @Injectable({
   providedIn: 'root'
@@ -20,19 +21,22 @@ export class BlockUtils {
   }
    
   static setLocalBlocks(mblocks){   
-    for(let i = 0 ; i <  mblocks.length ;i++){
-      const block_name = mblocks[i].block_name; 
-      if(block_name == ""){
-        mblocks[i].block_name = i+ ". Block";
-      }
-      const hasBlockIndex= mblocks.findIndex(o => o.block_name === block_name);  
-      if(hasBlockIndex!= i && hasBlockIndex!= -1){
-        mblocks[i].block_name = block_name +" : copy";
-      }
-    } 
-    this.cleanBlocks(mblocks);
-    localStorage.setItem("localblocks",JSON.stringify(mblocks)); 
-    return mblocks;
+    return new Promise<any>((resolve)=>{ 
+      for(let i = 0 ; i <  mblocks.length ;i++){
+        const block_name = mblocks[i].block_name; 
+        if(block_name == ""){
+          mblocks[i].block_name = i+ ". Block";
+        }
+        const hasBlockIndex= mblocks.findIndex(o => o.block_name === block_name);  
+        if(hasBlockIndex!= i && hasBlockIndex!= -1){
+          mblocks[i].block_name = block_name +" : copy";
+        }
+      } 
+      this.cleanBlocks(mblocks);
+      localStorage.setItem("localblocks",JSON.stringify(mblocks)); 
+      resolve();
+    })
+    // return mblocks;
   }
   static cleanBlocks(mblocks) { 
     const block_names  = this.getMainBlocks(mblocks);
@@ -112,18 +116,9 @@ export class BlockUtils {
       for(let k =0 ; k < quick_replies.length;k++){
         const payloads =quick_replies[k].payload; 
         if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
-          for(let l = 0 ;l<payloads.length ;l++){
-            // const payload = payloads[l]; 
-            // if(block_names[l]){
-            //   payload.block_name = block_names[l];
-            // }
-            // else{
-            //   payloads.splice(l,1);
-            // }
-            
+          for(let l = 0 ;l<payloads.length ;l++){ 
             const payload = payloads[l+1]; 
-            if(payload){  
-              // console.log(block_names[l] +"=="+ payload.block_name);
+            if(payload){   
               if(block_names[l] == payload.block_name){ 
                 payloads.splice(l,1);
               }
@@ -146,21 +141,23 @@ export class BlockUtils {
         const buttons = elements[k].buttons; 
         if(buttons || buttons != null || buttons != undefined || buttons.length > 0){
           for(let l= 0 ; l < buttons.length;l++){
-            const payloads = buttons[l].payload; 
-            if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
-              for(let m =0;m<payloads.length;m++){ 
-                const payload = payloads[m+1]; 
-                if(payload){   
-                  if(block_names[m] == payload.block_name  ){ 
-                    payloads.splice(m,1);
+            const payloads = buttons[l].payload;  
+            if(buttons[l].type != "web_url"){
+              if(payloads || payloads != null || payloads != undefined || payloads.length > 0){
+                for(let m =0;m<payloads.length;m++){ 
+                  const payload = payloads[m+1]; 
+                  if(payload){   
+                    if(block_names[m] == payload.block_name  ){ 
+                      payloads.splice(m,1);
+                    }
+                  } 
+                  else if(block_names.length  < payloads.length){ 
+                    payloads.splice(payloads.length-1,1);
                   }
-                } 
-                else if(block_names.length  < payloads.length){ 
-                  payloads.splice(payloads.length-1,1);
+                  if(block_names[m]){
+                    payloads[m].block_name = block_names[m];
+                  } 
                 }
-                if(block_names[m]){
-                  payloads[m].block_name = block_names[m];
-                } 
               }
             }
           }
@@ -172,24 +169,25 @@ export class BlockUtils {
     const buttons = mini_block.message.attachment.payload.buttons;
     if(buttons || buttons != null || buttons != undefined || buttons.length > 0){
       for(var k = 0 ; k < buttons.length ; k++){
-        const payloads = buttons[k].payload; 
-        console.log(buttons);
-        if(payloads || payloads != null || payloads != undefined || payloads.length > 0){ 
-          for( var l = 0 ; l < payloads.length ; l++){
-            const payload = payloads[l+1]; 
-            if(payload){  
-              if(block_names[l] == payload.block_name  ){ 
-                payloads.splice(l,1);
+        if(buttons[k].type != "web_url"){
+          const payloads = buttons[k].payload;   
+          if(payloads || payloads != null || payloads != undefined || payloads.length > 0){ 
+            for( var l = 0 ; l < payloads.length ; l++){
+              const payload = payloads[l+1]; 
+              if(payload){  
+                if(block_names[l] == payload.block_name  ){ 
+                  payloads.splice(l,1);
+                }
+              } 
+              else if(block_names.length  < payloads.length){ 
+                payloads.splice(payloads.length-1,1);
               }
+              if(block_names[l]){
+                payloads[l].block_name = block_names[l];
+              } 
             } 
-            else if(block_names.length  < payloads.length){ 
-              payloads.splice(payloads.length-1,1);
-            }
-            if(block_names[l]){
-              payloads[l].block_name = block_names[l];
-            } 
-          } 
-        }
+          }
+        } 
       }
     }
   }
