@@ -173,6 +173,7 @@ export class BlockUtils {
     if(buttons || buttons != null || buttons != undefined || buttons.length > 0){
       for(var k = 0 ; k < buttons.length ; k++){
         const payloads = buttons[k].payload; 
+        console.log(buttons);
         if(payloads || payloads != null || payloads != undefined || payloads.length > 0){ 
           for( var l = 0 ; l < payloads.length ; l++){
             const payload = payloads[l+1]; 

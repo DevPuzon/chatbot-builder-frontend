@@ -134,10 +134,13 @@ export class AutomationComponent implements OnInit {
     
     this.checkIsShowMinBlock();
     BlockUtils.setLocalBlocks(this.maindatas); 
-    for(let i = 0 ; i < this.maindatas.length;i++){
+    this.initEmoji();
+  } 
+  initEmoji(){
+    for(let i = 0 ; i < this.maindatas[this.block_index].mini_blocks.length;i++){
       this.showEmojiPickers[i] = false;
     }
-  } 
+  }
   getCVersion() { 
     this.custHttps.getId("getversion",this.user.clientID)
     .subscribe((snap:any)=>{
@@ -191,6 +194,7 @@ export class AutomationComponent implements OnInit {
     this.block_index = i;
     console.log(this.block_index);
     this.checkIsShowMinBlock();
+    this.initEmoji();
     BlockUtils.setLocalBlocks(this.maindatas);
   }
 
