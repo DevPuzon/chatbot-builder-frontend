@@ -35,6 +35,7 @@ export class AutomationComponent implements OnInit {
   isShowMinBlock = true;
   showEmojiPickers = new Array(); 
   wmatchingdtas = new Array(); 
+  delay = 3000;
   constructor(private popoverController:PopoverController,
     private toast:ToastMessageService, 
     private router :Router,
@@ -187,6 +188,10 @@ export class AutomationComponent implements OnInit {
     )
     console.log(this.maindatas);
     BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.addcleanBlocks(this.maindatas);
+    this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
+    WmatchingutilsService.addcleanWordMatch(this.wmatchingdtas);
+    console.log(this.wmatchingdtas);
   } 
   
   onBlocks(block,i){
@@ -199,32 +204,40 @@ export class AutomationComponent implements OnInit {
   }
 
   async onDelBlock(block_i){ 
-    const alert = await this.alertController.create({ 
-      header: 'Delete',
-      message: 'Do you want to <strong>delete</strong>?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Confirm Cancel: blah');
-          }
-        }, {
-          text: 'Yes',
-          handler: async () => {  
-            this.maindatas.splice(block_i,1);
-            this.onBlocks(this.maindatas[0], 0);
-            await BlockUtils.setLocalBlocks(this.maindatas);
+    // const alert = await this.alertController.create({ 
+    //   header: 'Delete',
+    //   message: 'Do you want to <strong>delete</strong>?',
+    //   buttons: [
+    //     {
+    //       text: 'Cancel',
+    //       role: 'cancel',
+    //       cssClass: 'secondary',
+    //       handler: (blah) => {
+    //         console.log('Confirm Cancel: blah');
+    //       }
+    //     }, {
+    //       text: 'Yes',
+    //       handler: async () => {  
+    //         this.maindatas.splice(block_i,1);
+    //         this.onBlocks(this.maindatas[0], 0);
+    //         await BlockUtils.setLocalBlocks(this.maindatas);
 
-            this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
-            WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
-            console.log(this.wmatchingdtas);
-          }
-        }
-      ]
-    }); 
-    await alert.present(); 
+    //         this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
+    //         WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
+    //         console.log(this.wmatchingdtas);
+    //       }
+    //     }
+    //   ]
+    // }); 
+    // await alert.present(); 
+    
+    this.maindatas.splice(block_i,1);
+    this.onBlocks(this.maindatas[0], 0);
+    await BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.cleanBlocks(this.maindatas);
+    this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
+    console.log(this.wmatchingdtas);
   }
 
   onEmojiPicker(i) { 
@@ -255,7 +268,7 @@ export class AutomationComponent implements OnInit {
     this.maindatas[this.block_index].block_name = block_name;
     console.log(this.maindatas); 
     await BlockUtils.setLocalBlocks(this.maindatas);
-
+    BlockUtils.cleanBlocks(this.maindatas);
     this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
     WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
     console.log(this.wmatchingdtas);
@@ -397,6 +410,7 @@ export class AutomationComponent implements OnInit {
       }
       console.log(snap);
       this.maindatas = snap;    
+      BlockUtils.setLocalBlocks(this.maindatas);  
     }, 
     async (errorCode: Response) => { 
       await loading.dismiss();
@@ -416,6 +430,7 @@ export class AutomationComponent implements OnInit {
         return;
       } 
       this.wmatchingdtas = snap; 
+      WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
     }, 
     async (errorCode: Response) => { 
       console.log(errorCode) ;
