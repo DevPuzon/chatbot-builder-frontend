@@ -31,11 +31,9 @@ export class UploadtostService {
           ContentType: contentType
       };
       bucket.upload(params, function (err, data) {
-          if (err) {
-              console.log('There was an error uploading your file: ', err);
+          if (err) { 
               return false;
-          }
-          console.log('Successfully uploaded file.', data);
+          } 
           resolve(data);
           return true;
       });

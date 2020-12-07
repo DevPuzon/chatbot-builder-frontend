@@ -36,8 +36,7 @@ export class UserRegisterComponent implements OnInit {
     this.imgPass = this.imgPass === 'eye-off' ? 'eye' : 'eye-off';
   }
   
-  async onSubmit(){ 
-    console.log(this.form);
+  async onSubmit(){  
     this.submitted = true;
     if(this.form.invalid){
       return;
@@ -54,8 +53,7 @@ export class UserRegisterComponent implements OnInit {
       await loading.dismiss();   
       this.router.navigateByUrl("auth");
     }, 
-    async (err:any) => { 
-      console.log(err);
+    async (err:any) => {  
       await loading.dismiss();   
       this.toast.presentToast(err.error.error_message);
     });

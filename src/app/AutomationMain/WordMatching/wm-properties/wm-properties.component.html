@@ -21,17 +21,17 @@
       <h4>Input message</h4> 
       <textarea  [(ngModel)]="txt_message" type="text" class="input-button-title"
       placeholder="How are you?....."  (keyup)="kMessage()" (keyup.enter)="onEnterMsg()"></textarea>
-      <ion-buttons>
+      <!-- <ion-buttons>
         <ion-button (click) ="toggleEmojiPicker()" style="margin-left: auto;">
           <ion-icon slot="icon-only"
           name="{{showEmojiPicker ? 'close-outline' : 'happy-outline'}}"></ion-icon>
         </ion-button>
-      </ion-buttons>  
+      </ion-buttons>   -->
     </div> 
   </div>
     
-  <emoji-mart class="emoji-mart" set="facebook" 
+  <!-- <emoji-mart class="emoji-mart" set="facebook" 
   [hidden]="!showEmojiPicker" 
   (emojiSelect)="addEmojiTextBtnOnly($event)" 
-  title="Pick your emoji.…"></emoji-mart> 
+  title="Pick your emoji.…"></emoji-mart>  -->
 </div>

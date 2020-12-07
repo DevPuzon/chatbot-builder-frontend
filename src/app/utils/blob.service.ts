@@ -170,8 +170,7 @@ export class BlobService {
       type: 'image/jpeg'
     };
     let file = new File([data], name+".jpg", metadata);
-    
-    console.log(file);
+     
     // ... do something with the file or return it
     return file;
   }

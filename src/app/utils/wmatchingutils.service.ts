@@ -11,8 +11,7 @@ export class WmatchingutilsService {
     localStorage.setItem("word_matching",JSON.stringify(data));
   }
   static cleanWordMatch(data) { 
-    const block_names = this.getMainBlocks();  
-    console.log(block_names);
+    const block_names = this.getMainBlocks();   
     if(!data){
       return false;
     }
@@ -21,9 +20,7 @@ export class WmatchingutilsService {
     }
     if( block_names.length == 0){
       return false;
-    } 
-    console.log('block_names');
-    console.log(data);
+    }  
     for(let i = 0 ;i< data.length ;i ++){ 
       const commands = data[i].commands; 
       if(commands || commands != null || commands != undefined || commands.length > 0){ 
@@ -33,13 +30,9 @@ export class WmatchingutilsService {
             if(block_properties || block_properties != null || block_properties != undefined || block_properties.length > 0){
               if(block_properties.find(o=>o.ischecked === true)){  
                 for(let l = 0 ; l < block_properties.length ; l ++){ 
-                  const block_property= block_properties[l];
-                  console.log(block_property); 
+                  const block_property= block_properties[l]; 
                   if(block_properties[l]){
-                    const block_property = block_properties[l+1]; 
-                    console.log(block_property);
-                    console.log(block_names.length);
-                    console.log(block_properties.length);
+                    const block_property = block_properties[l+1];  
                     if(block_property){   
                       if(block_names[l] == block_property.block_name  ){ 
                         block_properties.splice(l,1);
@@ -67,8 +60,7 @@ export class WmatchingutilsService {
     localStorage.setItem("word_matching",JSON.stringify(data));  
   }
   static addcleanWordMatch(data){
-    const block_names = this.getMainBlocks();  
-    console.log(block_names);
+    const block_names = this.getMainBlocks();   
     if(!data){
       return false;
     }
@@ -77,9 +69,7 @@ export class WmatchingutilsService {
     }
     if( block_names.length == 0){
       return false;
-    } 
-    console.log('block_names');
-    console.log(data);
+    }  
     for(let i = 0 ;i< data.length ;i ++){ 
       const commands = data[i].commands; 
       if(commands || commands != null || commands != undefined || commands.length > 0){ 

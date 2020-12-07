@@ -28,8 +28,7 @@ export class UserLoginComponent implements OnInit {
    }
 
   ngOnInit() { 
-    this.authService.authState.subscribe((user) => {
-      console.log(user);
+    this.authService.authState.subscribe((user) => { 
     });
   }
 
@@ -39,8 +38,7 @@ export class UserLoginComponent implements OnInit {
     this.typePass = this.typePass === 'text' ? 'password' : 'text';
     this.imgPass = this.imgPass === 'eye-off' ? 'eye' : 'eye-off';
   }
-  async onSubmit(){ 
-    console.log(this.form);
+  async onSubmit(){  
     this.submitted = true;
     if(this.form.invalid){
       return;
@@ -57,8 +55,8 @@ export class UserLoginComponent implements OnInit {
       await loading.dismiss();   
       localStorage.setItem("-=[]t",snap.token); 
       localStorage.removeItem("localblocks");
-      localStorage.removeItem("word_matching");
-      console.log(snap);
+      localStorage.removeItem("dep_version");
+      localStorage.removeItem("word_matching"); 
       setTimeout(() => { 
         this.cusHttp.getUser()
         .then(()=>{
@@ -88,8 +86,7 @@ export class UserLoginComponent implements OnInit {
     scope: 'pages_messaging,pages_messaging_subscriptions,email,pages_show_list,manage_pages',
     return_scopes: true,
     enable_profile_selector: true
-  };
-    console.log("signInWithFB");
+  }; 
     this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
   }
 

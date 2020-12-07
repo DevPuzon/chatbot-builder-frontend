@@ -15,8 +15,7 @@ export class BlockUtils {
     }
     ret = JSON.parse(localStorage.getItem("localblocks"));
     // ret = this.reBtnsPayloadParse(JSON.parse(localStorage.getItem("localblocks")))
-    this.cleanBlocks(ret);
-    console.log(ret);
+    this.cleanBlocks(ret); 
     return  ret;
   }
    
@@ -101,13 +100,9 @@ export class BlockUtils {
     if(resolve_blocks || resolve_blocks != null || resolve_blocks != undefined || resolve_blocks.length > 0){
       
       for(let l = 0 ; l < resolve_blocks.length ; l ++){ 
-        const block_property= resolve_blocks[l];
-        console.log(block_property); 
+        const block_property= resolve_blocks[l]; 
         if(resolve_blocks[l]){
-          const block_property = resolve_blocks[l+1]; 
-          console.log(block_property);
-          console.log(block_names.length);
-          console.log(resolve_blocks.length);
+          const block_property = resolve_blocks[l+1];  
           if(block_property){   
             if(block_names[l] == block_property.block_name  ){ 
               resolve_blocks.splice(l,1);
@@ -127,12 +122,9 @@ export class BlockUtils {
        
       for(let l = 0 ; l < reject_blocks.length ; l ++){ 
         const block_property= reject_blocks[l];
-        console.log(block_property); 
+        
         if(reject_blocks[l]){
-          const block_property = reject_blocks[l+1]; 
-          console.log(block_property);
-          console.log(block_names.length);
-          console.log(reject_blocks.length);
+          const block_property = reject_blocks[l+1];  
           if(block_property){   
             if(block_names[l] == block_property.block_name  ){ 
               reject_blocks.splice(l,1);
@@ -158,12 +150,9 @@ export class BlockUtils {
           
           for(let l = 0 ; l < blocks.length ; l ++){ 
             const block_property= blocks[l];
-            console.log(block_property); 
+            
             if(blocks[l]){
-              const block_property = blocks[l+1]; 
-              console.log(block_property);
-              console.log(block_names.length);
-              console.log(blocks.length);
+              const block_property = blocks[l+1];  
               if(block_property){   
                 if(block_names[l] == block_property.block_name  ){ 
                   blocks.splice(l,1);
@@ -190,12 +179,9 @@ export class BlockUtils {
            
           for(let l = 0 ; l < payloads.length ; l ++){ 
             const block_property= payloads[l];
-            console.log(block_property); 
+            
             if(payloads[l]){
-              const block_property = payloads[l+1]; 
-              console.log(block_property);
-              console.log(block_names.length);
-              console.log(payloads.length);
+              const block_property = payloads[l+1];  
               if(block_property){   
                 if(block_names[l] == block_property.block_name  ){ 
                   payloads.splice(l,1);
@@ -226,12 +212,9 @@ export class BlockUtils {
                  
                 for(let m= 0 ; m < payloads.length ; m ++){ 
                   const block_property= payloads[m];
-                  console.log(block_property); 
+                  
                   if(payloads[m]){
-                    const block_property = payloads[m+1]; 
-                    console.log(block_property);
-                    console.log(block_names.length);
-                    console.log(payloads.length);
+                    const block_property = payloads[m+1];  
                     if(block_property){   
                       if(block_names[m] == block_property.block_name  ){ 
                         payloads.splice(m,1);
@@ -261,12 +244,9 @@ export class BlockUtils {
           if(payloads || payloads != null || payloads != undefined || payloads.length > 0){   
             for(let l = 0 ; l < payloads.length ; l ++){ 
               const block_property= payloads[l];
-              console.log(block_property); 
+              
               if(payloads[l]){
-                const block_property = payloads[l+1]; 
-                console.log(block_property);
-                console.log(block_names.length);
-                console.log(payloads.length);
+                const block_property = payloads[l+1];  
                 if(block_property){   
                   if(block_names[l] == block_property.block_name  ){ 
                     payloads.splice(l,1);
@@ -458,21 +438,17 @@ export class BlockUtils {
     if(blocks == "" || blocks == null ){
       return null;
     }
-    blocks = JSON.parse(blocks);
-    console.log(mini_block_index);
+    blocks = JSON.parse(blocks); 
     let mini_blocks = blocks[block_index].mini_blocks[mini_block_index];
     if(mini_blocks.type != 'button-text-only'){
       return null;
     } 
-    let ret = null;
-    console.log(mini_blocks);
-    console.log(button_index);
+    let ret = null; 
     let btns = mini_blocks.message.attachment.payload.buttons[button_index];
     if(btns == undefined || btns == null){
       return null;
     }
-
-    console.log(mini_blocks.message.attachment.payload.buttons[button_index].payload);
+ 
     ret = mini_blocks.message.attachment.payload.buttons[button_index].payload;
     return ret;
   } 
@@ -576,8 +552,7 @@ export class BlockUtils {
           }
         }
       }
-    }
-    console.log(dtas);
+    } 
     return dtas;
   }
 
@@ -592,8 +567,7 @@ export class BlockUtils {
   static cleanObj(obj){ 
     var propNames = Object.getOwnPropertyNames(obj);
     for (var i = 0; i < propNames.length; i++) {
-      var propName = propNames[i]; 
-      console.log(obj[propName]); 
+      var propName = propNames[i];  
       if(obj[propName].url === null || obj[propName].url === undefined || obj[propName].url === ""){
         delete obj[propName];
       }

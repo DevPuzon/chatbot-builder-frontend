@@ -17,14 +17,11 @@ export class WmPropertiesComponent implements OnInit  {
   
   constructor(private popCtrl:PopoverController) { }
  
-  ngOnInit() {
-    console.log( this.txt_message)
+  ngOnInit() { 
     this.init();
   }
-  init() {
-    console.log(this.maindatas);
-    this.wmatchingdta = this.wmatchingdtas[this.wmatchingdtas_i]; 
-    console.log(this.wmatchingdta);
+  init() { 
+    this.wmatchingdta = this.wmatchingdtas[this.wmatchingdtas_i];  
     
     let local_block_p =WmatchingutilsService.getBlockProperties(this.wmatchingdta.commands[this.command_i]);
     if(!local_block_p){
@@ -40,47 +37,41 @@ export class WmPropertiesComponent implements OnInit  {
   } 
 
   blocks = new Array();
-  saveNoBlocks() {
-    console.log("saveNoBlocks"); 
+  saveNoBlocks() { 
     for(let i  = 0 ; i < this.maindatas.length; i++){
       // this.wmatchingdta.commands[this.command_i].block_properties.push({
       //   block_name:this.maindatas[i].block_name,
       //   block_index:i,
-      //   ischecked:false
+      //   //ischecked:false
       // });
       this.blocks.push({
         block_name:this.maindatas[i].block_name,
         block_index:i,
-        ischecked:false
+        //ischecked:false
       });
     }
-    // this.blocks = this.wmatchingdta.commands[0].block_properties;
-    console.log(this.wmatchingdta);
+    // this.blocks = this.wmatchingdta.commands[0].block_properties; 
   }
-  saveHasBlocks(localBlocks) {
-    console.log("saveHasBlocks");
-    console.log(localBlocks); 
+  saveHasBlocks(localBlocks) { 
     for(let i  = 0 ; i < this.maindatas.length; i++){
-      let bblock = {
+      let bblock ;
+      bblock ={
         block_name:this.maindatas[i].block_name,
         block_index:i,
-        ischecked:false
+        //ischecked:false
       }
       if(localBlocks[i]){
         bblock.ischecked = localBlocks[i].ischecked;
       } 
       this.blocks[i]=bblock;
       this.wmatchingdta.commands[this.command_i].block_properties[i] = bblock;
-    }
-    console.log(this.blocks);
+    } 
   }
   
-  onCheckBtnBlock(index){  
-    console.log(index);
+  onCheckBtnBlock(index){   
     if(index != null){    
       this.wmatchingdta.commands[this.command_i] = {}; 
-      let boolGl = !this.blocks[index].ischecked;  
-      console.log(boolGl);
+      let boolGl = !this.blocks[index].ischecked;   
       this.blocks[index].ischecked = boolGl;
       this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i]={
         block_properties : this.blocks,
@@ -88,30 +79,24 @@ export class WmPropertiesComponent implements OnInit  {
       } 
     }  
  
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
-    console.log(JSON.stringify(this.wmatchingdtas));
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);  
   }
 
   
   showEmojiPicker = false; 
-  toggleEmojiPicker() {
-    console.log(this.showEmojiPicker);
-        this.showEmojiPicker = !this.showEmojiPicker;
+  toggleEmojiPicker() { 
+    this.showEmojiPicker = !this.showEmojiPicker;
   }
 
   addEmojiTextBtnOnly(event) { 
-    let message ="";
-    console.log(message);
-    console.log(`${event.emoji.native}`)
+    let message =""; 
     const text = `${message}${event.emoji.native}`; 
-    console.log(text);
     this.txt_message = this.txt_message + text;
     this.kMessage();
     // this.showEmojiPicker = false;
   } 
   kMessage(){
-    if(this.txt_message !=""){
-      console.log(this.txt_message) ; 
+    if(this.txt_message !=""){ 
       this.wmatchingdta.commands[this.command_i] = {}; 
       this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i].command_type= "text_message";
       this.wmatchingdtas[this.wmatchingdtas_i].commands[this.command_i]={ 
@@ -125,12 +110,10 @@ export class WmPropertiesComponent implements OnInit  {
     for(let i = 0 ; i < this.blocks.length;i++){
       this.blocks[i].ischecked =false;
     }
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
-    console.log(JSON.stringify(this.wmatchingdtas));
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);  
 
   }
-  onEnterMsg(){
-    console.log("onEnterMsg");
+  onEnterMsg(){ 
     this.popCtrl.dismiss();
   }
 }

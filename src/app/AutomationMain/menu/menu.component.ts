@@ -14,10 +14,12 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {}
 
-  logout(){
-    console.log('logout');
+  logout(){ 
     localStorage.clear();
     this.router.navigateByUrl("auth/login");
     this.popover.dismiss();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   }
 }

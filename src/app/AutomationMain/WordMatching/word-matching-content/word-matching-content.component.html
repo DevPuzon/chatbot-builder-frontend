@@ -2,8 +2,8 @@
   <h1>Word matching</h1> 
   <ion-searchbar
   mode="ios"  #searchWord
-     (ionInput)="onInput(searchWord.value)"
-     (ionCancel)="onInput('')">
+     (ionInput)="onSearch(searchWord.value)"
+     (ionCancel)="onSearch('')">
    </ion-searchbar> 
    
   <ion-row *ngFor="let wmatchingdta of wmatchingdtas;index as i" > 
@@ -23,7 +23,8 @@
         </ion-col> 
       </ion-row>
     </ion-col>
-    <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6" *ngIf="user_word_bools[i]">
+    <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6" 
+    *ngIf="user_word_bools[i]">
       <p class="say">Bot reply.</p>
       <p (click)="onSCommand($event,i)" class="word-input" style="cursor: pointer;">Select command</p>
       <ion-row id="{{i}}comms" class="choices-block wm-slides-sub-arrange " >  

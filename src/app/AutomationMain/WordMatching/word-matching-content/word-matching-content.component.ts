@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, PopoverController, ToastController } from '@ionic/angular';
 import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { LoggerUtil } from 'src/app/utils/logger-util';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
 import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
 import { WmPropertiesComponent } from '../wm-properties/wm-properties.component';  
@@ -32,59 +33,37 @@ export class WordMatchingContentComponent implements OnInit {
     loading.dismiss();  
   }   
   
-  init() {
-    console.log(this.maindatas);
+  init() { 
     if(WmatchingutilsService.getWordMatch() != null){ 
       this.wmatchingdtas = WmatchingutilsService.getWordMatch();
     }else{
       this.wmatchingdtas.push({user_possible_words:[],commands:[]});  
     }
     WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
-    // console.log(this.wmatchingdtas);
+    this.onSearch(""); 
     // setInterval(()=>{
     //   WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
     //   WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
     // },3000);
-    this.onInput("");
-  }
-  
-  getCVersion(){ 
-    this.custHttps.getId("getversion",this.user.clientID)
-    .subscribe((snap:any)=>{
-      console.log(snap);
-      const version = snap.version;
-      const localversion = localStorage.getItem("dep_version");
-      if(version != localversion){
-        localStorage.setItem("dep_version",version);
-        this.getCloudblocks();  
-      }
-    })
-  }
-
+  } 
   async getCloudblocks(){  
-    // var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    // await loading.present();
-    
-    // this.custHttps.get("wordmatch/"+this.user.clientID)
-    // .subscribe(async (snap:any)=>{ 
-    //   await loading.dismiss();
-    //   snap = snap.response;
-    //   console.log(snap);
-    //   if(!snap){ 
-    //     return;
-    //   } 
-    //   this.wmatchingdtas = snap;
-    //   WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
-    //   this.init();
-    // }, 
-    // async (errorCode: Response) => { 
-    //   console.log(errorCode) ;
-    //   this.toast.presentToast("Something went wrong please try again later");
-    //   await loading.dismiss();
-    //   setTimeout(() => { 
-    //     this.router.navigateByUrl("/");
-    //   }, 1800);
-    // });
+     //WORDMATCH
+     this.custHttps.get("wordmatch/"+this.user.clientID)
+     .subscribe(async (snap:any)=>{  
+       snap = snap.response; 
+       if(!snap){ 
+         return;
+       } 
+       this.wmatchingdtas = snap; 
+       WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
+       this.onSearch(""); 
+     }, 
+     async (errorCode: Response) => {  
+       this.toast.presentToast("Something went wrong please try again later"); 
+       setTimeout(() => { 
+         this.router.navigateByUrl("/");
+       }, 1800);
+     }); 
   }
   async onSCommand(ev,wmatchingdtas_i){
     const popover = await this.popoverController.create({
@@ -107,15 +86,11 @@ export class WordMatchingContentComponent implements OnInit {
         var data = "";
         let id_con =$(this).context.id;
         id_con = id_con.substring(0,1);
-        var sets = [];          
-        console.log(id_con);
-        $('input[id^='+id_con+'sets]').each(function(){ 
-         console.log($(this).context.id);
+        var sets = [];       
+        $('input[id^='+id_con+'sets]').each(function(){  
          sets.push(JSON.parse($(this).val()));
-        });
-         console.log(sets);
-        _this.wmatchingdtas[id_con].commands = sets;
-        console.log(_this.wmatchingdtas[id_con]);
+        }); 
+        _this.wmatchingdtas[id_con].commands = sets; 
         WmatchingutilsService.setWordMatch(_this.wmatchingdtas,this.maindatas); 
         $(".slide-placeholder-animator").remove(); 
       },
@@ -126,8 +101,7 @@ export class WordMatchingContentComponent implements OnInit {
   kWord(word,wm_i,$event){
     if(!word){return;}
     this.wmatchingdtas[wm_i].user_possible_words.push(word);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
-    console.log($event);
+    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);  
     $event.target.value = "";
   }
   delWord(word_i,wm_i){
@@ -151,32 +125,30 @@ export class WordMatchingContentComponent implements OnInit {
     return await popover.present();
     WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
-  onAddWordM(){
-    console.log(this.wmatchingdtas);
+  onAddWordM(){ 
     this.wmatchingdtas.push({user_possible_words:[],commands:[ ]});
     WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
-    this.onInput("");
+    this.onSearch("");
   }
   onDelConv(conv_i){
     this.wmatchingdtas.splice(conv_i,1);
     WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
-  onInput(txt){ 
+  onSearch(txt){ 
     this.user_word_bools = new Array();
-    if(txt == ""){
-      console.log("null");
+    if(txt == ""){ 
       for(let i = 0 ; i < this.wmatchingdtas.length ;i ++){
         this.user_word_bools.push(true);
-      }
-      console.log(this.user_word_bools);
+      } 
       return;
     }
-    let user_words = this.wmatchingdtas.map(o=>o.user_possible_words);
-    console.log(user_words.length);   
+    let user_words = this.wmatchingdtas.map(o=>o.user_possible_words); 
     for(let i = 0 ; i < user_words.length;i++){
       const user_word = user_words[i];
       for(let j = 0 ; j < user_word.length;j++){
-        const word = user_word[j];
+        let word = user_word[j];
+        word = word.toLowerCase();
+        txt = txt.toLowerCase();
         if(word.includes(txt)){
           this.user_word_bools[i] =true;
           j = user_word.length;
@@ -185,5 +157,7 @@ export class WordMatchingContentComponent implements OnInit {
         }
       }
     } 
+      
+    LoggerUtil.log(this.user_word_bools);
   }
 }

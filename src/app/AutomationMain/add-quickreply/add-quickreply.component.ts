@@ -26,56 +26,46 @@ export class AddQuickreplyComponent implements OnInit {
   // .quick_replies[this.qreply_i].payload;
   ngOnInit() {   
     this.mini_block = this.maindatas[this.block_index].
-    mini_blocks[this.mini_block_index]; 
-
-    console.log(this.maindatas); 
-
-    console.log(this.mini_block_index); 
+    mini_blocks[this.mini_block_index];  
     // let localBlocks = BlockUtils.getQReplyButtonBlocks(this.block_index,this.mini_block_index,this.qreply_i);
     
     let localBlocks = this.mini_block.message.quick_replies[this.qreply_i].payload;
-    
-    console.log(localBlocks);
+     
     if(localBlocks != null || localBlocks != undefined){
       this.saveHasBlocks(localBlocks);
     }else{
       this.saveNoBlocks();
-    }
-    console.log(this.maindatas); 
+    } 
     BlockUtils.setLocalBlocks(this.maindatas); 
     this.show_blocks= this.blocks;
   }
  
 
-  saveNoBlocks() {
-    console.log("saveNoBlocks");
+  saveNoBlocks() { 
     for(let i  = 0 ; i < this.maindatas.length; i++){
       this.blocks.push({
         block_name:this.maindatas[i].block_name,
         block_index:i,
-        ischecked:false
+        //ischecked:false
       })
-    }
-    console.log(this.blocks);
+    } 
   }
 
 
 
-  saveHasBlocks(localBlocks) {
-    console.log("saveHasBlocks");
-    console.log(localBlocks); 
+  saveHasBlocks(localBlocks) { 
     for(let i  = 0 ; i < this.maindatas.length; i++){
-      let bblock = {
+      let bblock;
+      bblock = {
         block_name:this.maindatas[i].block_name,
         block_index:i,
-        ischecked:false
+        //ischecked:false
       }
       if(localBlocks[i]){
         bblock.ischecked = localBlocks[i].ischecked;
       } 
       this.blocks[i]=bblock;
-    }
-    console.log(this.blocks);
+    } 
   } 
   
   kBtnTitle(){ 
@@ -90,8 +80,7 @@ export class AddQuickreplyComponent implements OnInit {
     const index = this.blocks.findIndex(o=>o.block_name === block_name);
     if(index != null){
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
-    } 
-    console.log(this.blocks);  
+    }  
    
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
     .message.quick_replies[this.qreply_i]  =
@@ -102,8 +91,7 @@ export class AddQuickreplyComponent implements OnInit {
     } 
     
     const hasIsChecked = this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
-    .message.quick_replies[this.qreply_i].payload.find(o => o.ischecked === true); 
-    console.log(JSON.stringify(this.maindatas));
+    .message.quick_replies[this.qreply_i].payload.find(o => o.ischecked === true);  
     BlockUtils.setLocalBlocks(this.maindatas); 
   } 
   
@@ -111,8 +99,7 @@ export class AddQuickreplyComponent implements OnInit {
     if(txt ==""){
       this.show_blocks = this.blocks;
     }else{  
-      let arr_map = this.blocks.map(el => el.block_name);
-      console.log(arr_map);
+      let arr_map = this.blocks.map(el => el.block_name); 
       const search_bools = this.search(arr_map,txt);
       this.show_blocks = new Array(); 
       for(let i = 0 ; i < search_bools.length ;i++){

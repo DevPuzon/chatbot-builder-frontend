@@ -27,13 +27,18 @@
           </ion-buttons>
         </div>
         <div class="blocks-container" >
+          <ion-searchbar
+          mode="ios"  #searchWord
+             (ionInput)="onSearch(searchWord.value)"
+             (ionCancel)="onSearch('')">
+           </ion-searchbar> 
           <ion-row>
             <ion-col *ngFor="let data of maindatas;index as i"
             size="12"
             size-sm="12"
             size-md="12"
-            size-lg="6">  
-              <div class="block-container" >
+            size-lg="6" [hidden]="!search_blocks[i]">  
+              <div  class="block-container" [ngStyle]="block_index == i?{'background-color': '#B3D9FB'} : {'background-color': 'white'}" >
                 <p class="block-title" (click)="onBlocks(data,i)">{{data.block_name}}</p>
                 <img *ngIf="i>1 " (click)="onDelBlock(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
               </div>
@@ -46,7 +51,7 @@
           </ion-button>
         </div>
       </div>
-      <app-word-matching-content [maindatas]="maindatas"
+      <app-word-matching-content #wordmatching [maindatas]="maindatas"
        [wmatchingdtas]="wmatchingdtas"></app-word-matching-content>
     </ion-col>
     
@@ -60,8 +65,8 @@
       <div class="builder-container" > 
         <!-- <h1 class="builder-block-title">{{block.block_name}}</h1> -->
         <input [readonly]="block_index == 0 || block_index == 1" 
-        [(ngModel)]="block.block_name" 
-        (keyup)="kFocusOTitle(block.block_name)"
+        [(ngModel)]="block.block_name"  
+        (focusout)="kFocusOTitle(block.block_name)"
          type="text" class="builder-block-title"> 
         <div class="arrange-main slides-sub-arrange" > 
           <div *ngFor="let min_block of block.mini_blocks;index as i"
@@ -97,7 +102,7 @@
                   *ngIf="min_block.type == 'button-text-only' || min_block.type == 'text-only'">
                     <div class="textarea-container"> 
                       <textarea class="txt" #textminblock (keyup)="kTitleTxt(textminblock.value,min_block,i)" >{{min_block.type == 'text-only'? min_block.message.text : min_block.message.attachment.payload.text}} </textarea>
-                      <ion-buttons>
+                      <!-- <ion-buttons>
                         <ion-button (click) ="onEmojiPicker(i)" style="margin-left: auto;">
                           <ion-icon slot="icon-only"
                           name="{{showEmojiPickers[i] ? 'close-outline' : 'happy-outline'}}"></ion-icon>
@@ -105,7 +110,7 @@
                       </ion-buttons>  
                       <emoji-mart class="emoji-mart" set="facebook"  [hidden]="!showEmojiPickers[i]"
                       (emojiSelect)="addEmojiTextBtnOnly($event,textminblock.value,min_block,i)" 
-                      title="Pick your emoji.…"></emoji-mart>  
+                      title="Pick your emoji.…"></emoji-mart>   -->
                     </div>
                     <div class="buttons-container"
                     *ngIf="min_block.type == 'button-text-only'">
@@ -167,11 +172,11 @@
                         <ion-label position="stacked">{{car.title != ''? 'Title':'Title (required)'}}</ion-label>
                         <ion-input [(ngModel)]="car.title" #cartitle (keyup)="kCarTxt(cartitle.value,'','',ie,i)"> </ion-input>
                       </ion-item>
-                      <ion-item  class="item-transaparent" color="light"  [class]="car.subtitle == ''? 'err-text':''"> 
+                      <ion-item  class="item-transaparent" color="light"  > 
                         <ion-label position="stacked">Subtitle</ion-label>
                         <ion-input [(ngModel)]="car.subtitle" #carsubtitle (keyup)="kCarTxt('',carsubtitle.value,'',ie,i)"></ion-input>
                       </ion-item>
-                      <ion-item  class="item-transaparent" color="light" [class]="car.default_action.url == ''? 'err-text':''">  
+                      <ion-item  class="item-transaparent" color="light"  >  
                         <ion-label position="stacked">Url</ion-label>
                         <ion-input [(ngModel)]="car.default_action.url" #carurl (keyup)="kCarTxt('','',carurl.value,ie,i)"></ion-input>
                         <!-- <ion-input [(ngModel)]="car.image_url" #carimage_url (keyup)="kCarTxt('','',carimage_url.value,ie,i)"></ion-input> -->
@@ -243,8 +248,7 @@
               </div> 
             </div> 
           </div>
-        </div>   
-
+        </div>    
         <div class="slide" *ngFor="let min_block of block.mini_blocks;index as i" > 
           <div class="builder-block-container"  *ngIf="min_block.type == 'cback-only' ||
            min_block.type == 'livechat-only'"> 
@@ -259,7 +263,8 @@
               <div id="min_block_{{i}}"  class="txt-container block-card" 
               *ngIf="min_block.type == 'livechat-only'">
                 <div class="textarea-container"> 
-                  <textarea  class="txt"  #lchatminblock (keyup)="kTitleTxt(lchatminblock.value,min_block,i)"  > {{min_block.message.attachment.payload.text }} </textarea>
+                  <textarea  class="txt"  #lchatminblock 
+                  (keyup)="kTitleTxt(lchatminblock.value,min_block,i)"  > {{min_block.message.attachment.payload.text }} </textarea>
                 
                 </div>
                 <div class="buttons-container"

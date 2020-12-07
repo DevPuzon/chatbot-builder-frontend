@@ -1,5 +1,5 @@
 
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AlertController, LoadingController, PopoverController } from '@ionic/angular';
 import { AddTextButtonPopupComponent } from '../add-text-button-popup/add-text-button-popup.component'; 
@@ -18,6 +18,8 @@ import { AddCbackResponseComponent } from '../add-cback-response/add-cback-respo
 import { EditStopChatlLiveComponent } from '../edit-stop-chatl-live/edit-stop-chatl-live.component';
 import { UploadtostService } from 'src/app/utils/uploadtost.service';
 import { MenuComponent } from '../menu/menu.component';
+import { WordMatchingContentComponent } from '../WordMatching/word-matching-content/word-matching-content.component';
+import { LoggerUtil } from 'src/app/utils/logger-util';
  
 declare var $:any;
 @Component({
@@ -26,6 +28,7 @@ declare var $:any;
   styleUrls: ['./automation.component.scss'] 
 })
 export class AutomationComponent implements OnInit { 
+  @ViewChild('wordmatching') wordmatching : WordMatchingContentComponent;
   block_index= 0; 
   btntxt_index = null;
   text=""
@@ -34,7 +37,8 @@ export class AutomationComponent implements OnInit {
   user:any;
   isShowMinBlock = true;
   showEmojiPickers = new Array(); 
-  wmatchingdtas = new Array(); 
+  wmatchingdtas = new Array();  
+  search_blocks = new Array(); 
   delay = 3000;
   constructor(private popoverController:PopoverController,
     private toast:ToastMessageService, 
@@ -52,6 +56,7 @@ export class AutomationComponent implements OnInit {
     //   WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
     //   WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
     // }, this.delay);
+    this.onSearch("");
   }  
   async onMenu(ev){ 
     const popover = await this.popoverController.create({
@@ -68,16 +73,32 @@ export class AutomationComponent implements OnInit {
       this.isShowMinBlock = false;
     }else{
       this.isShowMinBlock = true;
-    }
-    console.log(isShow);
-    console.log(this.isShowMinBlock);
+    } 
   } 
   onNavMinblock(i){
-    var elmnt = document.getElementById("min_block_"+i) ;
-    console.log(elmnt);
+    var elmnt = document.getElementById("min_block_"+i) ; 
     elmnt.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
   
+  onSearch(txt){ 
+    this.search_blocks = new Array();
+    if(txt == ""){ 
+      for(let i = 0 ; i < this.maindatas.length ;i ++){
+        this.search_blocks.push(true);
+      } 
+      return;
+    }
+    for(let i = 0 ; i < this.maindatas.length ;i ++){
+      const block_name = this.maindatas[i].block_name.toLowerCase();
+      if(block_name.includes(txt.toLowerCase())){
+        this.search_blocks.push(true);
+      }else{
+        this.search_blocks.push(false);
+      }
+    } 
+
+    LoggerUtil.log(this.search_blocks);
+  }
   initSortable() { 
     let _this = this;
     $(".slides-sub-arrange").sortable({ 
@@ -93,8 +114,7 @@ export class AutomationComponent implements OnInit {
            mini_blocks[i] = sets[i]; 
           }
         }
-       //  _this.maindatas[_this.block_index].mini_blocks = sets;
-        console.log(_this.maindatas[_this.block_index].mini_blocks);
+       //  _this.maindatas[_this.block_index].mini_blocks = sets; 
         BlockUtils.setLocalBlocks(_this.maindatas);
         $(".slide-placeholder-animator").remove(); 
      },
@@ -113,16 +133,14 @@ export class AutomationComponent implements OnInit {
             mini_blocks[i] = sets[i]; 
            }
          }
-        //  _this.maindatas[_this.block_index].mini_blocks = sets;
-         console.log(_this.maindatas[_this.block_index].mini_blocks);
+        //  _this.maindatas[_this.block_index].mini_blocks = sets; 
          BlockUtils.setLocalBlocks(_this.maindatas);
          $(".slide-placeholder-animator").remove(); 
       },
      });
   }
 
-  init() { 
-    console.log("init");  
+  init() {  
     this.getCVersion();
 
     if(BlockUtils.getLocalBlocks() != undefined
@@ -144,8 +162,7 @@ export class AutomationComponent implements OnInit {
   }
   getCVersion() { 
     this.custHttps.getId("getversion",this.user.clientID)
-    .subscribe((snap:any)=>{
-      console.log(snap);
+    .subscribe((snap:any)=>{ 
       const version = snap.version;
       const localversion = localStorage.getItem("dep_version");
       if(version != localversion){
@@ -185,72 +202,59 @@ export class AutomationComponent implements OnInit {
           ChatbotFunc.genText("What do you want to do next?")
           ]
       }
-    )
-    console.log(this.maindatas);
+    ) 
     BlockUtils.setLocalBlocks(this.maindatas);
     BlockUtils.addcleanBlocks(this.maindatas);
     this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
-    WmatchingutilsService.addcleanWordMatch(this.wmatchingdtas);
-    console.log(this.wmatchingdtas);
+    WmatchingutilsService.addcleanWordMatch(this.wmatchingdtas); 
+    this.onSearch("");
   } 
   
   onBlocks(block,i){
     this.block = block; 
-    this.block_index = i;
-    console.log(this.block_index);
+    this.block_index = i; 
     this.checkIsShowMinBlock();
     this.initEmoji();
     BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   async onDelBlock(block_i){ 
-    // const alert = await this.alertController.create({ 
-    //   header: 'Delete',
-    //   message: 'Do you want to <strong>delete</strong>?',
-    //   buttons: [
-    //     {
-    //       text: 'Cancel',
-    //       role: 'cancel',
-    //       cssClass: 'secondary',
-    //       handler: (blah) => {
-    //         console.log('Confirm Cancel: blah');
-    //       }
-    //     }, {
-    //       text: 'Yes',
-    //       handler: async () => {  
-    //         this.maindatas.splice(block_i,1);
-    //         this.onBlocks(this.maindatas[0], 0);
-    //         await BlockUtils.setLocalBlocks(this.maindatas);
+    const alert = await this.alertController.create({ 
+      header: 'Delete',
+      message: 'Do you want to <strong>delete</strong>?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => { 
+          }
+        }, {
+          text: 'Yes',
+          handler: async () => {  
+            this.maindatas.splice(block_i,1);
+            this.onBlocks(this.maindatas[0], 0);
+            await BlockUtils.setLocalBlocks(this.maindatas);
 
-    //         this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
-    //         WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
-    //         console.log(this.wmatchingdtas);
-    //       }
-    //     }
-    //   ]
-    // }); 
-    // await alert.present(); 
+            BlockUtils.cleanBlocks(this.maindatas);
+            this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
+            WmatchingutilsService.cleanWordMatch(this.wmatchingdtas); 
+            this.onSearch("");
+          }
+        }
+      ]
+    }); 
+    await alert.present(); 
     
-    this.maindatas.splice(block_i,1);
-    this.onBlocks(this.maindatas[0], 0);
-    await BlockUtils.setLocalBlocks(this.maindatas);
-    BlockUtils.cleanBlocks(this.maindatas);
-    this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
-    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
-    console.log(this.wmatchingdtas);
   }
 
   onEmojiPicker(i) { 
-    this.showEmojiPickers[i] = !this.showEmojiPickers[i];
-    console.log(this.showEmojiPickers[i]);
+    this.showEmojiPickers[i] = !this.showEmojiPickers[i]; 
   }
 
   addEmojiTextBtnOnly(event,txt,min_block,mini_block_i) { 
-    let message =txt;
-    console.log(message);
-    console.log(`${event.emoji.native}`)
-    const text = `${message}${event.emoji.native}`; 
-    console.log(text);
+    let message =txt; 
+    const text = `${message}${event.emoji.native}`;  
     this.kTitleTxt(text,min_block,mini_block_i);
     // this.showEmojiPicker = false;
   } 
@@ -259,20 +263,18 @@ export class AutomationComponent implements OnInit {
       this.maindatas[this.block_index].mini_blocks[mini_block_i].message.text = txt;
     }else{
       this.maindatas[this.block_index].mini_blocks[mini_block_i].message.attachment.payload.text = txt;
-    }
-    console.log(this.maindatas); 
+    } 
     BlockUtils.setLocalBlocks(this.maindatas);
   }  
 
   async kFocusOTitle(block_name){ 
-    this.maindatas[this.block_index].block_name = block_name;
-    console.log(this.maindatas); 
+    this.maindatas[this.block_index].block_name = block_name; 
     await BlockUtils.setLocalBlocks(this.maindatas);
+    
     BlockUtils.cleanBlocks(this.maindatas);
     this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
-    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
-    console.log(this.wmatchingdtas);
-  }
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas); 
+  } 
 
   kCarTxt(title,subtitle,url,elements_i,mini_block_i){
     let element = 
@@ -291,9 +293,7 @@ export class AutomationComponent implements OnInit {
       element.default_action = defurl;
     }
     BlockUtils.setLocalBlocks(this.maindatas);
-  }
-
-
+  } 
   
   async onDeploy(){ 
     const alert = await this.alertController.create({ 
@@ -304,30 +304,33 @@ export class AutomationComponent implements OnInit {
           text: 'Cancel',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+          handler: (blah) => { 
           }
         }, {
           text: 'Yes',
           handler: async () => { 
-            BlockUtils.setLocalBlocks(this.maindatas);
-            console.log("ondeploy");
+            BlockUtils.setLocalBlocks(this.maindatas); 
             var loading = await  this.loadingController.create({ message: "Please wait ...."  });
             await loading.present(); 
             
-            this.custHttps.post("deploy/"+this.user.clientID+"/"+this.user.clientID,{
-              blocks:BlockUtils.getLocalBlocks(),
-              word_matches:WmatchingutilsService.getWordMatch()
-            }).subscribe(async (snap:any)=>{  
-              loading.dismiss();
-              console.log(snap)
-              localStorage.setItem("dep_version",snap.version);   
-            }, 
-            (errorCode: Response) => { 
-              loading.dismiss();
-              console.log(errorCode) 
-              this.toast.presentToast("Something went wrong, please try again later.");
-            });  
+            //clean data
+            BlockUtils.cleanBlocks(this.maindatas);
+            this.wmatchingdtas = JSON.parse(localStorage.getItem("word_matching"));
+            WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);  
+            
+            setTimeout(() => { 
+              this.custHttps.post("deploy/"+this.user.clientID+"/"+this.user.clientID,{
+                blocks:BlockUtils.getLocalBlocks(),
+                word_matches:WmatchingutilsService.getWordMatch()
+              }).subscribe(async (snap:any)=>{  
+                loading.dismiss(); 
+                localStorage.setItem("dep_version",snap.version);   
+              }, 
+              (errorCode: Response) => { 
+                loading.dismiss(); 
+                this.toast.presentToast("Something went wrong, please try again later.");
+              });  
+            }, 1200);
           }
         }
       ]
@@ -335,8 +338,7 @@ export class AutomationComponent implements OnInit {
     await alert.present();
   }
 
-  async onClearAll(){
-    console.log("onClearAll");
+  async onClearAll(){ 
     
     const alert = await this.alertController.create({ 
       header: 'Clear',
@@ -346,8 +348,7 @@ export class AutomationComponent implements OnInit {
           text: 'Cancel',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+          handler: (blah) => { 
           }
         }, {
           text: 'Yes',
@@ -358,26 +359,20 @@ export class AutomationComponent implements OnInit {
               if(localBlocks != null ||localBlocks != undefined || !localBlocks){  
                 this.custHttps.del("delblocks",this.user.clientID)
                 .subscribe(async (snap:any)=>{ 
-                  loading.dismiss(); 
-                  console.log(snap)  
-                  console.log("onClearAll1"); 
+                  loading.dismiss();  
                 }, 
                 (errorCode: Response) => { 
-                  loading.dismiss();
-                  console.log(errorCode) 
+                  loading.dismiss(); 
                 });
               }
               const localWordMatch = WmatchingutilsService.getWordMatch(); 
               if(localWordMatch[0].user_possible_words.length != 0){  
                 this.custHttps.del("delwordmatch",this.user.clientID)
                 .subscribe(async (snap:any)=>{  
-                  loading.dismiss();
-                  console.log(snap)  
-                  console.log("onClearAll2"); 
+                  loading.dismiss(); 
                 }, 
                 (errorCode: Response) => { 
-                  loading.dismiss();
-                  console.log(errorCode) 
+                  loading.dismiss(); 
                 });
               }
               setTimeout(() => {
@@ -398,48 +393,27 @@ export class AutomationComponent implements OnInit {
   async getCloudblocks(){  
     //BLOCKS
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    await loading.present();
-    console.log(this.user);
+    await loading.present(); 
     this.custHttps.get("getallblocks/"+this.user.clientID)
     .subscribe(async (snap:any)=>{ 
       await loading.dismiss();
-      snap = snap.response;
-      console.log(snap);
+      snap = snap.response; 
       if(!snap){ 
         return;
-      }
-      console.log(snap);
+      } 
       this.maindatas = snap;    
       BlockUtils.setLocalBlocks(this.maindatas);  
+      this.onSearch("");
     }, 
     async (errorCode: Response) => { 
-      await loading.dismiss();
-      console.log(errorCode) ;
+      await loading.dismiss(); 
       this.toast.presentToast("Something went wrong please try again later");
       setTimeout(() => { 
         this.router.navigateByUrl("/");
       }, 1800);
     });
 
-    //WORDMATCH
-    this.custHttps.get("wordmatch/"+this.user.clientID)
-    .subscribe(async (snap:any)=>{  
-      snap = snap.response;
-      console.log(snap);
-      if(!snap){ 
-        return;
-      } 
-      this.wmatchingdtas = snap; 
-      WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
-    }, 
-    async (errorCode: Response) => { 
-      console.log(errorCode) ;
-      this.toast.presentToast("Something went wrong please try again later");
-      await loading.dismiss();
-      setTimeout(() => { 
-        this.router.navigateByUrl("/");
-      }, 1800);
-    }); 
+    this.wordmatching.getCloudblocks();
   }
 
   onAddTxtMiniBlock(){
@@ -449,9 +423,7 @@ export class AutomationComponent implements OnInit {
     this.checkIsShowMinBlock();
   }
 
-  onAddImgMiniBlock(){
-    console.log(this.maindatas);
-    console.log(this.block_index);
+  onAddImgMiniBlock(){ 
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genImageTemplate(""));
     this.checkIsShowMinBlock();
@@ -479,21 +451,17 @@ export class AutomationComponent implements OnInit {
   onAddCbackMiniBlock(){ 
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genURLCback(""));
-    this.checkIsShowMinBlock();
-    console.log(this.maindatas);
+    this.checkIsShowMinBlock(); 
     BlockUtils.setLocalBlocks(this.maindatas);
   }
   onAddLChatMiniBlock(){ 
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genLChat());
-    this.checkIsShowMinBlock();
-    console.log(this.maindatas);
+    this.checkIsShowMinBlock(); 
     BlockUtils.setLocalBlocks(this.maindatas);
   }
 
-  onAddQreplyMiniBlock(){
-    console.log(this.maindatas);
-    console.log(this.block_index);
+  onAddQreplyMiniBlock(){ 
     this.maindatas[this.block_index]
     .mini_blocks.push(ChatbotFunc.genQuickReply("",[]));
     this.checkIsShowMinBlock(); 
@@ -503,15 +471,13 @@ export class AutomationComponent implements OnInit {
   onAddQReply(mini_block_i){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.quick_replies.push({ content_type:"text",
-      title:"", payload:[] });
-    console.log(this.maindatas);
+      title:"", payload:[] }); 
     BlockUtils.setLocalBlocks(this.maindatas);
   }
 
   kQreplyTxt(mini_block_i,qreplytxt){
     this.maindatas[this.block_index].mini_blocks[mini_block_i]
-    .message.text =qreplytxt;
-    console.log(this.maindatas);
+    .message.text =qreplytxt; 
     BlockUtils.setLocalBlocks(this.maindatas);
   }
 
@@ -531,8 +497,7 @@ export class AutomationComponent implements OnInit {
               this.maindatas[this.block_index]
               .mini_blocks[this.miniblock_index]
               .message.attachment.payload
-              .elements[this.car_elem_i].image_url = url;
-              console.log(JSON.stringify(this.maindatas));
+              .elements[this.car_elem_i].image_url = url; 
             }
             BlockUtils.setLocalBlocks(this.maindatas);
           })
@@ -597,8 +562,7 @@ export class AutomationComponent implements OnInit {
     return await popover.present();
   }
 
-  async addTextButton(ev: any,mini_block_index) {
-    console.log(this.block.mini_blocks[mini_block_index].type);
+  async addTextButton(ev: any,mini_block_index) { 
     if(this.block.mini_blocks[mini_block_index].type =="button-text-only"){
       let btns_length =this.block.mini_blocks[mini_block_index].message.attachment.payload.buttons.length;
     }
@@ -614,8 +578,7 @@ export class AutomationComponent implements OnInit {
     return await popover.present();
   }
 
-  async onBtnTxtEdit(ev: any,mini_block_index,button_index,btn_name,txt_URL) { 
-    console.log(btn_name);
+  async onBtnTxtEdit(ev: any,mini_block_index,button_index,btn_name,txt_URL) {  
     const popover = await this.popoverController.create({
       component: AddTextButtonPopupComponent , 
       cssClass: 'ion-popover',
@@ -642,15 +605,14 @@ export class AutomationComponent implements OnInit {
     });
     return await popover.present();
   } 
-  async onLChatEdit(ev: any,mini_block_index,qreply_title) { 
-    console.log("onLChatEdit");
+  async onLChatEdit(ev: any,mini_block_index,btn_name) {  
     const popover = await this.popoverController.create({
       component: EditStopChatlLiveComponent , 
       cssClass: 'ion-popover',
       event: ev,
       componentProps:{maindatas:this.maindatas, 
         mini_block_index:mini_block_index, 
-        btn_name:qreply_title, 
+        btn_name:btn_name, 
         block_index:this.block_index}
     });
     return await popover.present();
@@ -683,8 +645,7 @@ export class AutomationComponent implements OnInit {
     BlockUtils.setLocalBlocks(this.maindatas);
   }
 
-  async addCarButton(ev: any,mini_block_index,element_i) {
-    console.log(this.block.mini_blocks[mini_block_index].type); 
+  async addCarButton(ev: any,mini_block_index,element_i) { 
     const popover = await this.popoverController.create({
       component: AddCarButtonComponent , 
       cssClass: 'ion-popover',
@@ -698,8 +659,7 @@ export class AutomationComponent implements OnInit {
     return await popover.present();
   }
 
-  async onBtnCarEdit(ev: any,mini_block_index,button_index,btn_name,txt_URL,element_i) { 
-    console.log(btn_name);
+  async onBtnCarEdit(ev: any,mini_block_index,button_index,btn_name,txt_URL,element_i) {  
     const popover = await this.popoverController.create({
       component: AddCarButtonComponent , 
       cssClass: 'ion-popover',

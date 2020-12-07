@@ -31,21 +31,14 @@ export class AddCarButtonComponent implements OnInit {
   ngOnInit() {   
     this.mini_block = this.maindatas[this.block_index].
     mini_blocks[this.mini_block_index];
-    this.onCheckButton();
-
-    console.log(this.maindatas); 
-
-    console.log(this.mini_block_index);
-    console.log(this.button_index);
+    this.onCheckButton(); 
     let localBlocks = BlockUtils.getCarButtonBlocks(this.block_index,this.mini_block_index,this.element_i,this.button_index);
-    
-    console.log(localBlocks);
+     
     if(localBlocks != null || localBlocks != undefined){
       this.saveHasBlocks(localBlocks);
     }else{
       this.saveNoBlocks();
-    }
-    console.log(this.maindatas); 
+    } 
     BlockUtils.setLocalBlocks(this.maindatas); 
     this.show_blocks= this.blocks;
   }
@@ -58,25 +51,22 @@ export class AddCarButtonComponent implements OnInit {
     }
   }
 
-  saveNoBlocks() {
-    console.log("saveNoBlocks");
+  saveNoBlocks() { 
     for(let i  = 0 ; i < this.maindatas.length; i++){
       this.blocks.push({
         block_name:this.maindatas[i].block_name,
         block_index:i,
-        ischecked:false
+        //ischecked:false
       })
-    }
-    console.log(this.blocks);
+    } 
   }
-  saveHasBlocks(localBlocks) {
-    console.log("saveHasBlocks");
-    console.log(localBlocks); 
+  saveHasBlocks(localBlocks) { 
     for(let i  = 0 ; i < this.maindatas.length; i++){
-      let bblock = {
+      let bblock;
+      bblock = {
         block_name:this.maindatas[i].block_name,
         block_index:i,
-        ischecked:false
+        //ischecked:false
       }
       if(localBlocks[i]){
         bblock.ischecked = localBlocks[i].ischecked;
@@ -85,8 +75,7 @@ export class AddCarButtonComponent implements OnInit {
       //   bblock = localBlocks[i].ischecked;
       // }
       this.blocks[i]=bblock;
-    }
-    console.log(this.blocks);
+    } 
   }
 
   segment="block";
@@ -123,10 +112,7 @@ export class AddCarButtonComponent implements OnInit {
     const index = this.blocks.findIndex(o=>o.block_name === block_name);
     if(index != null){
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
-    }
- 
-    console.log(this.blocks); 
-    console.log(this.button_index);
+    } 
    
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.elements[this.element_i].buttons[this.button_index] =
     {
@@ -134,33 +120,28 @@ export class AddCarButtonComponent implements OnInit {
       payload:this.blocks,
       title:this.btn_name
     } 
-
-    console.log(JSON.stringify(this.maindatas));
+ 
     BlockUtils.setLocalBlocks(this.maindatas); 
   }
 
   onCheckURLBlock(index){
     if(index != null){
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
-    }
-
-    console.log(this.blocks); 
+    } 
    
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.elements[this.element_i].buttons[this.button_index] =
     {
       type:"web_url",
       url:this.txt_URL, 
       title:this.btn_name
-    } 
-    console.log(this.maindatas);
+    }  
     BlockUtils.setLocalBlocks(this.maindatas); 
   }
   onInput(txt){
     if(txt ==""){
       this.show_blocks = this.blocks;
     }else{  
-      let arr_map = this.blocks.map(el => el.block_name);
-      console.log(arr_map);
+      let arr_map = this.blocks.map(el => el.block_name); 
       const search_bools = this.search(arr_map,txt);
       this.show_blocks = new Array(); 
       for(let i = 0 ; i < search_bools.length ;i++){

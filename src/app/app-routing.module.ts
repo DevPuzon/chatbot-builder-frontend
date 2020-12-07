@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { UserLoginComponent } from './Auth/user-login/user-login.component';
 import { UserRegisterComponent } from './Auth/user-register/user-register.component';
+import { AutomationGuardGuard } from './AutomationMain/main-automation/automation-guard.guard';
  
 const routes: Routes = [ 
   {
@@ -30,7 +31,9 @@ const routes: Routes = [
   },
   {
     path: 't',
+    canActivate:[AutomationGuardGuard],
     loadChildren: () => import('./AutomationMain/main-automation/main-automation.module').then( m => m.MainAutomationPageModule)
+
   }
 ];
 

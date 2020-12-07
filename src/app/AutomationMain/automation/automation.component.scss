@@ -188,13 +188,12 @@ ion-col{
     .textarea-container{
         padding: 10px;
         .txt{
-            height: 250px; 
             width: 100%;
-            overflow: hidden;
+            overflow: auto;
             background-color: transparent;
             font-size: 16px;
             line-height: 1.32; 
-            height: 189px;
+            min-height: 289px; 
             padding: 7px 9px;
             white-space: pre-wrap;
             margin: 0;

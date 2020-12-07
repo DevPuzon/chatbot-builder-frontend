@@ -30,15 +30,9 @@ export class AddTextButtonPopupComponent implements OnInit {
   ngOnInit() {   
     this.mini_block = this.maindatas[this.block_index].
     mini_blocks[this.mini_block_index];
-    this.onCheckButton();
-
-    console.log(this.maindatas); 
-
-    console.log(this.mini_block_index);
-    console.log(this.button_index);
+    this.onCheckButton(); 
     let localBlocks = BlockUtils.getTxtButtonBlocks(this.block_index,this.mini_block_index,this.button_index);
-    
-    console.log(localBlocks);
+     
     if(localBlocks != null || localBlocks != undefined){
       this.saveHasBlocks(localBlocks);
     }else{
@@ -56,25 +50,22 @@ export class AddTextButtonPopupComponent implements OnInit {
     }
   }
 
-  saveNoBlocks() {
-    console.log("saveNoBlocks");
+  saveNoBlocks() { 
     for(let i  = 0 ; i < this.maindatas.length; i++){
       this.blocks.push({
         block_name:this.maindatas[i].block_name,
         block_index:i,
-        ischecked:false
+        //ischecked:false
       })
-    }
-    console.log(this.blocks);
+    } 
   }
-  saveHasBlocks(localBlocks) {
-    console.log("saveHasBlocks");
-    console.log(localBlocks); 
+  saveHasBlocks(localBlocks) { 
     for(let i  = 0 ; i < this.maindatas.length; i++){
-      let bblock = {
+      let bblock;
+      bblock = {
         block_name:this.maindatas[i].block_name,
         block_index:i,
-        ischecked:false
+        //ischecked:false
       }
       if(localBlocks[i]){
         bblock.ischecked = localBlocks[i].ischecked;
@@ -83,8 +74,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       //   bblock = localBlocks[i].ischecked;
       // }
       this.blocks[i]=bblock;
-    }
-    console.log(this.blocks);
+    } 
   }
 
   segment="block";
@@ -96,7 +86,6 @@ export class AddTextButtonPopupComponent implements OnInit {
     // this.onCheckBtnBlock(null);
     if(this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment){
       let btn = this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.buttons[this.button_index];
-      console.log(btn);
       if(btn){
         btn.title = this.btn_name;
         BlockUtils.setLocalBlocks(this.maindatas);
@@ -123,8 +112,7 @@ export class AddTextButtonPopupComponent implements OnInit {
     if(index != null){
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
     }
-
-    console.log(this.blocks); 
+ 
     let buttons = new Array();
     let func;
     let text = ""
@@ -132,8 +120,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       text =this.mini_block.message.text;
     }else{
       text =this.mini_block.message.attachment.payload.text;
-    }
-    console.log(this.button_index);
+    } 
     if(this.mini_block.type == "button-text-only"){
       buttons = this.mini_block.message.attachment.payload.buttons; 
       buttons[this.button_index] =
@@ -152,8 +139,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       }
       func = ChatbotFunc.genButtonTemplate(text,buttons);
     } 
-    this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func;
-    console.log(this.maindatas);
+    this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func; 
     BlockUtils.setLocalBlocks(this.maindatas); 
   }
 
@@ -161,8 +147,7 @@ export class AddTextButtonPopupComponent implements OnInit {
     if(index != null){
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
     }
-
-    console.log(this.blocks); 
+ 
     let buttons = new Array();
     let func;
     let text = ""
@@ -170,8 +155,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       text =this.mini_block.message.text;
     }else{
       text =this.mini_block.message.attachment.payload.text;
-    }
-    console.log(this.button_index);
+    } 
     if(this.mini_block.type == "button-text-only"){
       buttons = this.mini_block.message.attachment.payload.buttons; 
       buttons[this.button_index] =
@@ -190,8 +174,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       }
       func = ChatbotFunc.genButtonTemplate(text,buttons);
     }
-    this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func;
-    console.log(this.maindatas);
+    this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func; 
     BlockUtils.setLocalBlocks(this.maindatas); 
   }
   
@@ -199,8 +182,7 @@ export class AddTextButtonPopupComponent implements OnInit {
     if(txt ==""){
       this.show_blocks = this.blocks;
     }else{  
-      let arr_map = this.blocks.map(el => el.block_name);
-      console.log(arr_map);
+      let arr_map = this.blocks.map(el => el.block_name); 
       const search_bools = this.search(arr_map,txt);
       this.show_blocks = new Array(); 
       for(let i = 0 ; i < search_bools.length ;i++){
