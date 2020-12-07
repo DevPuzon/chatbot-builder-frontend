@@ -19,7 +19,7 @@ export class CustomHttpService {
   private token  = "";
   constructor(private http:HttpClient,
     private router:Router){  
-      // this.base = environment.backend;
+      this.base = environment.backend;
       LoggerUtil.log(this.base);
       this.token ="Bearer "+ localStorage.getItem("-=[]t");
   }
