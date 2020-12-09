@@ -28,11 +28,11 @@ export class AddCarButtonComponent implements OnInit {
   constructor(private formBuilder:FormBuilder) { 
   }
   // .elements[this.element_i].buttons
-  ngOnInit() {   
+  async ngOnInit() {   
     this.mini_block = this.maindatas[this.block_index].
     mini_blocks[this.mini_block_index];
     this.onCheckButton(); 
-    let localBlocks = BlockUtils.getCarButtonBlocks(this.block_index,this.mini_block_index,this.element_i,this.button_index);
+    let localBlocks = await BlockUtils.getCarButtonBlocks(this.block_index,this.mini_block_index,this.element_i,this.button_index);
      
     if(localBlocks != null || localBlocks != undefined){
       this.saveHasBlocks(localBlocks);

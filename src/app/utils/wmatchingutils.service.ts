@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { IndexedDBAngular } from 'indexeddb-angular';
 import { BlockUtils } from './block-utils';
 
 @Injectable({
@@ -9,70 +10,20 @@ export class WmatchingutilsService {
   constructor() { }
   static setWordMatch(data,maindatas){ 
     this.cleanWordMatch(data);
-    this.pureSetWordMatch(JSON.stringify(data));
+    this.pureSetWordMatch( data);
   }
 
-  static cleanWordMatch(data) { 
-    // const block_names = this.getMainBlocks();   
-    // if(!data){
-    //   return false;
-    // }
-    // if(!block_names){
-    //   return false;
-    // }
-    // if( block_names.length == 0){
-    //   return false;
-    // }  
-    // for(let i = 0 ;i< data.length ;i ++){ 
-    //   const commands = data[i].commands; 
-    //   if(commands || commands != null || commands != undefined || commands.length > 0){ 
-    //     for(let k = 0 ; k < commands.length ; k ++){ 
-    //       if(commands[k].command_type == "block"){ 
-    //         const block_properties = commands[k].block_properties;
-    //         if(block_properties || block_properties != null || block_properties != undefined || block_properties.length > 0){
-    //           if(block_properties.find(o=>o.ischecked === true)){  
-    //             for(let l = 0 ; l < block_properties.length ; l ++){ 
-    //               const block_property= block_properties[l]; 
-    //               if(block_properties[l]){
-    //                 const block_property = block_properties[l+1];  
-    //                 if(block_property){   
-    //                   if(block_names[l] == block_property.block_name  ){ 
-    //                     block_properties.splice(l,1);
-    //                   }
-    //                 } 
-    //                 else if(block_names.length  < block_properties.length){ 
-    //                   block_properties.splice(block_properties.length-1,1);
-    //                 }
-    //                 if(block_names[l]){
-    //                   block_properties[l].block_name = block_names[l];
-    //                 } 
-    //               }  
-    //             }
-    //             if(!block_properties.find(o=>o.ischecked === true)){
-    //               commands.splice(k,1);
-    //             }
-    //           }else{
-    //             commands.splice(k,1);
-    //           }
-    //         }
-    //       }
-    //     } 
-    //   }
-    // } 
-    // this.pureSetWordMatch(JSON.stringify(data));
-    this.addcleanWordMatch(data);
-  }
-  static addcleanWordMatch(data){
-    const block_names = this.getMainBlocks();  
-    if(!data){ 
+  static async cleanWordMatch(data) { 
+    const block_names = await this.getMainBlocks();     
+    if(!data){
       return false;
     }
-    if(!block_names){ 
+    if(!block_names){
       return false;
     }
-    if( block_names.length == 0){ 
+    if( block_names.length == 0){
       return false;
-    }   
+    }  
     for(let i = 0 ;i< data.length ;i ++){ 
       const commands = data[i].commands; 
       if(commands || commands != null || commands != undefined || commands.length > 0){ 
@@ -80,41 +31,88 @@ export class WmatchingutilsService {
           if(commands[k].command_type == "block"){ 
             const block_properties = commands[k].block_properties;
             if(block_properties || block_properties != null || block_properties != undefined || block_properties.length > 0){
-             
-                
-              for(let q = 0 ; q < block_properties.length ;q ++){
-                if(!block_properties[q]){ 
-                  delete block_properties[q];
-                }  
-              } 
-              
-              for(let q = 0 ; q < block_names.length ;q ++){
-                if(block_properties[q]){ 
-                  const isch = block_properties[q].ischecked;
-                  block_properties[q] = {
-                    block_index : q,
-                    block_name : block_names[q],
-                    ischecked : isch
-                  }
-                  if(!isch){ 
-                    delete block_properties[q];
-                  }
-                }  
-              } 
-              // if(!block_properties.find(o=>o.ischecked === true)){
-              //   commands.splice(k,1);
-              // }
+              if(block_properties.find(o=>o.ischecked === true)){  
+                for(let l = 0 ; l < block_properties.length ; l ++){ 
+                  const block_property= block_properties[l]; 
+                  if(block_properties[l]){
+                    const block_property = block_properties[l+1];  
+                    if(block_property){   
+                      if(block_names[l] == block_property.block_name  ){ 
+                        block_properties.splice(l,1);
+                      }
+                    } 
+                    else if(block_names.length  < block_properties.length){ 
+                      block_properties.splice(block_properties.length-1,1);
+                    }
+                    if(block_names[l]){
+                      block_properties[l].block_name = block_names[l];
+                    } 
+                  }  
+                }
+                if(!block_properties.find(o=>o.ischecked === true)){
+                  commands.splice(k,1);
+                }
+              }else{
+                commands.splice(k,1);
+              }
             }
           }
         } 
       }
     } 
-    console.log(JSON.stringify(data));
-    this.pureSetWordMatch(JSON.stringify(data));
+    this.pureSetWordMatch( data);
+  }
+  static async addcleanWordMatch(data){
+    const block_names = await this.getMainBlocks();   
+    if(!data){
+      return false;
+    }
+    if(!block_names){
+      return false;
+    }
+    if( block_names.length == 0){
+      return false;
+    }  
+    for(let i = 0 ;i< data.length ;i ++){ 
+      const commands = data[i].commands; 
+      if(commands || commands != null || commands != undefined || commands.length > 0){ 
+        for(let k = 0 ; k < commands.length ; k ++){ 
+          if(commands[k].command_type == "block"){ 
+            const block_properties = commands[k].block_properties;
+            if(block_properties || block_properties != null || block_properties != undefined || block_properties.length > 0){
+              if(block_properties.find(o=>o.ischecked === true)){ 
+                for(let q = 0 ; q < block_names.length ;q ++){
+                  if(block_properties[q]){ 
+                    const isch =block_properties[q].ischecked;
+                    block_properties[q] = {
+                      block_index : q,
+                      block_name : block_names[q],
+                      ischecked : isch
+                    }
+                  }else{
+                    block_properties[q] = {
+                      block_index : q,
+                      block_name : block_names[q],
+                      ischecked : false
+                    }
+                  }
+                } 
+                if(!block_properties.find(o=>o.ischecked === true)){
+                  commands.splice(k,1);
+                }
+              }else{
+                commands.splice(k,1);
+              }
+            }
+          }
+        } 
+      }
+    } 
+    this.pureSetWordMatch( data);
   }
   
-  static getMainBlocks() {
-    const blocks = BlockUtils.getLocalBlocks();
+  static async getMainBlocks() {
+    const blocks = await BlockUtils.getLocalBlocks();
     if(!blocks){
       return null;
     }
@@ -124,11 +122,10 @@ export class WmatchingutilsService {
     }
     return ret ;
   }
-
-  static getWordMatch():any[]{
+  static async getWordMatch():Promise<any[]>{
     let ret = this.pureGetWordMatch();
     if(ret){
-      this.cleanWordMatch(ret);
+      await this.cleanWordMatch(ret);
       return ret;
     }else{
       return null;
@@ -143,23 +140,55 @@ export class WmatchingutilsService {
     }
   }
 
+  static db = new IndexedDBAngular('rti_db_word_matching', 1);
   static pureGetWordMatch(){
-    const length = parseInt(localStorage.getItem("word_matching_length"));
-    let ret = new Array();
-    for(let i = 0 ; i < length ; i ++){
-      ret.push(JSON.parse(localStorage.getItem("word_matching_"+i)));
-    }
-    if(ret){ 
-      return ret;
-    }else{
-      return null;
-    }
+    // const length = parseInt(localStorage.getItem("word_matching_length"));
+    // let ret = new Array();
+    // for(let i = 0 ; i < length ; i ++){
+    //   ret.push(JSON.parse(localStorage.getItem("word_matching_"+i)));
+    // }
+    // if(ret){ 
+    //   return ret;
+    // }else{
+    //   return null;
+    // }
+    
+    return new Promise<any>((resolve)=>{ 
+      this.db.createStore(1,function (dbs){ 
+        dbs.currentTarget.result.createObjectStore('word_matching'); 
+      }).then(()=>{   
+        this.db.getByKey('word_matching',0).then((snap)=>{
+          console.log(snap);
+          resolve(snap);
+        })
+      }).catch(err=>{ 
+        console.log(err);
+      })  
+    })
   }
-  static pureSetWordMatch(maindatas){
-    maindatas = JSON.parse(maindatas);
-    for(let i = 0 ; i < maindatas.length ; i ++){
-      localStorage.setItem("word_matching_"+i,JSON.stringify(maindatas[i]));
-    }
-    localStorage.setItem("word_matching_length",maindatas.length);
+  static pureSetWordMatch(word_matching){
+    // word_matching = JSON.parse(word_matching);
+    // for(let i = 0 ; i < word_matching.length ; i ++){
+    //   localStorage.setItem("word_matching_"+i,JSON.stringify(word_matching[i]));
+    // }
+    // localStorage.setItem("word_matching_length",word_matching.length);
+    
+    return new Promise<any>(async (resolve)=>{   
+      this.db.createStore(1,function (dbs){ 
+        dbs.currentTarget.result.createObjectStore('word_matching'); 
+      }).then(()=>{  
+        const dep_version= localStorage.getItem("dep_version");
+        if(dep_version){
+          this.db.update('word_matching',word_matching,0);
+        }else{
+          this.db.add('word_matching',word_matching,0);
+        }
+        this.db.getByKey('word_matching',0).then((snap)=>{ 
+          resolve();
+        })
+      }).catch(err=>{ 
+        console.log(err);
+      })  
+    })
   }
 }

@@ -33,10 +33,11 @@ export class WordMatchingContentComponent implements OnInit {
     loading.dismiss();  
   }   
   
-  init() { 
-    if(WmatchingutilsService.getWordMatch() != null){ 
-      this.wmatchingdtas = WmatchingutilsService.getWordMatch();
-    }else{
+  async init() { 
+    const localwordmatch =await WmatchingutilsService.getWordMatch();
+    if(localwordmatch != null){ 
+      this.wmatchingdtas =  localwordmatch;
+    }else{ 
       this.wmatchingdtas.push({user_possible_words:[],commands:[]});  
     }
     WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
@@ -55,7 +56,6 @@ export class WordMatchingContentComponent implements OnInit {
          return;
        } 
        this.wmatchingdtas = snap; 
-       WmatchingutilsService.addcleanWordMatch(this.wmatchingdtas);
        WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
        this.onSearch(""); 
      }, 

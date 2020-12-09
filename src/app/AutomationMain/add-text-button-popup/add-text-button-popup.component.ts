@@ -27,11 +27,11 @@ export class AddTextButtonPopupComponent implements OnInit {
   constructor(private formBuilder:FormBuilder) { 
   }
 
-  ngOnInit() {   
+  async ngOnInit() {   
     this.mini_block = this.maindatas[this.block_index].
     mini_blocks[this.mini_block_index];
     this.onCheckButton(); 
-    let localBlocks = BlockUtils.getTxtButtonBlocks(this.block_index,this.mini_block_index,this.button_index);
+    let localBlocks = await BlockUtils.getTxtButtonBlocks(this.block_index,this.mini_block_index,this.button_index);
      
     if(localBlocks != null || localBlocks != undefined){
       this.saveHasBlocks(localBlocks);
