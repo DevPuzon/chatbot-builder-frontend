@@ -24,6 +24,7 @@ export class CustomHttpService {
       this.token ="Bearer "+ localStorage.getItem("-=[]t");
   }
   get(ctrl){  
+    this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
     LoggerUtil.log(this.token);
     const url = this.base+ctrl;
@@ -37,6 +38,7 @@ export class CustomHttpService {
   }
   
   getNoBase(ctrl){ 
+    this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
     LoggerUtil.log(this.token);
     const url = ctrl;
@@ -48,6 +50,7 @@ export class CustomHttpService {
     .get(url, { headers: headers })
   }
   getId(ctrl,id){
+    this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
     LoggerUtil.log(this.token);
     const url = this.base+ctrl+"/"+id;
@@ -61,6 +64,7 @@ export class CustomHttpService {
   } 
 
   post(ctrl,body){
+    this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
     LoggerUtil.log(this.token);
     const url = this.base+ctrl;
@@ -75,6 +79,7 @@ export class CustomHttpService {
     .post(url,body, { headers: headers })
   }
   put(ctrl,id,body){
+    this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
     LoggerUtil.log(this.token);
     const url = this.base+ctrl+"/"+id;
@@ -89,6 +94,7 @@ export class CustomHttpService {
   }
   
   del(ctrl,id){
+    this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
     LoggerUtil.log(this.token);
     const url = this.base+ctrl+"/"+id;
@@ -101,6 +107,7 @@ export class CustomHttpService {
   } 
 
   getNoToken(ctrl){ 
+    this.base = environment.backend;
     const url = this.base+ctrl;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache') 
@@ -111,6 +118,7 @@ export class CustomHttpService {
   }
   
   delNoToken(ctrl,id){
+    this.base = environment.backend;
     const url = this.base+ctrl+"/"+id;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache') 
@@ -121,6 +129,7 @@ export class CustomHttpService {
   }
   
   postNoToken(ctrl,body){
+    this.base = environment.backend;
     const url = this.base+ctrl;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache') 
@@ -131,6 +140,7 @@ export class CustomHttpService {
     return this.http .post(url,body, { headers: headers })
   }
   putNoToken(ctrl,id,body){
+    this.base = environment.backend;
     const url = this.base+ctrl+"/"+id;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache') 
@@ -142,6 +152,7 @@ export class CustomHttpService {
   }
   
   errorFirst(json):string{  
+    this.base = environment.backend;
     let error =  json.error; 
     let keys =Object.keys(error);
     for (let i = 0 ; i < keys.length;i++){
@@ -158,6 +169,7 @@ export class CustomHttpService {
 
   
    getUser(){
+    this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
     LoggerUtil.log(this.token);
     return new Promise<any>((resolve,reject)=>{ 

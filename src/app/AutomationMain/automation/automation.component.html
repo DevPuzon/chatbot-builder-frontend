@@ -281,10 +281,27 @@
                           <ion-col size="auto" *ngFor="let payload of btn.payload.blocks" >
                             <p class="block-style" *ngIf="payload.ischecked">{{payload.block_name}} </p></ion-col>
                         </ion-row>
-                      </div>  
+                      </div>   
+                      <div class="tooltip"> 
+                        <img class="logo-del" (click)="onDelLChatBtn(i,x)"
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+                        <span class="tooltiptext">Delete button</span>
+                      </div>
                     </div>
                   </div>
                 </div> 
+                <div *ngIf="min_block.message.attachment.payload.buttons.length ==0"> 
+                  <div class="button-add" (click)="addLChatButton($event,i)" >
+                    <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
+                    <p class="add-button-txt">ADD STOP LIVE CHAT BUTTON </p>
+                  </div>
+                </div> 
+                <!-- <div *ngIf="!min_block.message.attachment"> 
+                  <div class="button-add" (click)="addTextButton($event,i)" >
+                    <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
+                    <p class="add-button-txt">ADD BUTTON (OPTIONAL)</p>
+                  </div>
+                </div>  -->
               </div>  
               <!-- URL Callback -->
               <div *ngIf="min_block.type == 'cback-only' "  class="cback-container block-card">

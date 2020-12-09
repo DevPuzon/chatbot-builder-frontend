@@ -8,8 +8,9 @@ export class WmatchingutilsService {
   constructor() { }
   static setWordMatch(data,maindatas){ 
     this.cleanWordMatch(data);
-    localStorage.setItem("word_matching",JSON.stringify(data));
+    this.pureSetWordMatch(JSON.stringify(data));
   }
+
   static cleanWordMatch(data) { 
     const block_names = this.getMainBlocks();   
     if(!data){
@@ -57,7 +58,7 @@ export class WmatchingutilsService {
         } 
       }
     } 
-    localStorage.setItem("word_matching",JSON.stringify(data));  
+    this.pureSetWordMatch(JSON.stringify(data));
   }
   static addcleanWordMatch(data){
     const block_names = this.getMainBlocks();   
@@ -105,7 +106,7 @@ export class WmatchingutilsService {
         } 
       }
     } 
-    localStorage.setItem("word_matching",JSON.stringify(data));  
+    this.pureSetWordMatch(JSON.stringify(data));
   }
   
   static getMainBlocks() {
@@ -120,7 +121,7 @@ export class WmatchingutilsService {
     return ret ;
   }
   static getWordMatch():any[]{
-    let ret = JSON.parse(localStorage.getItem("word_matching"));
+    let ret = this.pureGetWordMatch();
     if(ret){
       this.cleanWordMatch(ret);
       return ret;
@@ -135,5 +136,25 @@ export class WmatchingutilsService {
     }catch(e){
       return null;
     }
+  }
+
+  static pureGetWordMatch(){
+    const length = parseInt(localStorage.getItem("word_matching_length"));
+    let ret = new Array();
+    for(let i = 0 ; i < length ; i ++){
+      ret.push(JSON.parse(localStorage.getItem("word_matching_"+i)));
+    }
+    if(ret){ 
+      return ret;
+    }else{
+      return null;
+    }
+  }
+  static pureSetWordMatch(maindatas){
+    maindatas = JSON.parse(maindatas);
+    for(let i = 0 ; i < maindatas.length ; i ++){
+      localStorage.setItem("word_matching_"+i,JSON.stringify(maindatas[i]));
+    }
+    localStorage.setItem("word_matching_length",maindatas.length);
   }
 }

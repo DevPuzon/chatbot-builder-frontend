@@ -41,8 +41,9 @@
           <div *ngIf="command.command_type == 'block'"> 
             <ion-row>
               <ion-col size="auto" *ngFor="let block_property of command.block_properties;index as ie"> 
-           
-                <div class="non-block" *ngIf="block_property.ischecked">
+                
+                <div class="non-block" *ngIf="block_property">
+                  {{block_property.block_name}}
                   <p class="txt-block">{{block_property.block_name}}</p> 
                 </div>
               </ion-col>

@@ -10,10 +10,17 @@ export class BlockUtils {
 
   static getLocalBlocks():any[]{
     let ret ; 
-    if(localStorage.getItem("localblocks") == null || localStorage.getItem("localblocks") == "" || localStorage.getItem("localblocks") == undefined){
+    if(localStorage.getItem("localblock_length") == null || 
+    localStorage.getItem("localblock_length") == "" || localStorage.getItem("localblock_length") 
+    == undefined){
       return null;
     }
-    ret = JSON.parse(localStorage.getItem("localblocks"));
+    const length =parseInt(localStorage.getItem("localblock_length"));
+    let locablocks = new Array();
+    for(let i = 0 ; i <  length ; i ++){
+      locablocks.push(JSON.parse(localStorage.getItem("localblock_"+i)));
+    }
+    ret = locablocks;
     // ret = this.reBtnsPayloadParse(JSON.parse(localStorage.getItem("localblocks")))
     this.cleanBlocks(ret); 
     return  ret;
@@ -30,8 +37,9 @@ export class BlockUtils {
         if(hasBlockIndex!= i && hasBlockIndex!= -1){
           mblocks[i].block_name = block_name +" : copy";
         }
-      }  
-      localStorage.setItem("localblocks",JSON.stringify(mblocks)); 
+        localStorage.setItem("localblock_"+i,JSON.stringify(mblocks[i])); 
+      }   
+      localStorage.setItem("localblock_length",mblocks.length); 
       resolve();
     })
     // return mblocks;

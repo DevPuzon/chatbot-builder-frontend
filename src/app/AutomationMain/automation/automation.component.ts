@@ -205,7 +205,7 @@ export class AutomationComponent implements OnInit {
     ) 
     BlockUtils.setLocalBlocks(this.maindatas);
     BlockUtils.addcleanBlocks(this.maindatas);
-    this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
+    this.wmatchingdtas =WmatchingutilsService.pureGetWordMatch();
     WmatchingutilsService.addcleanWordMatch(this.wmatchingdtas); 
     this.onSearch("");
   } 
@@ -237,7 +237,7 @@ export class AutomationComponent implements OnInit {
             await BlockUtils.setLocalBlocks(this.maindatas);
 
             BlockUtils.cleanBlocks(this.maindatas);
-            this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
+            this.wmatchingdtas =WmatchingutilsService.pureGetWordMatch();
             WmatchingutilsService.cleanWordMatch(this.wmatchingdtas); 
             this.onSearch("");
           }
@@ -272,7 +272,7 @@ export class AutomationComponent implements OnInit {
     await BlockUtils.setLocalBlocks(this.maindatas);
     
     BlockUtils.cleanBlocks(this.maindatas);
-    this.wmatchingdtas =JSON.parse(localStorage.getItem("word_matching"));
+    this.wmatchingdtas =WmatchingutilsService.pureGetWordMatch();
     WmatchingutilsService.cleanWordMatch(this.wmatchingdtas); 
   } 
 
@@ -315,7 +315,7 @@ export class AutomationComponent implements OnInit {
             
             //clean data
             BlockUtils.cleanBlocks(this.maindatas);
-            this.wmatchingdtas = JSON.parse(localStorage.getItem("word_matching"));
+            this.wmatchingdtas =WmatchingutilsService.pureGetWordMatch();
             WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);  
             
             setTimeout(() => { 
@@ -378,8 +378,8 @@ export class AutomationComponent implements OnInit {
               setTimeout(() => {
                 loading.dismiss();
                 this.toast.presentToast("Cleared successfully"); 
-                localStorage.removeItem("word_matching");
-                localStorage.removeItem("localblocks");
+                localStorage.removeItem("word_matching_length");
+                localStorage.removeItem("localblocks_length");
                 window.location.reload();
               }, 2300);
           }
@@ -562,10 +562,7 @@ export class AutomationComponent implements OnInit {
     return await popover.present();
   }
 
-  async addTextButton(ev: any,mini_block_index) { 
-    if(this.block.mini_blocks[mini_block_index].type =="button-text-only"){
-      let btns_length =this.block.mini_blocks[mini_block_index].message.attachment.payload.buttons.length;
-    }
+  async addTextButton(ev: any,mini_block_index) {  
     const popover = await this.popoverController.create({
       component: AddTextButtonPopupComponent , 
       cssClass: 'ion-popover',
@@ -576,6 +573,19 @@ export class AutomationComponent implements OnInit {
         block_index:this.block_index}
     });
     return await popover.present();
+  }
+
+  async addLChatButton(ev: any,mini_block_index) {  
+    this.maindatas[this.block_index].mini_blocks[mini_block_index]
+    .message.attachment.payload.buttons.push({
+      type: "postback",
+      payload: {
+        isUserStopChatLive :true,
+        blocks : []
+      },
+      title: "Stop Chat"
+    });
+    this.onLChatEdit(ev,mini_block_index,"Stop Chat");
   }
 
   async onBtnTxtEdit(ev: any,mini_block_index,button_index,btn_name,txt_URL) {  
@@ -630,6 +640,14 @@ export class AutomationComponent implements OnInit {
       this.maindatas[this.block_index]
       .mini_blocks[mini_block_i] = ChatbotFunc.genText(txt)
     } 
+    BlockUtils.setLocalBlocks(this.maindatas);
+  }
+
+  onDelLChatBtn(mini_block_i,txtbtn_i){
+    this.maindatas[this.block_index].mini_blocks[mini_block_i]
+    .message.attachment.payload.buttons.splice(txtbtn_i,1);
+    const btns  =this.maindatas[this.block_index].mini_blocks[mini_block_i]
+    .message.attachment.payload.buttons; 
     BlockUtils.setLocalBlocks(this.maindatas);
   }
 

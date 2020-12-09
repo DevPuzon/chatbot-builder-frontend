@@ -54,9 +54,9 @@ export class UserLoginComponent implements OnInit {
     .subscribe(async (snap:any)=>{ 
       await loading.dismiss();   
       localStorage.setItem("-=[]t",snap.token); 
-      localStorage.removeItem("localblocks");
+      localStorage.removeItem("localblocks_length");
       localStorage.removeItem("dep_version");
-      localStorage.removeItem("word_matching"); 
+      localStorage.removeItem("word_matching_length"); 
       setTimeout(() => { 
         this.cusHttp.getUser()
         .then(()=>{
