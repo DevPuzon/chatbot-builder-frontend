@@ -26,7 +26,8 @@ export class BlockUtils {
     return  ret;
   }
    
-  static setLocalBlocks(mblocks){   
+  static setLocalBlocks(mblocks){  
+    console.log("setLocalBlocks");
     return new Promise<any>((resolve)=>{ 
       for(let i = 0 ; i <  mblocks.length ;i++){
         const block_name = mblocks[i].block_name; 

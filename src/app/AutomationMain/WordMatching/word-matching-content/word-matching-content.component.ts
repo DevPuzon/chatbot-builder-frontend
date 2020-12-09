@@ -55,6 +55,7 @@ export class WordMatchingContentComponent implements OnInit {
          return;
        } 
        this.wmatchingdtas = snap; 
+       WmatchingutilsService.addcleanWordMatch(this.wmatchingdtas);
        WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
        this.onSearch(""); 
      }, 
