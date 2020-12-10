@@ -325,11 +325,12 @@ export class AutomationComponent implements OnInit {
             BlockUtils.cleanBlocks(this.maindatas);
             this.wmatchingdtas =await WmatchingutilsService.pureGetWordMatch();
             WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);  
-            
+            const localblocks = await BlockUtils.getLocalBlocks();
+            const wmatchingdtas = this.wmatchingdtas;
             setTimeout(() => { 
               this.custHttps.post("deploy/"+this.user.clientID+"/"+this.user.clientID,{
-                blocks:BlockUtils.getLocalBlocks(),
-                word_matches:WmatchingutilsService.getWordMatch()
+                blocks:localblocks,
+                word_matches:wmatchingdtas
               }).subscribe(async (snap:any)=>{  
                 loading.dismiss(); 
                 localStorage.setItem("dep_version",snap.version);   

@@ -154,11 +154,13 @@ export class WmatchingutilsService {
     // }
     
     return new Promise<any>((resolve)=>{ 
+      
       this.db.createStore(1,function (dbs){ 
         dbs.currentTarget.result.createObjectStore('word_matching'); 
       }).then(()=>{   
         this.db.getByKey('word_matching',0).then((snap)=>{
           console.log(snap);
+          snap = JSON.parse(snap);
           resolve(snap);
         })
       }).catch(err=>{ 
@@ -174,6 +176,7 @@ export class WmatchingutilsService {
     // localStorage.setItem("word_matching_length",word_matching.length);
     
     return new Promise<any>(async (resolve)=>{   
+      word_matching = JSON.stringify(word_matching);
       this.db.createStore(1,function (dbs){ 
         dbs.currentTarget.result.createObjectStore('word_matching'); 
       }).then(()=>{  

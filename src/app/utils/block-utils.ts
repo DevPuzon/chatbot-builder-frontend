@@ -39,7 +39,9 @@ export class BlockUtils {
         //   console.log(err);
         // })
         
-        this.db.getByKey('localblock',0).then((snap)=>{
+        this.db.getByKey('localblock',0).then((snap)=>{ 
+          snap = JSON.parse(snap);
+          this.cleanBlocks(snap); 
           console.log(snap);
           resolve(snap);
         })
@@ -51,6 +53,7 @@ export class BlockUtils {
    
   static setLocalBlocks(mblocks){   
     return new Promise<any>(async (resolve)=>{  
+      mblocks = JSON.stringify(mblocks);
       // for(let i = 0 ; i <  mblocks.length ;i++){ 
       //   // await this.timer(50);  
       //   const block_name = mblocks[i].block_name; 
