@@ -33,7 +33,7 @@ export class WordMatchingContentComponent implements OnInit {
     loading.dismiss();  
   }   
   
-  async init() { 
+  async init() {  
     const localwordmatch =await WmatchingutilsService.getWordMatch();
     if(localwordmatch != null){ 
       this.wmatchingdtas =  localwordmatch;
@@ -53,8 +53,7 @@ export class WordMatchingContentComponent implements OnInit {
      .subscribe(async (snap:any)=>{  
        snap = snap.response;
        console.log(snap); 
-       if(!snap){ 
-        WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
+       if(!snap){  
          return;
        } 
        this.wmatchingdtas = snap; 

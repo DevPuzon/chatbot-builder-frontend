@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
+import { CustomHttpService } from 'src/app/utils/custom-http.service';
 
 @Component({
   selector: 'app-menu',
@@ -10,16 +11,13 @@ import { PopoverController } from '@ionic/angular';
 export class MenuComponent implements OnInit {
 
   constructor(private router:Router,
+    private cushttp:CustomHttpService,
     private popover:PopoverController) { }
 
   ngOnInit() {}
 
-  logout(){ 
-    localStorage.clear();
-    this.router.navigateByUrl("auth/login");
+  logout(){   
     this.popover.dismiss();
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    this.cushttp.onLogoutUser();
   }
 }

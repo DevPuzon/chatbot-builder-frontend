@@ -41,6 +41,7 @@ export class BlockUtils {
         
         this.db.getByKey('localblock',0).then((snap)=>{ 
           console.log(snap);
+          if(!snap){resolve(null) ;return;}
           try{ 
             snap = JSON.parse(snap);
             this.cleanBlocks(snap);  
@@ -51,6 +52,18 @@ export class BlockUtils {
             resolve(null);
           }
         })
+      }).catch(err=>{ 
+        console.log(err);
+      })  
+    })
+  }
+
+  static delBlocks(){
+    return new Promise<any>((resolve)=>{ 
+      this.db.createStore(1,function (dbs){ 
+        dbs.currentTarget.result.createObjectStore('localblock'); 
+      }).then(()=>{   
+        this.db.clear('localblock').then(()=>{resolve()})
       }).catch(err=>{ 
         console.log(err);
       })  

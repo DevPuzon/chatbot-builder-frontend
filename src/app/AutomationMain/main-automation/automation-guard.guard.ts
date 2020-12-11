@@ -13,9 +13,7 @@ export class AutomationGuardGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.cushttp.getUser().then(()=>{
-      
-    })
+    this.cushttp.getUser() ;
     if(localStorage.getItem("-==0us")){
       return true;
     }else{

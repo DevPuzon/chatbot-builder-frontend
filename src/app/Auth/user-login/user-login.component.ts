@@ -5,8 +5,10 @@ import { LoadingController } from '@ionic/angular';
 
 import { SocialAuthService } from "angularx-social-login";
 import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
+import { BlockUtils } from 'src/app/utils/block-utils';
 import { CustomHttpService } from 'src/app/utils/custom-http.service';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
+import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
@@ -47,9 +49,11 @@ export class UserLoginComponent implements OnInit {
   } 
   
   async onLogin() { 
-    localStorage.clear();
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present(); 
+    await  BlockUtils.delBlocks();
+    await WmatchingutilsService.delWordMatch();
+    localStorage.clear();
     
     this.cusHttp.postNoToken("login", this.form.value)
     .subscribe(async (snap:any)=>{ 

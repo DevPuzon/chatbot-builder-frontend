@@ -17,7 +17,7 @@ export const environment = {
   SECRET_ACCESS_KEY : "5Pia8GUCTVTcm4RuB+XAqMdwsiHsjVdu1a2I6t29",
   AWS_REGION : "ap-southeast-1",
   S3_BUCKET : "kawi-rb",
-  backend:"https://api.retailgate.tech:20186/api/"
+  backend:"https://api.retailgate.tech:20185/api/"
 };
 
 /*

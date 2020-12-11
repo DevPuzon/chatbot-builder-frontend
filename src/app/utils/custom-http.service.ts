@@ -5,6 +5,8 @@ import { rejects } from 'assert';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { LoggerUtil } from './logger-util';
+import { BlockUtils } from './block-utils';
+import { WmatchingutilsService } from './wmatchingutils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -195,11 +197,13 @@ export class CustomHttpService {
       // });
     })
   }
-  onLogoutUser(){// this.toast.presentToast("Something went wrong");
-  this.router.navigateByUrl("");
-  localStorage.clear();
-    setTimeout(() => { 
-      window.location.reload();
-    }, 1500);
+  async onLogoutUser(){// this.toast.presentToast("Something went wrong");
+    this.router.navigateByUrl("auth/login");
+    await  BlockUtils.delBlocks();
+    await WmatchingutilsService.delWordMatch();
+    localStorage.clear();
+      setTimeout(() => { 
+        window.location.reload();
+      }, 800);
   }
 }

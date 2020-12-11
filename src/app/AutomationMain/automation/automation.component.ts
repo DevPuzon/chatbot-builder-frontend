@@ -172,9 +172,8 @@ export class AutomationComponent implements OnInit {
         localStorage.setItem("dep_version",version);
         this.getCloudblocks();  
       }
-    },err=>{
-      WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
-      BlockUtils.setLocalBlocks(this.maindatas);
+    },err=>{ 
+      this.deployNow();
       console.log(err);
     })
   }
@@ -331,34 +330,37 @@ export class AutomationComponent implements OnInit {
         }, {
           text: 'Yes',
           handler: async () => { 
-            await BlockUtils.setLocalBlocks(this.maindatas); 
-            var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-            await loading.present(); 
             
-            //clean data
-            BlockUtils.cleanBlocks(this.maindatas);
-            this.wmatchingdtas =await WmatchingutilsService.pureGetWordMatch();
-            WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);  
-            const localblocks = await BlockUtils.getLocalBlocks();
-            const wmatchingdtas = this.wmatchingdtas;
-            setTimeout(() => { 
-              this.custHttps.post("deploy/"+this.user.clientID+"/"+this.user.clientID,{
-                blocks:localblocks,
-                word_matches:wmatchingdtas
-              }).subscribe(async (snap:any)=>{  
-                loading.dismiss(); 
-                localStorage.setItem("dep_version",snap.version);   
-              }, 
-              (errorCode: Response) => { 
-                loading.dismiss(); 
-                this.toast.presentToast("Something went wrong, please try again later.");
-              });  
-            }, 1200);
+            this.deployNow();
           }
         }
       ]
     }); 
     await alert.present();
+  }
+  async deployNow() { 
+    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    await loading.present(); 
+    await BlockUtils.setLocalBlocks(this.maindatas); 
+    //clean data
+    BlockUtils.cleanBlocks(this.maindatas);
+    this.wmatchingdtas =await WmatchingutilsService.pureGetWordMatch();
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);  
+    const localblocks = await BlockUtils.getLocalBlocks();
+    const wmatchingdtas = this.wmatchingdtas;
+    setTimeout(() => { 
+      this.custHttps.post("deploy/"+this.user.clientID+"/"+this.user.clientID,{
+        blocks:localblocks,
+        word_matches:wmatchingdtas
+      }).subscribe(async (snap:any)=>{  
+        loading.dismiss(); 
+        localStorage.setItem("dep_version",snap.version);   
+      }, 
+      (errorCode: Response) => { 
+        loading.dismiss(); 
+        this.toast.presentToast("Something went wrong, please try again later.");
+      });  
+    }, 1200);
   }
 
   async onClearAll(){ 
@@ -423,8 +425,7 @@ export class AutomationComponent implements OnInit {
       snap = snap.response; 
       
       console.log(snap);
-      if(!snap){ 
-        BlockUtils.setLocalBlocks(this.maindatas);
+      if(!snap){  
         return;
       } 
       this.maindatas = snap;    
