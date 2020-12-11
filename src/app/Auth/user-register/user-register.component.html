@@ -11,11 +11,11 @@
           <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()"  (keyup.enter)="onSubmit()">
             <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
               <ion-label position="stacked">Messenger ID</ion-label>
-              <ion-input formControlName="pageID" placeholder="Please provide your messenger ID."></ion-input>
+              <ion-input formControlName="clientID" placeholder="Please provide your messenger ID."></ion-input>
             </ion-item>
-            <div *ngIf="submitted && f.pageID.errors">  
-              <div class="error-text">{{(f.pageID.errors.required) ? 'ID is required' :
-                (f.pageID.errors) ? 'Number only.' :  ''}}</div>
+            <div *ngIf="submitted && f.clientID.errors">  
+              <div class="error-text">{{(f.clientID.errors.required) ? 'ID is required' :
+                (f.clientID.errors) ? 'Number only.' :  ''}}</div>
             </div>
   
             <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">

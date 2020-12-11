@@ -12,7 +12,8 @@ export class EditStopChatlLiveComponent implements OnInit {
   @Input() block_index = 0 ;
   @Input() mini_block_index  = 0 ;   
   @Input() btn_name ="";  
-  
+  @Input() localBlocks :any;
+  @Input() button_index =0;
   mini_block :any;  
  
   blocks = new Array();
@@ -25,10 +26,10 @@ export class EditStopChatlLiveComponent implements OnInit {
     this.mini_block = this.maindatas[this.block_index].
     mini_blocks[this.mini_block_index]; 
   
-    let localBlocks = this.mini_block.message.attachment.payload.buttons[0].payload.blocks
+    // let localBlocks = this.mini_block.message.attachment.payload.buttons[0].payload.blocks
      
-    if(localBlocks != null || localBlocks != undefined){
-      this.saveHasBlocks(localBlocks);
+    if(this.localBlocks != null || this.localBlocks != undefined){
+      this.saveHasBlocks(this.localBlocks);
     }else{
       this.saveNoBlocks();
     } 
@@ -68,7 +69,7 @@ export class EditStopChatlLiveComponent implements OnInit {
     if(this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment){
       
       this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
-    .message.attachment.payload.buttons[0].title = this.btn_name; 
+    .message.attachment.payload.buttons[this.button_index].title = this.btn_name; 
       BlockUtils.setLocalBlocks(this.maindatas);
     } 
   }
@@ -79,7 +80,7 @@ export class EditStopChatlLiveComponent implements OnInit {
       this.blocks[index].ischecked = !this.blocks[index].ischecked;
     }  
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
-    .message.attachment.payload.buttons[0].payload.blocks= this.blocks; 
+    .message.attachment.payload.buttons[this.button_index].payload.blocks= this.blocks; 
     BlockUtils.setLocalBlocks(this.maindatas); 
   } 
   

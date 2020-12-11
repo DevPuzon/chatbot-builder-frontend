@@ -112,7 +112,15 @@ export class ChatbotFunc{
                     blocks : []
                   },
                   title: "Stop Chat"
-                }
+                },
+                {
+                  type: "postback",
+                  payload: {
+                    isUserFollowUp :true,
+                    blocks : []
+                  },
+                  title: "Follow up"
+                },
               ]
             }
           }

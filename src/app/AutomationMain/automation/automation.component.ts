@@ -66,12 +66,19 @@ export class AutomationComponent implements OnInit {
     });
     return await popover.present();
   }
+  isUserStopChatLive = false;
+  isUserFollowUp = false;
   checkIsShowMinBlock() {
     const mini_blocks = this.maindatas[this.block_index].mini_blocks;  
     let isShow = mini_blocks.findIndex(o => o.type === 'cback-only'); 
-    let isLChatShow = mini_blocks.findIndex(o => o.type === 'livechat-only');
-    if(isShow != -1 || isLChatShow != -1){
+    let isLChatShow = mini_blocks.find(o => o.type === 'livechat-only');
+    console.log(isLChatShow);
+    if(isShow != -1 || isLChatShow){
       this.isShowMinBlock = false;
+      this.isUserStopChatLive = !!isLChatShow.message.attachment.payload.buttons.find(o => o.payload.isUserStopChatLive===true);
+      this.isUserFollowUp =  !!isLChatShow.message.attachment.payload.buttons.find(o => o.payload.isUserFollowUp===true);
+      console.log(this.isUserStopChatLive);
+      console.log(this.isUserFollowUp);
     }else{
       this.isShowMinBlock = true;
     } 
@@ -155,13 +162,20 @@ export class AutomationComponent implements OnInit {
   }
   getCVersion() { 
     this.custHttps.getId("getversion",this.user.clientID)
-    .subscribe((snap:any)=>{ 
+    .subscribe((snap:any)=>{
+      if(!snap){
+        return;
+      }
       const version = snap.version;
       const localversion = localStorage.getItem("dep_version");
       if(version != localversion){
         localStorage.setItem("dep_version",version);
         this.getCloudblocks();  
       }
+    },err=>{
+      WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
+      BlockUtils.setLocalBlocks(this.maindatas);
+      console.log(err);
     })
   }
 
@@ -407,7 +421,10 @@ export class AutomationComponent implements OnInit {
     .subscribe(async (snap:any)=>{ 
       await loading.dismiss();
       snap = snap.response; 
+      
+      console.log(snap);
       if(!snap){ 
+        BlockUtils.setLocalBlocks(this.maindatas);
         return;
       } 
       this.maindatas = snap;    
@@ -599,7 +616,24 @@ export class AutomationComponent implements OnInit {
       },
       title: "Stop Chat"
     });
-    this.onLChatEdit(ev,mini_block_index,"Stop Chat");
+    
+    const btn_i = this.maindatas[this.block_index].mini_blocks[mini_block_index]
+    .message.attachment.payload.buttons.length -1;
+    this.onLChatEdit(ev,mini_block_index,"Stop Chat",null,btn_i);
+  }
+  async addLUPChatButton(ev: any,mini_block_index) {  
+    this.maindatas[this.block_index].mini_blocks[mini_block_index]
+    .message.attachment.payload.buttons.push({
+      type: "postback",
+      payload: {
+        isUserFollowUp :true,
+        blocks : []
+      },
+      title: "Follow up"
+    });
+    const btn_i = this.maindatas[this.block_index].mini_blocks[mini_block_index]
+    .message.attachment.payload.buttons.length -1;
+    this.onLChatEdit(ev,mini_block_index,"Follow up",null,btn_i);
   }
 
   async onBtnTxtEdit(ev: any,mini_block_index,button_index,btn_name,txt_URL) {  
@@ -629,7 +663,8 @@ export class AutomationComponent implements OnInit {
     });
     return await popover.present();
   } 
-  async onLChatEdit(ev: any,mini_block_index,btn_name) {  
+  async onLChatEdit(ev: any,mini_block_index,btn_name,localBlocks,button_index) {   
+    this.checkIsShowMinBlock();
     const popover = await this.popoverController.create({
       component: EditStopChatlLiveComponent , 
       cssClass: 'ion-popover',
@@ -637,6 +672,8 @@ export class AutomationComponent implements OnInit {
       componentProps:{maindatas:this.maindatas, 
         mini_block_index:mini_block_index, 
         btn_name:btn_name, 
+        localBlocks:localBlocks,
+        button_index:button_index,
         block_index:this.block_index}
     });
     return await popover.present();
@@ -662,7 +699,8 @@ export class AutomationComponent implements OnInit {
     .message.attachment.payload.buttons.splice(txtbtn_i,1);
     const btns  =this.maindatas[this.block_index].mini_blocks[mini_block_i]
     .message.attachment.payload.buttons;  
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas);  
+    this.checkIsShowMinBlock();
   }
 
   onDelCarBtn(mini_block_i,element_i,button_index){

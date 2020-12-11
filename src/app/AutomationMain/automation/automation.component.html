@@ -271,8 +271,9 @@
                 *ngIf="min_block.type == 'livechat-only'">
                   <div 
                   [class]="btn.title == '' ? 'err-button':'button'"
-                  *ngFor="let btn of min_block.message.attachment.payload.buttons; index as x"
-                  (click)="onLChatEdit($event,i,btn.title)">
+                  *ngFor="let btn of min_block.message.attachment.payload.buttons; index as x;
+                  let title = 'title';"
+                  (click)="onLChatEdit($event,i,btn.title,btn.payload.blocks,x)"> 
                     <p class="button-title">{{btn.title == '' ? 'Enter button name':btn.title}}</p>
                     <div class="button-main"> 
                       <div class="button-subtitle func" 
@@ -289,11 +290,17 @@
                       </div>
                     </div>
                   </div>
-                </div> 
-                <div *ngIf="min_block.message.attachment.payload.buttons.length ==0"> 
+                </div>  
+                <div *ngIf="!isUserStopChatLive" > 
                   <div class="button-add" (click)="addLChatButton($event,i)" >
                     <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
                     <p class="add-button-txt">ADD STOP LIVE CHAT BUTTON </p>
+                  </div>
+                </div> 
+                <div *ngIf="!isUserFollowUp"> 
+                  <div class="button-add" (click)="addLUPChatButton($event,i)" >
+                    <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
+                    <p class="add-button-txt">ADD FOLLOW UP BUTTON </p>
                   </div>
                 </div> 
                 <!-- <div *ngIf="!min_block.message.attachment"> 

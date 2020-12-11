@@ -158,10 +158,15 @@ export class WmatchingutilsService {
       this.db.createStore(1,function (dbs){ 
         dbs.currentTarget.result.createObjectStore('word_matching'); 
       }).then(()=>{   
-        this.db.getByKey('word_matching',0).then((snap)=>{
-          console.log(snap);
-          snap = JSON.parse(snap);
-          resolve(snap);
+        this.db.getByKey('word_matching',0).then((snap)=>{ 
+          try{ 
+            snap = JSON.parse(snap);
+            resolve(snap);
+          }catch(err){
+            this.db.clear('word_matching');
+            console.log(err);
+            resolve(null); 
+          }
         })
       }).catch(err=>{ 
         console.log(err);

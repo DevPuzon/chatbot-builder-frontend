@@ -51,8 +51,10 @@ export class WordMatchingContentComponent implements OnInit {
      //WORDMATCH
      this.custHttps.get("wordmatch/"+this.user.clientID)
      .subscribe(async (snap:any)=>{  
-       snap = snap.response; 
+       snap = snap.response;
+       console.log(snap); 
        if(!snap){ 
+        WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
          return;
        } 
        this.wmatchingdtas = snap; 

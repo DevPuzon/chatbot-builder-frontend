@@ -40,10 +40,16 @@ export class BlockUtils {
         // })
         
         this.db.getByKey('localblock',0).then((snap)=>{ 
-          snap = JSON.parse(snap);
-          this.cleanBlocks(snap); 
           console.log(snap);
-          resolve(snap);
+          try{ 
+            snap = JSON.parse(snap);
+            this.cleanBlocks(snap);  
+            resolve(snap);
+          }catch(err){
+            this.db.clear('localblock');
+            console.log(err);
+            resolve(null);
+          }
         })
       }).catch(err=>{ 
         console.log(err);
@@ -67,13 +73,10 @@ export class BlockUtils {
       //   localStorage.setItem("localblock_"+i,JSON.stringify(mblocks[i])); 
       // }   
       // localStorage.setItem("localblock_length",mblocks.length); 
-       
-      console.log("IndexedDBAngular");
-      this.db.createStore(1,function (dbs){
-        console.log("createStore");
+        
+      this.db.createStore(1,function (dbs){ 
         dbs.currentTarget.result.createObjectStore('localblock'); 
-      }).then(()=>{ 
-        console.log("createStore then");
+      }).then(()=>{  
          
         // this.db.clear("localblock").then(async ()=>{
         //   for(let i = 0 ; i <  mblocks.length ;i++){  
@@ -91,12 +94,11 @@ export class BlockUtils {
         }else{
           this.db.add('localblock',mblocks,0);
         }
-        this.db.getByKey('localblock',0).then((snap)=>{
+        this.db.getByKey('localblock',0).then((snap)=>{ 
           console.log(snap);
           resolve();
         })
-      }).catch(err=>{
-          console.log("errIndexedDBAngular");
+      }).catch(err=>{ 
         console.log(err);
       })  
     })
@@ -550,21 +552,17 @@ export class BlockUtils {
     if(blocks == "" || blocks == null ){
       return null;
     }
-     
-    console.log(mini_block_index);
+      
     let mini_blocks = blocks[block_index].mini_blocks[mini_block_index];
     if(mini_blocks.type != 'carousel-only'){
       return null;
     } 
-    let ret = null;
-    console.log(mini_blocks);
-    console.log(button_index);
+    let ret = null; 
     let btns = mini_blocks.message.attachment.payload.elements[element_i].buttons[button_index];
     if(btns == undefined || btns == null){
       return null;
     }
-
-    console.log(btns);
+ 
     ret = mini_blocks.message.attachment.payload.elements[element_i].buttons[button_index].payload;
     return ret;
   } 
@@ -574,20 +572,17 @@ export class BlockUtils {
     if(blocks == "" || blocks == null ){
       return null;
     }
-     
-    console.log(mini_block_index);
+      
     let mini_blocks = blocks[block_index].mini_blocks[mini_block_index];
     if(mini_blocks.type != 'quickreply-only'){
       return null;
     } 
-    let ret = null;
-    console.log(mini_blocks); 
+    let ret = null; 
     let btns = mini_blocks.message.quick_replies[qreply_i].payload; 
     if(btns == undefined || btns == null || btns.length <= 0){
       return null;
     }
-
-    console.log(btns);
+ 
     ret = mini_blocks.message.quick_replies[qreply_i].payload;
     return ret;
   } 

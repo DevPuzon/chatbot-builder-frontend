@@ -47,6 +47,7 @@ export class UserLoginComponent implements OnInit {
   } 
   
   async onLogin() { 
+    localStorage.clear();
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present(); 
     
@@ -54,9 +55,6 @@ export class UserLoginComponent implements OnInit {
     .subscribe(async (snap:any)=>{ 
       await loading.dismiss();   
       localStorage.setItem("-=[]t",snap.token); 
-      localStorage.removeItem("localblocks_length");
-      localStorage.removeItem("dep_version");
-      localStorage.removeItem("word_matching_length"); 
       setTimeout(() => { 
         this.cusHttp.getUser()
         .then(()=>{
