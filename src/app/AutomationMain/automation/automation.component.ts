@@ -20,8 +20,8 @@ import { UploadtostService } from 'src/app/utils/uploadtost.service';
 import { MenuComponent } from '../menu/menu.component';
 import { WordMatchingContentComponent } from '../WordMatching/word-matching-content/word-matching-content.component';
 import { LoggerUtil } from 'src/app/utils/logger-util';
-import { IndexedDBAngular } from 'indexeddb-angular';
- 
+import { IndexedDBAngular } from 'indexeddb-angular'; 
+import { FacebookService, InitParams } from 'ngx-facebook';
 declare var $:any;
 @Component({
   selector: 'app-automation',
@@ -35,14 +35,14 @@ export class AutomationComponent implements OnInit {
   text=""
   maindatas = new Array();
   block :any;
-  user:any;
-  isShowMinBlock = true;
+  user:any; 
   showEmojiPickers = new Array(); 
   wmatchingdtas = new Array();  
   search_blocks = new Array(); 
   delay = 3000;
   constructor(private popoverController:PopoverController,
-    private toast:ToastMessageService, 
+    private toast:ToastMessageService,
+    private facebookService: FacebookService, 
     private router :Router,
     private alertController:AlertController,
     private storage :AngularFireStorage,  
@@ -52,13 +52,18 @@ export class AutomationComponent implements OnInit {
   async ngOnInit() {    
     this.user = JSON.parse(localStorage.getItem("-==0us"));
     this.initSortable();
-    this.init();    
+    this.init();   
+    this.initFacebookService(); 
     // setInterval(()=>{
     //   BlockUtils.setLocalBlocks(this.maindatas); 
     //   WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
     //   WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
     // }, this.delay);
   }  
+  private initFacebookService(): void {
+    const initParams: InitParams = { xfbml:true, version:'v3.2'};
+    this.facebookService.init(initParams);
+  }
   async onMenu(ev){ 
     const popover = await this.popoverController.create({
       component: MenuComponent ,  
@@ -73,14 +78,11 @@ export class AutomationComponent implements OnInit {
     let isShow = mini_blocks.findIndex(o => o.type === 'cback-only'); 
     let isLChatShow = mini_blocks.find(o => o.type === 'livechat-only');
     console.log(isLChatShow);
-    if(isShow != -1 || isLChatShow){
-      this.isShowMinBlock = false;
+    if(isShow != -1 && isLChatShow){ 
       this.isUserStopChatLive = !!isLChatShow.message.attachment.payload.buttons.find(o => o.payload.isUserStopChatLive===true);
       this.isUserFollowUp =  !!isLChatShow.message.attachment.payload.buttons.find(o => o.payload.isUserFollowUp===true);
       console.log(this.isUserStopChatLive);
       console.log(this.isUserFollowUp);
-    }else{
-      this.isShowMinBlock = true;
     } 
   } 
   onNavMinblock(i){

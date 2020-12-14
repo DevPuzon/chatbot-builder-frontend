@@ -39,8 +39,7 @@ export class BlockUtils {
         //   console.log(err);
         // })
         
-        this.db.getByKey('localblock',0).then((snap)=>{ 
-          console.log(snap);
+        this.db.getByKey('localblock',0).then((snap)=>{  
           if(!snap){resolve(null) ;return;}
           try{ 
             snap = JSON.parse(snap);
@@ -63,7 +62,7 @@ export class BlockUtils {
       this.db.createStore(1,function (dbs){ 
         dbs.currentTarget.result.createObjectStore('localblock'); 
       }).then(()=>{   
-        this.db.clear('localblock').then(()=>{resolve()})
+        this.db.clear('localblock').then(()=>{resolve({done:true})})
       }).catch(err=>{ 
         console.log(err);
       })  
@@ -97,7 +96,7 @@ export class BlockUtils {
         //   } 
         //   this.db.getAll('localblock').then((snap)=>{
         //     console.log(snap);
-        //     resolve();
+        //     resolve({done:true});
         //   })
         // })  
         
@@ -107,9 +106,8 @@ export class BlockUtils {
         }else{
           this.db.add('localblock',mblocks,0);
         }
-        this.db.getByKey('localblock',0).then((snap)=>{ 
-          console.log(snap);
-          resolve();
+        this.db.getByKey('localblock',0).then((snap)=>{  
+          resolve({done:true});
         })
       }).catch(err=>{ 
         console.log(err);
@@ -138,7 +136,7 @@ export class BlockUtils {
   static timer (ms){
     return new Promise<any>((resolve)=>{  
       setTimeout(() => {
-        resolve();
+        resolve({done:true});
       }, ms);
     })
   }

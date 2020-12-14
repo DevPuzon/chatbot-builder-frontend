@@ -26,11 +26,13 @@ import {
 import {DragDropModule} from '@angular/cdk/drag-drop'; 
 import {AutosizeModule} from 'ngx-autosize';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { FacebookModule } from 'ngx-facebook';
  
 @NgModule({
   declarations: declarations,
   entryComponents: entryComponents,
   imports: [
+    FacebookModule.forRoot(),
     PickerModule,
     AutosizeModule,
     AngularFireModule.initializeApp(environment.firebase),

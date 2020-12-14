@@ -159,7 +159,6 @@ export class WmatchingutilsService {
         dbs.currentTarget.result.createObjectStore('word_matching'); 
       }).then(()=>{   
         this.db.getByKey('word_matching',0).then((snap)=>{  
-          console.log(snap);
           if(!snap){resolve(null) ;return;}
           try{ 
             snap = JSON.parse(snap);
@@ -194,7 +193,7 @@ export class WmatchingutilsService {
           this.db.add('word_matching',word_matching,0);
         }
         this.db.getByKey('word_matching',0).then((snap)=>{ 
-          resolve();
+          resolve({done:true});
         })
       }).catch(err=>{ 
         console.log(err);
@@ -207,7 +206,7 @@ export class WmatchingutilsService {
       this.db.createStore(1,function (dbs){ 
         dbs.currentTarget.result.createObjectStore('word_matching'); 
       }).then(()=>{   
-        this.db.clear('word_matching').then(()=>{resolve()})
+        this.db.clear('word_matching').then(()=>{resolve({done:true})})
       }).catch(err=>{ 
         console.log(err);
       })  

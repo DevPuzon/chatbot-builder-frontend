@@ -241,112 +241,97 @@
                         <span class="tooltiptext">Add quick reply</span>
                       </div>
                     </div>
-                  </div> 
+                  </div>  
+                  <!-- Live Chat -->
+                  <div id="min_block_{{i}}"  class="txt-container block-card" 
+                  *ngIf="min_block.type == 'livechat-only'">
+                    <div class="textarea-container"> 
+                      <textarea  class="txt"  #lchatminblock 
+                      (keyup)="kTitleTxt(lchatminblock.value,min_block,i)"  > {{min_block.message.attachment.payload.text }} </textarea>
+                    
+                    </div>
+                    <div class="buttons-container"
+                    *ngIf="min_block.type == 'livechat-only'">
+                      <div 
+                      [class]="btn.title == '' ? 'err-button':'button'"
+                      *ngFor="let btn of min_block.message.attachment.payload.buttons; index as x;
+                      let title = 'title';"
+                      (click)="onLChatEdit($event,i,btn.title,btn.payload.blocks,x)"> 
+                        <p class="button-title">{{btn.title == '' ? 'Enter button name':btn.title}}</p>
+                        <div class="button-main"> 
+                          <div class="button-subtitle func" 
+                          *ngIf="btn.type =='postback'">
+                            <ion-row>
+                              <ion-col size="auto" *ngFor="let payload of btn.payload.blocks" >
+                                <p class="block-style" *ngIf="payload.ischecked">{{payload.block_name}} </p></ion-col>
+                            </ion-row>
+                          </div>   
+                          <div class="tooltip"> 
+                            <img class="logo-del" (click)="onDelLChatBtn(i,x)"
+                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+                            <span class="tooltiptext">Delete button</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>  
+                    <div *ngIf="!isUserStopChatLive" > 
+                      <div class="button-add" (click)="addLChatButton($event,i)" >
+                        <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
+                        <p class="add-button-txt">ADD STOP LIVE CHAT BUTTON </p>
+                      </div>
+                    </div> 
+                    <div *ngIf="!isUserFollowUp"> 
+                      <div class="button-add" (click)="addLUPChatButton($event,i)" >
+                        <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
+                        <p class="add-button-txt">ADD FOLLOW UP BUTTON </p>
+                      </div>
+                    </div> 
+                    <!-- <div *ngIf="!min_block.message.attachment"> 
+                      <div class="button-add" (click)="addTextButton($event,i)" >
+                        <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
+                        <p class="add-button-txt">ADD BUTTON (OPTIONAL)</p>
+                      </div>
+                    </div>  -->
+                  </div>  
+                  <!-- URL Callback -->
+                  <div *ngIf="min_block.type == 'cback-only' "  class="cback-container block-card">
+                    <h2>URL Callback</h2>
+                    <input [(ngModel)]="min_block.message.url" (keyup)="kURLCback()"
+                    class="cback-input" >
+                    <div class="cback-block" (click)="onActionCback($event,'resolve',i)">
+                      <h3>Resolve block</h3>
+                    </div>
+                    <div class="list-block"  *ngIf="min_block.message.resolve_blocks.length > 0 ">
+                      <ion-row >
+                        <div *ngFor="let res_block of min_block.message.resolve_blocks">
+                          <ion-col *ngIf="res_block.ischecked" >
+                            <p class="block-style">{{res_block.block_name}}</p>
+                          </ion-col>
+                        </div>
+                      </ion-row>
+                    </div>
+                    <div class="cback-block" (click)="onActionCback($event,'reject',i)">
+                      <h3>Reject block</h3>
+                    </div>
+                    <div class="list-block" *ngIf="min_block.message.reject_blocks.length != 0">
+                      <ion-row>
+                        <div *ngFor="let rej_block of min_block.message.reject_blocks">
+                          <ion-col  *ngIf="rej_block.ischecked">
+                            <p class="block-style" >{{rej_block.block_name}}</p>
+                          </ion-col> 
+                        </div>
+                      </ion-row>
+                    </div>
+                  </div>
                   <div class="line-bottom"> 
                   </div>
                 </div>
               </div> 
             </div> 
           </div>
-        </div>    
-        <div class="slide " *ngFor="let min_block of block.mini_blocks;index as i" > 
-          <div class="builder-block-container bottom-b"  *ngIf="min_block.type == 'cback-only' ||
-           min_block.type == 'livechat-only'"> 
-            <div> 
-              <div class="tooltip"> 
-                <img class="logo-del" (click)="onDelMiniBlock(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
-                <span class="tooltiptext">Delete mini block</span>
-              </div>
-            </div>
-            <div>   
-              <!-- Live Chat -->
-              <div id="min_block_{{i}}"  class="txt-container block-card" 
-              *ngIf="min_block.type == 'livechat-only'">
-                <div class="textarea-container"> 
-                  <textarea  class="txt"  #lchatminblock 
-                  (keyup)="kTitleTxt(lchatminblock.value,min_block,i)"  > {{min_block.message.attachment.payload.text }} </textarea>
-                
-                </div>
-                <div class="buttons-container"
-                *ngIf="min_block.type == 'livechat-only'">
-                  <div 
-                  [class]="btn.title == '' ? 'err-button':'button'"
-                  *ngFor="let btn of min_block.message.attachment.payload.buttons; index as x;
-                  let title = 'title';"
-                  (click)="onLChatEdit($event,i,btn.title,btn.payload.blocks,x)"> 
-                    <p class="button-title">{{btn.title == '' ? 'Enter button name':btn.title}}</p>
-                    <div class="button-main"> 
-                      <div class="button-subtitle func" 
-                      *ngIf="btn.type =='postback'">
-                        <ion-row>
-                          <ion-col size="auto" *ngFor="let payload of btn.payload.blocks" >
-                            <p class="block-style" *ngIf="payload.ischecked">{{payload.block_name}} </p></ion-col>
-                        </ion-row>
-                      </div>   
-                      <div class="tooltip"> 
-                        <img class="logo-del" (click)="onDelLChatBtn(i,x)"
-                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
-                        <span class="tooltiptext">Delete button</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>  
-                <div *ngIf="!isUserStopChatLive" > 
-                  <div class="button-add" (click)="addLChatButton($event,i)" >
-                    <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
-                    <p class="add-button-txt">ADD STOP LIVE CHAT BUTTON </p>
-                  </div>
-                </div> 
-                <div *ngIf="!isUserFollowUp"> 
-                  <div class="button-add" (click)="addLUPChatButton($event,i)" >
-                    <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
-                    <p class="add-button-txt">ADD FOLLOW UP BUTTON </p>
-                  </div>
-                </div> 
-                <!-- <div *ngIf="!min_block.message.attachment"> 
-                  <div class="button-add" (click)="addTextButton($event,i)" >
-                    <div class="plus-container"> <img src="https://img.icons8.com/android/24/000000/plus.png"/></div>
-                    <p class="add-button-txt">ADD BUTTON (OPTIONAL)</p>
-                  </div>
-                </div>  -->
-              </div>  
-              <!-- URL Callback -->
-              <div *ngIf="min_block.type == 'cback-only' "  class="cback-container block-card">
-                <h2>URL Callback</h2>
-                <input [(ngModel)]="min_block.message.url" (keyup)="kURLCback()"
-                 class="cback-input" >
-                <div class="cback-block" (click)="onActionCback($event,'resolve',i)">
-                  <h3>Resolve block</h3>
-                </div>
-                <div class="list-block"  *ngIf="min_block.message.resolve_blocks.length > 0 ">
-                  <ion-row >
-                    <div *ngFor="let res_block of min_block.message.resolve_blocks">
-                      <ion-col *ngIf="res_block.ischecked" >
-                        <p class="block-style">{{res_block.block_name}}</p>
-                      </ion-col>
-                    </div>
-                  </ion-row>
-                </div>
-                <div class="cback-block" (click)="onActionCback($event,'reject',i)">
-                  <h3>Reject block</h3>
-                </div>
-                <div class="list-block" *ngIf="min_block.message.reject_blocks.length != 0">
-                  <ion-row>
-                    <div *ngFor="let rej_block of min_block.message.reject_blocks">
-                      <ion-col  *ngIf="rej_block.ischecked">
-                        <p class="block-style" >{{rej_block.block_name}}</p>
-                      </ion-col> 
-                    </div>
-                  </ion-row>
-                </div>
-              </div>
-              <div class="line-bottom"> 
-              </div>
-            </div>
-          </div> 
-        </div>
+        </div>     
 
-        <div class="mini-block" *ngIf="isShowMinBlock" > 
+        <div class="mini-block"  > 
           <h2>Add mini block</h2> 
           <div class="mini-blocks-con" > 
             <div class="btn-mini-block-con txt-color"
@@ -396,4 +381,7 @@
       </div>
     </ion-col>
   </ion-row>
+  <div class="fb-customerchat"
+     page_id="102223365016973">
+  </div>
 </ion-content>

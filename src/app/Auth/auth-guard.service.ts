@@ -13,15 +13,13 @@ export class AuthGuardService  implements CanActivate{
     ,private router:Router) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     if(localStorage.getItem("-=[]t")){
-      this.custHttps.getUser()
-      .then((user)=>{
+      console.log("AuthGuardService");
+      this.custHttps.getUser().then(()=>{
         this.router.navigateByUrl("t");
-      })
-      .catch(()=>{
-        this.router.navigateByUrl(""); 
-      }) 
-    }else{
+      }).catch(()=>{ this.router.navigateByUrl("");})
       return false;
+    }else{
+      return true;
     }
   }  
 }

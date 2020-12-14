@@ -23,7 +23,9 @@ export class WordMatchingContentComponent implements OnInit {
     private router:Router,
     private toast : ToastMessageService,
     private loadingController:LoadingController) { }
-    user:any;
+    
+  user:any;
+
   async ngOnInit() {
     this.user = JSON.parse(localStorage.getItem("-==0us"));
     this.initSortable();

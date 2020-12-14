@@ -180,6 +180,7 @@ export class CustomHttpService {
         LoggerUtil.log(snap);
         if(!snap){
           reject();
+          this.onLogoutUser();
           return;
         }
         localStorage.setItem('-==0us',JSON.stringify(snap));
@@ -198,10 +199,10 @@ export class CustomHttpService {
     })
   }
   async onLogoutUser(){// this.toast.presentToast("Something went wrong");
-    this.router.navigateByUrl("auth/login");
     await  BlockUtils.delBlocks();
     await WmatchingutilsService.delWordMatch();
     localStorage.clear();
+    this.router.navigateByUrl("auth/login");
       setTimeout(() => { 
         window.location.reload();
       }, 800);
