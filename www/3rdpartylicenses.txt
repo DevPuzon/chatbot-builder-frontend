@@ -787,6 +787,9 @@ limitations under the License.
 ngx-autosize
 MIT
 
+ngx-facebook
+MIT
+
 punycode
 MIT
 Copyright Mathias Bynens <https://mathiasbynens.be/>
