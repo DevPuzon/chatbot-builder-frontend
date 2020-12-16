@@ -84,12 +84,36 @@ export class UserLoginComponent implements OnInit {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
-  signInWithFB(): void {const fbLoginOptions = {
-    scope: 'pages_messaging,pages_messaging_subscriptions,email,pages_show_list,manage_pages',
-    return_scopes: true,
-    enable_profile_selector: true
-  }; 
-    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+  signInWithFB(): void {
+    const fbLoginOptions = {
+      // scope: 'pages_messaging,pages_messaging_subscriptions,email,pages_show_list,manage_pages',
+      scope:'email,public_profile,pages_show_list,pages_messaging,pages_read_engagement,pages_manage_metadata',
+      return_scopes: true,
+      enable_profile_selector: true
+     }; 
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID,fbLoginOptions ).then((snap)=>{
+      console.log(snap);
+      this.prepPages(snap.response.id,snap.authToken);
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
+  prepPages(user_id,access_token) {
+    this.cusHttp.getP(`https://graph.facebook.com/${user_id}/accounts?fields=name,access_token&access_token=${access_token}`)
+    .subscribe((snap:any)=>{
+      const data = snap.data;
+      console.log(data);
+      data.forEach(async el => { 
+        const data = await new Promise<any>((resolve)=>{
+          this.cusHttp.postP(`https://graph.facebook.com/${el.id}/subscribed_apps?subscribed_fields=messages,message_deliveries,messaging_pre_checkouts,messaging_referrals,standby,message_reactions,messaging_postbacks,message_reads,messaging_checkout_updates,message_echoes,messaging_handovers,inbox_labels,messaging_optins,messaging_payments,messaging_account_linking,messaging_game_plays,messaging_policy_enforcement&access_token=${el.access_token}`,{})
+          .subscribe((data)=>{
+            resolve(data);
+          })
+        })
+        console.log(data);
+      });
+      console.log("Logging in ...."); 
+    });
   }
 
   signOut(): void {

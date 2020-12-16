@@ -20,6 +20,18 @@
             Deploy
           </ion-button>
           <ion-buttons>
+            <ion-button class="test-color" color="primary">
+              Test
+            </ion-button> 
+          </ion-buttons>
+          <div class="test-code-main"> 
+            <p class="quote-code">Copy and send this key to FB : RTI-TestPage.</p>
+            <div (click)="copyTestCode()" class="test-code">
+              <p  class="code">QWED</p>
+              <img src="https://img.icons8.com/material-rounded/24/000000/copy.png"/> 
+            </div>
+          </div>
+          <ion-buttons> 
             <ion-button class="cust-color" color="danger"
              (click)="onClearAll()">
               Clear All

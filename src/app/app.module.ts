@@ -44,7 +44,8 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
     SocialLoginModule,
     BrowserModule, 
     IonicModule.forRoot(),
-     AppRoutingModule],
+     AppRoutingModule
+  ],
   providers: [
     {
       provide: 'SocialAuthServiceConfig',
@@ -53,7 +54,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
         providers: [ 
           {
             id: FacebookLoginProvider.PROVIDER_ID,
-            provider: new FacebookLoginProvider('3443378839110052')
+            provider: new FacebookLoginProvider('917782305413341')
           }
         ]
       } as SocialAuthServiceConfig,

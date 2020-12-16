@@ -62,7 +62,10 @@ export class AutomationComponent implements OnInit {
   }  
   private initFacebookService(): void {
     const initParams: InitParams = { xfbml:true, version:'v3.2'};
-    this.facebookService.init(initParams);
+    console.log(initParams);
+    this.facebookService.init(initParams).then((s)=>{
+      console.log(s);
+    })
   }
   async onMenu(ev){ 
     const popover = await this.popoverController.create({
@@ -70,6 +73,20 @@ export class AutomationComponent implements OnInit {
       event: ev 
     });
     return await popover.present();
+  }
+  copyTestCode(){ 
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '90px';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value ="QWED";
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy'); 
+    
+    this.toast.presentToast('Copied.'); 
   }
   isUserStopChatLive = false;
   isUserFollowUp = false;

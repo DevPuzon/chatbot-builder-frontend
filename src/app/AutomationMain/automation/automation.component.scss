@@ -21,10 +21,30 @@ ion-col{
             width: 100%;
             height: 50px; 
             margin-bottom: 8px;
-        }
+        } 
         .cust-color{
             background-color: #E7D3D6;
             border-radius: 4px;
+        }
+        .test-color{
+            background-color: #E1EDFF;
+            border-radius: 4px;
+        }
+        .test-code-main{
+            padding: 7px; 
+            p{
+                margin: 0px;
+            } 
+            .test-code{
+                display: flex; 
+                cursor: pointer;
+                .code{
+                    width: 90%;
+                    font-size: 18px;
+                    font-weight: 500;
+                    color: #333333;
+                }
+            }
         }
     }
     

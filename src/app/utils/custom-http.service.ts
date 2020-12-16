@@ -39,6 +39,14 @@ export class CustomHttpService {
     .get(url, { headers: headers })
   }
   
+  getP(url){     
+    const headers = new HttpHeaders()
+    .set('cache-control', 'no-cache') 
+    .set('content-type', 'application/json')  
+    return this.http
+    .get(url, { headers: headers })
+  }
+
   getNoBase(ctrl){ 
     this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
@@ -77,6 +85,13 @@ export class CustomHttpService {
     LoggerUtil.log("post");
     LoggerUtil.log(body);
     LoggerUtil.log(url);
+    return this.http
+    .post(url,body, { headers: headers })
+  }
+  postP(url,body){   
+    const headers = new HttpHeaders()
+    .set('cache-control', 'no-cache') 
+    .set('content-type', 'application/json')  
     return this.http
     .post(url,body, { headers: headers })
   }

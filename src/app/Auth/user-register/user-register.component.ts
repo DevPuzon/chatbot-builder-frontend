@@ -51,7 +51,8 @@ export class UserRegisterComponent implements OnInit {
     this.cusHttp.postNoToken("reg", this.form.value)
     .subscribe(async (snap:any)=>{ 
       await loading.dismiss();   
-      this.router.navigateByUrl("auth");
+      this.router.navigateByUrl("auth/login");
+      this.toast.presentToast("Registered successfully");
     }, 
     async (err:any) => {  
       await loading.dismiss();   
