@@ -1,6 +1,12 @@
 <ion-list>
-  <ion-item button>
-    Account
+  <ion-item button (click)="onExport()">
+    My projects
+  </ion-item>
+  <ion-item button (click)="onExport()">
+    Templates
+  </ion-item>
+  <ion-item button (click)="onExport()">
+    Export as template
   </ion-item>
   <ion-item (click)="logout()" button>
     Logout

@@ -15,7 +15,7 @@ export class AuthGuardService  implements CanActivate{
     if(localStorage.getItem("-=[]t")){
       console.log("AuthGuardService");
       this.custHttps.getUser().then(()=>{
-        this.router.navigateByUrl("t");
+        this.router.navigateByUrl("p");
       }).catch(()=>{ this.router.navigateByUrl("");})
       return false;
     }else{

@@ -88,20 +88,19 @@ export class AutomationComponent implements OnInit {
     
     this.toast.presentToast('Copied.'); 
   }
-  isUserStopChatLive = false;
-  isUserFollowUp = false;
+ 
+  isShowMinBlock = true;
   checkIsShowMinBlock() {
     const mini_blocks = this.maindatas[this.block_index].mini_blocks;  
     let isShow = mini_blocks.findIndex(o => o.type === 'cback-only'); 
-    let isLChatShow = mini_blocks.find(o => o.type === 'livechat-only');
-    console.log(isLChatShow);
-    if(isShow != -1 && isLChatShow){ 
-      this.isUserStopChatLive = !!isLChatShow.message.attachment.payload.buttons.find(o => o.payload.isUserStopChatLive===true);
-      this.isUserFollowUp =  !!isLChatShow.message.attachment.payload.buttons.find(o => o.payload.isUserFollowUp===true);
-      console.log(this.isUserStopChatLive);
-      console.log(this.isUserFollowUp);
+    let isLChatShow = mini_blocks.findIndex(o => o.type === 'livechat-only');
+    if(isShow != -1 || isLChatShow != -1){
+      this.isShowMinBlock = false;
+    }else{
+      this.isShowMinBlock = true;
     } 
   } 
+
   onNavMinblock(i){
     var elmnt = document.getElementById("min_block_"+i) ; 
     elmnt.scrollIntoView({ behavior: 'smooth', block: 'center' });

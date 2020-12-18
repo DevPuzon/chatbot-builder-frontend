@@ -30,7 +30,12 @@ const routes: Routes = [
     path: 't',
     canActivate:[AutomationGuardGuard],
     loadChildren: () => import('./AutomationMain/main-automation/main-automation.module').then( m => m.MainAutomationPageModule)
+  }, 
+  {
+    path: 'p',
+    loadChildren: () => import('./ProjectPackage/main-project/main-project.module').then( m => m.MainProjectPageModule)
   }
+
 ];
 
 @NgModule({

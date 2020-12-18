@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PopoverController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { ExportasfileComponent } from '../exportasfile/exportasfile.component';
 
 @Component({
   selector: 'app-menu',
@@ -11,6 +12,7 @@ import { CustomHttpService } from 'src/app/utils/custom-http.service';
 export class MenuComponent implements OnInit {
 
   constructor(private router:Router,
+    private modalController:ModalController,
     private cushttp:CustomHttpService,
     private popover:PopoverController) { }
 
@@ -19,5 +21,12 @@ export class MenuComponent implements OnInit {
   logout(){   
     this.popover.dismiss();
     this.cushttp.onLogoutUser();
+  }
+  async onExport(){ 
+    this.popover.dismiss();
+    const modal = await this.modalController.create({
+      component: ExportasfileComponent, 
+    });
+    return await modal.present();
   }
 }

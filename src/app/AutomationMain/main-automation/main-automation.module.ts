@@ -17,6 +17,7 @@ import { AddCbackResponseComponent } from '../add-cback-response/add-cback-respo
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EditStopChatlLiveComponent } from '../edit-stop-chatl-live/edit-stop-chatl-live.component';
 import { MenuComponent } from '../menu/menu.component';
+import { ExportasfileComponent } from '../exportasfile/exportasfile.component';
 
 @NgModule({ 
   imports: [
@@ -31,6 +32,7 @@ import { MenuComponent } from '../menu/menu.component';
     AddCarButtonComponent,AddQuickreplyComponent,
     AddTextButtonPopupComponent,AddCbackResponseComponent,
     EditStopChatlLiveComponent,MenuComponent,
+    ExportasfileComponent,
     WordMatchingContentComponent,WmPropertiesComponent]
 })
 export class MainAutomationPageModule {}

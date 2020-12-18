@@ -513,3 +513,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     top: auto;
     width: auto;; }
 }  
+.center-horizontal {  
+  width: 100%;
+  display: flex;
+  justify-content: center; 
+ } 
