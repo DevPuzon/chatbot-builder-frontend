@@ -1,0 +1,52 @@
+.c-exit{ 
+    position: absolute;
+    width: fit-content;
+}
+.c-template{
+    .txt{ 
+        margin-bottom: 10px;
+        .title{
+            text-align: start;
+            font-weight: 750;
+            margin-left: 12px;
+            margin-right: 12px;
+            margin-top: 15px;
+            margin-bottom: 0px;
+            font-size: 23px;
+            line-height: normal;
+        }
+        .subtitle{
+            text-align: start;
+            font-weight: 100;
+            margin-left: 12px;
+            margin-right: 12px;
+            margin-top: 5px; 
+            font-size: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: normal;
+        }
+        .desc{      
+            margin-left: 12px;
+            margin-right: 12px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            text-align: left;
+        } 
+    }
+    .profile{ 
+        height: 350px;
+        overflow: hidden;
+        img{
+            width: 100%;
+        }
+    }
+}
+.bottom-btns{
+    margin: 10px;
+    ion-button{
+        width: 50%;
+        height: 30px;
+    }
+}

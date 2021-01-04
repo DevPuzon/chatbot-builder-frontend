@@ -1,0 +1,6 @@
+<ion-list>
+  <ion-item *ngFor="let a of buttons;index as i" (click)="onItemclick(i,a)"
+  lines="full" details="false" button>
+    {{a}}
+  </ion-item> 
+</ion-list>

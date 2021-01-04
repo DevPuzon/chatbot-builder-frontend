@@ -1,0 +1,84 @@
+ 
+<ion-content>
+  <div  class="content">
+    <div class="c-menu-view"> 
+      <ion-buttons size="default">
+        <ion-button class="c-view-proj" color="primary"
+        [routerLink]="['/p']">
+          View my projects
+        </ion-button>
+      </ion-buttons> 
+      <ion-segment value="all">
+        <ion-segment-button value="all">
+          <ion-label>All</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="new">
+          <ion-label>New</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="trending">
+          <ion-label>Trending</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="business">
+          <ion-label>Business</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="marketing">
+          <ion-label>Marketing</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="faqs">
+          <ion-label>FAQs</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="e-commerce">
+          <ion-label>E-commerce</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="concierge">
+          <ion-label>Concierge</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="recommendations">
+          <ion-label>Recommendations</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <ion-row>   
+      <ion-col size="12" size-sm="12" size-md="auto" size-lg="auto">
+        <div class="c-blank-proj" (click)="onBlankProj()">
+          <div class="c-blank-proj1"> 
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADcAAAA3CAYAAACo29JGAAAABmJLR0QA/wD/AP+gvaeTAAAAwUlEQVRoge3asQ2CQABG4aexYgF2sHYUdnEGdnETrN2BBWi1JXiFxXHmJ+9LKDDEPy/B5iJIaunUaGcA+tX9DDwabe9uAt6ra2oxem4x8i/GpTIulXGpjEtlXCrjUhmXyrhUxqUqHRANwL3yzhXoVvcL8Kq8MbI5dLoUHuqBW+XhrW6HjX77waFfy0PHlV7LGXhW3mnxm5srf9/PPJStzbhUxqUyLpVxqYxLZVwq41IZl8q4VKUDoj2MfP9rT9LBfADvGhZM9Gt5dgAAAABJRU5ErkJggg=="/>
+            <div class="txt">
+              <p class="title">Blank project</p>
+            </div>
+          </div>
+        </div>
+      </ion-col> 
+      <ion-col size="12" size-sm="12" size-md="auto" size-lg="auto" 
+      *ngFor="let a of ['','','','']">  
+        <div class="flip-card"  (click)="onPreview()">
+          <div class="flip-card-inner">
+            <div class="flip-card-front"> 
+              <div class="c-template">
+                <div class="profile"> 
+                  <img src="https://images.chatfuel.com/bot/raw/de864fe2-fead-4887-b40f-75637d7385e3">
+                </div>
+                <div class="txt">
+                  <p class="title">Project 1 </p>
+                  <p class="subtitle">By Retailgate page </p>
+                  <p class="desc1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Venenatis urna cursus eget nunc scelerisque viverra mauris. Arcu non sodales neque sodales ut etiam sit. Posuere urna nec tincidunt praesent semper feugiat nibh sed. Tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras fermentum. Suspendisse interdum consectetur libero id faucibus nisl tincidunt. Faucibus scelerisque eleifend donec pretium vulputate sapien nec. Bibendum neque egestas congue quisque egestas. Mi eget mauris pharetra et ultrices neque ornare aenean.</p>
+                </div>
+              </div>  
+            </div>
+            <div class="flip-card-back">    
+              <div class="c-template"> 
+                <div class="txt">
+                  <p class="title">Project 1 </p>
+                  <p class="subtitle">By Retailgate page </p>
+                  <p class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Venenatis urna cursus eget nunc scelerisque viverra mauris. Arcu non sodales neque sodales ut etiam sit. Posuere urna nec tincidunt praesent semper feugiat nibh sed. Tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras fermentum. Suspendisse interdum consectetur libero id faucibus nisl tincidunt. Faucibus scelerisque eleifend donec pretium vulputate sapien nec. Bibendum neque egestas congue quisque egestas. Mi eget mauris pharetra et ultrices neque ornare aenean.</p>
+                </div>
+              </div> 
+              <ion-button  class="btn-connect"
+              fill="outline" color="dark" >Preview</ion-button> 
+            </div>  
+          </div>
+        </div>
+      </ion-col> 
+    </ion-row>
+  </div>
+</ion-content>

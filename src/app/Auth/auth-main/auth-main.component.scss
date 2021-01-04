@@ -1,15 +1,5 @@
 ion-content{
     height: 100vh;
-}
-.container {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    ion-label{
-        width: 350px;
-    }
 }  
 .passwordIcon{
     font-size:2rem !important;
@@ -126,4 +116,25 @@ ion-row{
         color: #8A8A8A; 
         margin-top: 15px; 
     }
+}
+.c-guest{
+    cursor:pointer;
+    text-align: center;
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #488AFF;
+    border-radius: 7px;
+    p{
+        margin: 0px;
+        font-size: 30px;
+        font-weight: 450;
+        color: white;
+    }
+}
+.router{
+    background-color: white;
+    height: 100vh;
 }

@@ -518,3 +518,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   display: flex;
   justify-content: center; 
  } 
+.alert-input{
+  .alert-head{
+    padding-bottom: 0px;
+  }
+  .alert-input-group{
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+}
+.modal-rad{ 
+  .modal-wrapper{
+    border-radius: 15px;
+  } 
+}
+.super-center{  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

@@ -13,15 +13,16 @@ import { BlobService } from 'src/app/utils/blob.service';
 import { AddQuickreplyComponent } from '../add-quickreply/add-quickreply.component';
 import { AddCarButtonComponent } from '../add-car-button/add-car-button.component';
 import { AuthGuardService } from 'src/app/Auth/auth-guard.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AddCbackResponseComponent } from '../add-cback-response/add-cback-response.component';
 import { EditStopChatlLiveComponent } from '../edit-stop-chatl-live/edit-stop-chatl-live.component';
-import { UploadtostService } from 'src/app/utils/uploadtost.service';
-import { MenuComponent } from '../menu/menu.component';
+import { UploadtostService } from 'src/app/utils/uploadtost.service'; 
 import { WordMatchingContentComponent } from '../WordMatching/word-matching-content/word-matching-content.component';
 import { LoggerUtil } from 'src/app/utils/logger-util';
 import { IndexedDBAngular } from 'indexeddb-angular'; 
 import { FacebookService, InitParams } from 'ngx-facebook';
+import { MenuAutomateComponent } from '../menu-automate/menu-automate.component';
+import { CryptService } from 'src/app/utils/crypt.service';
 declare var $:any;
 @Component({
   selector: 'app-automation',
@@ -44,16 +45,30 @@ export class AutomationComponent implements OnInit {
     private toast:ToastMessageService,
     private facebookService: FacebookService, 
     private router :Router,
+    private route :ActivatedRoute,
     private alertController:AlertController,
     private storage :AngularFireStorage,  
     private loadingController:LoadingController,
     private custHttps:CustomHttpService) { 
     }   
+  
+  guestID:any;
   async ngOnInit() {    
     this.user = JSON.parse(localStorage.getItem("-==0us"));
     this.initSortable();
     this.init();   
     this.initFacebookService(); 
+    if(window.location.href.includes('guest')){
+      this.guestID = CryptService.decryptData(localStorage.getItem('-=[],.g'));
+      console.log(this.guestID);
+      if(this.guestID == null){
+        this.toast.presentToast("Something went wrong");
+        setTimeout(() => {
+          localStorage.removeItem('-=[],.g');
+          this.router.navigateByUrl("/");
+        }, 1000);
+      }
+    }
     // setInterval(()=>{
     //   BlockUtils.setLocalBlocks(this.maindatas); 
     //   WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
@@ -63,13 +78,11 @@ export class AutomationComponent implements OnInit {
   private initFacebookService(): void {
     const initParams: InitParams = { xfbml:true, version:'v3.2'};
     console.log(initParams);
-    this.facebookService.init(initParams).then((s)=>{
-      console.log(s);
-    })
+    this.facebookService.init(initParams);
   }
   async onMenu(ev){ 
     const popover = await this.popoverController.create({
-      component: MenuComponent ,  
+      component: MenuAutomateComponent ,  
       event: ev 
     });
     return await popover.present();
@@ -167,7 +180,7 @@ export class AutomationComponent implements OnInit {
   }
 
   async init() {  
-    this.getCVersion();
+    // this.getCVersion();
     this.initMaindatas();
 
     this.checkIsShowMinBlock(); 
@@ -347,8 +360,7 @@ export class AutomationComponent implements OnInit {
           }
         }, {
           text: 'Yes',
-          handler: async () => { 
-            
+          handler: async () => {   
             this.deployNow();
           }
         }

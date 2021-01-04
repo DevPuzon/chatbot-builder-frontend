@@ -9,7 +9,7 @@ export class CryptService {
 
   constructor() { }
  
-  encryptData(data) { 
+  static encryptData(data) { 
     try {
       return CryptoJS.AES.encrypt(JSON.stringify(data), environment.crypt_code).toString();
     } catch (e) {
@@ -17,15 +17,16 @@ export class CryptService {
     } 
   }
 
-  decryptData(data):any { 
+  static decryptData(data):any { 
     try {
-      const bytes = CryptoJS.AES.decrypt(data,environment.crypt_code);
-      if (bytes.toString()) {
+      const bytes = CryptoJS.AES.decrypt(data,environment.crypt_code); 
+      if (bytes.toString()) { 
         return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      }else{
+        return null;
       }
-      return data;
     } catch (e) {
-      //console.log(e);
+      console.log(e);
     } 
   }
 }

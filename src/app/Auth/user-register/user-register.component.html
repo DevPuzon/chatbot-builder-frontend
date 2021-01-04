@@ -1,65 +1,42 @@
-<ion-content>
-  <ion-row >
-    <ion-col style="background-color: white;" 
-    size="12" size-sm="12" size-lg="4" size-md="4"> 
-      <div class="container"> 
-        <ion-label class="ion-text-center"   > 
-          <div class="panel"> 
-            <p class="title"><b>JOIN NOW</b></p>
-            <p class="desc"><b>Many opportunity waiting for you.</b></p>
-          </div>
-          <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()"  (keyup.enter)="onSubmit()">
-            <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
-              <ion-label position="stacked">Messenger ID</ion-label>
-              <ion-input formControlName="clientID" placeholder="Please provide your messenger ID."></ion-input>
-            </ion-item>
-            <div *ngIf="submitted && f.clientID.errors">  
-              <div class="error-text">{{(f.clientID.errors.required) ? 'ID is required' :
-                (f.clientID.errors) ? 'Number only.' :  ''}}</div>
-            </div>
-  
-            <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
-              <ion-label position="stacked">Email</ion-label>
-              <ion-input formControlName="email" placeholder="What is your email address?"></ion-input>
-            </ion-item>
-            <div *ngIf="submitted && f.email.errors">  
-              <div class="error-text">{{(f.email.errors.required) ? 'Email is required' :
-                (f.email.errors) ? 'Email is not valid.' :  ''}}</div>
-            </div>
-  
-            <ion-item color="transparent" style="margin-bottom: 14px;" class="ion-no-padding">
-              <ion-label position="stacked">Password</ion-label>
-              <ion-input formControlName="password" type="{{typePass}}" placeholder="Shhh! don't share your password to anyone except on me. :)"></ion-input>
-              <ion-icon class="passwordIcon" slot="end" name="{{imgPass}}" (click)="onClickShow()"></ion-icon>
-            </ion-item> 
-            <div *ngIf="submitted && f.password.errors">  
-              <div class="error-text">{{(f.password.errors.required) ? 'Password is required' :
-                (f.password.errors) ? 'Password is not valid.' :  ''}}</div>
-            </div>
-            <div class="signin-con"> 
-              <ion-button   class="btn-login" (click)="onSubmit()"> 
-              Sign up</ion-button> 
-            </div> 
-          </form>
-        </ion-label>
+
+  <div class="super-center"> 
+    <ion-label class="ion-text-center"   > 
+      <div class="panel"> 
+        <p class="title"><b>JOIN NOW</b></p>
+        <p class="desc"><b>Many opportunity waiting for you.</b></p>
       </div>
-    </ion-col>
-    <ion-col class="con-right shadow" size="12"
-     size-sm="12" size-md="" size-lg="" >
-     <ion-row> 
-      <ion-col size="12"
-        size-sm="12" size-md="8" size-lg="8"
-        offset="0"
-        offset-sm="0" offset-md="1" offset-lg="1"
-        class="super-center"> 
-        <div> 
-          <h1 class="title p">Retail Gate</h1>
-          <h3 class="subtitle p">Chatbot builder</h3>
-    
-          <!-- <img src="../../../assets/bg"> -->
+      <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()"  (keyup.enter)="onSubmit()">
+        <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
+          <ion-label position="stacked">Messenger ID</ion-label>
+          <ion-input formControlName="clientID" placeholder="Please provide your messenger ID."></ion-input>
+        </ion-item>
+        <div *ngIf="submitted && f.clientID.errors">  
+          <div class="error-text">{{(f.clientID.errors.required) ? 'ID is required' :
+            (f.clientID.errors) ? 'Number only.' :  ''}}</div>
         </div>
-      </ion-col>
-     </ion-row>
-    </ion-col>
-  </ion-row>
-</ion-content>
+
+        <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input formControlName="email" placeholder="What is your email address?"></ion-input>
+        </ion-item>
+        <div *ngIf="submitted && f.email.errors">  
+          <div class="error-text">{{(f.email.errors.required) ? 'Email is required' :
+            (f.email.errors) ? 'Email is not valid.' :  ''}}</div>
+        </div>
+
+        <ion-item color="transparent" style="margin-bottom: 14px;" class="ion-no-padding">
+          <ion-label position="stacked">Password</ion-label>
+          <ion-input formControlName="password" type="{{typePass}}" placeholder="Shhh! don't share your password to anyone except on me. :)"></ion-input>
+          <ion-icon class="passwordIcon" slot="end" name="{{imgPass}}" (click)="onClickShow()"></ion-icon>
+        </ion-item> 
+        <div *ngIf="submitted && f.password.errors">  
+          <div class="error-text">{{(f.password.errors.required) ? 'Password is required' :
+            (f.password.errors) ? 'Password is not valid.' :  ''}}</div>
+        </div>
+        <div class="signin-con"> 
+          <ion-button   class="btn-login" (click)="onSubmit()"> 
+          Sign up</ion-button> 
+        </div> 
+      </form>
+    </ion-label>
+  </div>

@@ -47,8 +47,7 @@ export class CustomHttpService {
     .get(url, { headers: headers })
   }
 
-  getNoBase(ctrl){ 
-    this.base = environment.backend;
+  getNoBase(ctrl){  
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
     LoggerUtil.log(this.token);
     const url = ctrl;

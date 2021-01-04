@@ -1,24 +1,6 @@
-ion-content{
-    height: 100vh;
-}
-.container {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    ion-label{
-        width: 350px;
-    }
-} 
-.super-center{ 
-    width: 100%;
-    padding: 10px;
-    margin-top: 90px;
-    margin-bottom: 600px;
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;  
+
+ion-label{ 
+    width: 80%;
 }
 .passwordIcon{
     font-size:2rem !important;
@@ -102,7 +84,7 @@ display: inline-block;
         text-align-last: left;
     }
     .title{
-        font-size: 120px;
+        font-size: 90px;
         font-weight: bolder;
         line-height: 96px;
         text-align-last: left;
@@ -134,5 +116,22 @@ ion-row{
     .desc{ 
         color: #8A8A8A; 
         margin-top: 15px; 
+    }
+}
+.c-guest{
+    cursor:pointer;
+    text-align: center;
+    height: 80px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #488AFF;
+    border-radius: 7px;
+    margin: 9px;
+    p{
+        margin: 0px;
+        font-size: 30px;
+        font-weight: 450;
+        color: white;
     }
 }

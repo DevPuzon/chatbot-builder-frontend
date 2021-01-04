@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
@@ -10,8 +10,7 @@ import { ToastMessageService } from 'src/app/utils/toast-message.service';
   templateUrl: './user-register.component.html',
   styleUrls: ['./user-register.component.scss'],
 })
-export class UserRegisterComponent implements OnInit {
-
+export class UserRegisterComponent implements OnInit { 
   form: FormGroup; get f() { return this.form.controls; }
   submitted=false;
   constructor(

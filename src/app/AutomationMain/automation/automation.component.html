@@ -3,15 +3,16 @@
     <ion-col style="height: 100vh; overflow: auto;" size="12" size-sm="12" size-md="4" size-lg="4">  
       <ion-toolbar class="toolbar" color="primary">   
         <img slot="start"  class="toolbar-icon" src="../../../assets/icon/favicon.png"> 
-        <ion-title>Retailgate</ion-title>
+        <ion-title  >Retailgate  </ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="onMenu($event)" >
             <ion-icon slot="icon-only"
-            name="menu-outline"></ion-icon>
+            name="ellipsis-vertical-outline"></ion-icon>
           </ion-button>
         </ion-buttons> 
       </ion-toolbar>
-      <div class="blocks-word-main-con"> 
+      <h1 class="c-auth" *ngIf="guestID">Guest ID : {{guestID}}</h1>
+      <div class="blocks-word-main-con">  
         <h1>Blocks</h1>
         <div class="btn-deploy-con">
           <ion-button color="primary"
@@ -28,7 +29,7 @@
             <p class="quote-code">Copy and send this key to FB : RTI-TestPage.</p>
             <div (click)="copyTestCode()" class="test-code">
               <p  class="code">QWED</p>
-              <img src="https://img.icons8.com/material-rounded/24/000000/copy.png"/> 
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAAA10lEQVRIie2WOw7CMBBE30b0QIfogBtwGOAmtLQcBc6QMrScAKgQLeIEQxNLLiIcwfJTMtXYGvnJm1W80DRZvJDUA2ZA3+HsnZkVyZSknqST/LR6xMsivwBGL96ytjqRHwRjZlaRdVWWjrxHnVTAqeGuwMbMbrXAJXSPz7dfSpoGeKrUng03BuZhkSq1S8NJUmmHYe9rzdWCW3ALbsH/B47/1QWw/jjYzHIg/xT4J0pdpUsw0dP2is61UuXIe3Qadw+SuuHs5ONehmfA5Ol7whHYxjNX83QHpcHLvwDsnt8AAAAASUVORK5CYII=">
             </div>
           </div>
           <ion-buttons> 

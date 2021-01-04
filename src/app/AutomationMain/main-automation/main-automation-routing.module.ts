@@ -7,7 +7,7 @@ import { MainAutomationPage } from './main-automation.page';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'automation',
+    redirectTo: 'automate',
     pathMatch: 'full'
   },
   {
@@ -15,7 +15,11 @@ const routes: Routes = [
     component: MainAutomationPage,
     children:[
       {
-        path:"automation",
+        path:"automate",
+        component:AutomationComponent
+      },
+      {
+        path:"guest",
         component:AutomationComponent
       }
     ]

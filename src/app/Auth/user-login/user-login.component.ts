@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
@@ -6,8 +6,10 @@ import { LoadingController } from '@ionic/angular';
 import { SocialAuthService } from "angularx-social-login";
 import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
 import { BlockUtils } from 'src/app/utils/block-utils';
+import { CryptService } from 'src/app/utils/crypt.service';
 import { CustomHttpService } from 'src/app/utils/custom-http.service';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
+import { UuidService } from 'src/app/utils/uuid.service';
 import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
 @Component({
   selector: 'app-user-login',
@@ -15,6 +17,8 @@ import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
   styleUrls: ['./user-login.component.scss'],
 })
 export class UserLoginComponent implements OnInit {
+  @Input() isConnectAcc :any;
+  
   form: FormGroup; get f() { return this.form.controls; }
   submitted=false;
   constructor(private authService: SocialAuthService,
@@ -30,6 +34,7 @@ export class UserLoginComponent implements OnInit {
    }
 
   ngOnInit() { 
+    console.log(this.isConnectAcc);
     this.authService.authState.subscribe((user) => { 
     });
   }
@@ -51,6 +56,12 @@ export class UserLoginComponent implements OnInit {
   async onLogin() { 
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present(); 
+    setTimeout(async () => {
+      await loading.dismiss();  
+      this.router.navigateByUrl("p"); 
+    },2800); 
+    return;
+
     await  BlockUtils.delBlocks();
     await WmatchingutilsService.delWordMatch();
     localStorage.clear();
@@ -63,7 +74,7 @@ export class UserLoginComponent implements OnInit {
         this.cusHttp.getUser()
         .then(()=>{
           setTimeout(() => {
-            this.router.navigateByUrl("t"); 
+            this.router.navigateByUrl("p"); 
           }, 800);
         }).catch(()=>{
           this.toast.presentToast("Something went wrong");
@@ -120,6 +131,14 @@ export class UserLoginComponent implements OnInit {
     this.authService.signOut();
   }
 
+  onGuest(){
+    const id = UuidService.makeid(6);
+    localStorage.setItem('-=[],.g',CryptService.encryptData(id));
+    this.router.navigateByUrl("/t/guest");
+  }
+  noAccount(){
+
+  }
 }
 
 
