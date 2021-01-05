@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
@@ -57,5 +57,15 @@ export class UserRegisterComponent implements OnInit {
       await loading.dismiss();   
       this.toast.presentToast(err.error.error_message);
     });
+  }
+
+  @Input() isConnectAcc :any;
+  @Output() isPathLogin: EventEmitter<any> = new EventEmitter();
+  haveAccount(){
+    if(!this.isConnectAcc){
+      this.router.navigateByUrl('/auth/login');
+    }else{
+      this.isPathLogin.emit();
+    }
   }
 }

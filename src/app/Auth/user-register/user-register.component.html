@@ -2,7 +2,7 @@
   <div class="super-center"> 
     <ion-label class="ion-text-center"   > 
       <div class="panel"> 
-        <p class="title"><b>JOIN NOW</b></p>
+        <p class="title"><b>Join now!</b></p>
         <p class="desc"><b>Many opportunity waiting for you.</b></p>
       </div>
       <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()"  (keyup.enter)="onSubmit()">
@@ -37,6 +37,9 @@
           <ion-button   class="btn-login" (click)="onSubmit()"> 
           Sign up</ion-button> 
         </div> 
+        <div class='have-acc'>  
+          <p (click)="haveAccount()">Have account.</p>
+        </div>
       </form>
     </ion-label>
   </div>

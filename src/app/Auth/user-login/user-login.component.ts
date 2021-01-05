@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
@@ -8,6 +8,7 @@ import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-logi
 import { BlockUtils } from 'src/app/utils/block-utils';
 import { CryptService } from 'src/app/utils/crypt.service';
 import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { FbProcessService } from 'src/app/utils/fb-process.service';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
 import { UuidService } from 'src/app/utils/uuid.service';
 import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
@@ -16,8 +17,7 @@ import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
   templateUrl: './user-login.component.html',
   styleUrls: ['./user-login.component.scss'],
 })
-export class UserLoginComponent implements OnInit {
-  @Input() isConnectAcc :any;
+export class UserLoginComponent implements OnInit { 
   
   form: FormGroup; get f() { return this.form.controls; }
   submitted=false;
@@ -33,8 +33,7 @@ export class UserLoginComponent implements OnInit {
     }, { });
    }
 
-  ngOnInit() { 
-    console.log(this.isConnectAcc);
+  ngOnInit() {  
     this.authService.authState.subscribe((user) => { 
     });
   }
@@ -46,11 +45,13 @@ export class UserLoginComponent implements OnInit {
     this.imgPass = this.imgPass === 'eye-off' ? 'eye' : 'eye-off';
   }
   async onSubmit(){  
-    this.submitted = true;
-    if(this.form.invalid){
-      return;
-    }   
+    
     this.onLogin();
+    // this.submitted = true;
+    // if(this.form.invalid){
+    //   return;
+    // }   
+    // this.onLogin();
   } 
   
   async onLogin() { 
@@ -95,35 +96,30 @@ export class UserLoginComponent implements OnInit {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
-  signInWithFB(): void {
+  async signInWithFB(): Promise<void> {
+    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    await loading.present(); 
     const fbLoginOptions = {
       // scope: 'pages_messaging,pages_messaging_subscriptions,email,pages_show_list,manage_pages',
       scope:'email,public_profile,pages_show_list,pages_messaging,pages_read_engagement,pages_manage_metadata',
       return_scopes: true,
       enable_profile_selector: true
      }; 
-    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID,fbLoginOptions ).then((snap)=>{
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID,fbLoginOptions ).then(async (snap)=>{
       console.log(snap);
-      this.prepPages(snap.response.id,snap.authToken);
+      const u_access_token = await FbProcessService.getLongLiveUserAToken(snap.authToken);
+      const data = await FbProcessService.getLongLivePageToken(snap.id,u_access_token);
+      await FbProcessService.prepPages(data); 
+      await this.onSaveFbLogin();
+      await loading.dismiss(); 
     }).catch((err)=>{
       console.log(err);
     })
   }
-  prepPages(user_id,access_token) {
-    this.cusHttp.getP(`https://graph.facebook.com/${user_id}/accounts?fields=name,access_token&access_token=${access_token}`)
-    .subscribe((snap:any)=>{
-      const data = snap.data;
-      console.log(data);
-      data.forEach(async el => { 
-        const data = await new Promise<any>((resolve)=>{
-          this.cusHttp.postP(`https://graph.facebook.com/${el.id}/subscribed_apps?subscribed_fields=messages,message_deliveries,messaging_pre_checkouts,messaging_referrals,standby,message_reactions,messaging_postbacks,message_reads,messaging_checkout_updates,message_echoes,messaging_handovers,inbox_labels,messaging_optins,messaging_payments,messaging_account_linking,messaging_game_plays,messaging_policy_enforcement&access_token=${el.access_token}`,{})
-          .subscribe((data)=>{
-            resolve(data);
-          })
-        })
-        console.log(data);
-      });
-      console.log("Logging in ...."); 
+
+  onSaveFbLogin() {
+    return new Promise<any>(resolve=>{
+
     });
   }
 
@@ -136,9 +132,17 @@ export class UserLoginComponent implements OnInit {
     localStorage.setItem('-=[],.g',CryptService.encryptData(id));
     this.router.navigateByUrl("/t/guest");
   }
-  noAccount(){
 
-  }
+  @Input() isConnectAcc :any;
+  @Output() isPathLogin: EventEmitter<any> = new EventEmitter();
+  noAccount(){
+    if(!this.isConnectAcc){
+      this.router.navigateByUrl('auth/register');
+    }else{ 
+      this.isPathLogin.emit();
+    }
+  } 
+  
 }
 
 

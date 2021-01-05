@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'; 
+import { ModalController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-connect-real-acc',
@@ -8,8 +9,17 @@ import { Component, OnInit } from '@angular/core';
 export class ConnectRealAccComponent implements OnInit {
   isConnectAcc = true;
   constructor( 
+    private modalCtrl:ModalController
     ) { }
   ngOnInit(): void { 
   }
  
+  onBack(){ 
+    this.modalCtrl.dismiss();
+  }
+  
+  isLogin =true;
+  onPathLogin(){
+    this.isLogin = !this.isLogin;  
+  }
 }

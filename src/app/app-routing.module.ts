@@ -5,8 +5,7 @@ import { AuthGuardService } from './Auth/auth-guard.service';
 import { AuthMainComponent } from './Auth/auth-main/auth-main.component';
 import { UserLoginComponent } from './Auth/user-login/user-login.component';
 import { UserRegisterComponent } from './Auth/user-register/user-register.component';
-import { ConnectRealAccComponent } from './AutomationMain/connect-real-acc/connect-real-acc.component';
-import { AutomationGuardGuard } from './AutomationMain/main-automation/automation-guard.guard';
+import { ConnectRealAccComponent } from './AutomationMain/connect-real-acc/connect-real-acc.component'; 
 import { IonPopOverListComponent } from './utils/ion-pop-over-list/ion-pop-over-list.component';
  
 const routes: Routes = [ 
