@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SplashScreenComponent, SplashScreenController } from 'src/app/InteractivePackage/splash-screen/splash-screen.component';
+import { LoaderComponentService } from 'src/app/utils/loader-component.service';
 
 @Component({
   selector: 'app-auth-main',
@@ -7,8 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthMainComponent implements OnInit {
 
-  constructor() { }
+  isLogin = true;
+  constructor(private route:ActivatedRoute, 
+    private splCtrl:SplashScreenController, 
+    private router:Router) {  
+    route.url.subscribe((url:any) =>{
+      this.isLogin = !!router.url.includes('login'); 
+      this.splCtrl.showDefTime(); 
+    }); 
+    
+  }
 
-  ngOnInit() {}
+  ngOnInit() {    
+    // this.service.setRootViewContainerRef(this.viewContainerRef)
+  }
 
 }

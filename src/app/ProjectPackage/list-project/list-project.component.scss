@@ -1,3 +1,4 @@
+
 .content{
     background-color: #F3F2F2;       
     text-align: -webkit-center;
@@ -34,7 +35,7 @@
         .txt{
             .title{
                 text-align: start;
-                font-weight: 750;
+                font-weight: 300;
                 margin-left: 12px;
                 margin-right: 12px;
                 margin-top: 15px;
@@ -49,7 +50,7 @@
         .txt{
             .title{
                 text-align: start;
-                font-weight: 750;
+                font-weight: 500;
                 margin-left: 12px;
                 margin-right: 12px;
                 margin-top: 15px;
@@ -81,5 +82,9 @@
 }
 .template-color{
     background-color: #662063;
+    color: #ffffff;
+}
+.blank-color{
+    background-color: #208EF0;
     color: #ffffff;
 }

@@ -66,6 +66,14 @@
             <div class="error-text">{{(f.description.errors.required) ? 'Description is required' :
               (f.description.errors) ? 'Description is not valid.' :  ''}}</div>
           </div>
+          
+          <ion-item>
+            <ion-label position="stacked">Messenger ID</ion-label> 
+            <ion-input  formControlName="msgr_id"></ion-input>
+          </ion-item>
+          <div *ngIf="submitted && f.msgr_id.errors">  
+            <div class="error-text">{{ (f.msgr_id.errors) ? 'Numbers only.' :  ''}}</div>
+          </div>
 
           <ion-item>
             <ion-label>Type</ion-label>

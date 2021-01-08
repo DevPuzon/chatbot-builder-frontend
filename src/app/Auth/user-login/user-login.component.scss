@@ -1,7 +1,9 @@
-
-ion-label{ 
+.login-con{ 
     width: 80%;
-}
+}  
+ .field{
+    margin-bottom: 17px;
+ }
 .passwordIcon{
     font-size:2rem !important;
     position: relative !important;
@@ -9,8 +11,10 @@ ion-label{
     margin: 0 auto !important;
 }
 .forgotpass{
-margin-top: 8px;
-display: inline-block;
+    width: 100%;
+    text-align-last: center;
+    margin-top: 8px;
+    display: inline-block;
     p{
         margin-top: 3px;
         margin-bottom: 6px;
@@ -26,8 +30,7 @@ display: inline-block;
     margin-bottom: 20px;
 }
 
-.signin-con{
-    margin-top: 35px;
+.signin-con{ 
     .btn-login{
         width: 100%;
         margin-top: 10px;
@@ -37,9 +40,7 @@ display: inline-block;
     }
     .login-or{ 
         margin-bottom: 18px;
-        margin-top: 18px;
-        padding-left: 18px;
-        padding-right: 18px;
+        margin-top: 18px; 
         display: flex;    
         place-items: center;
         .line{
@@ -96,16 +97,20 @@ display: inline-block;
     }
 }
 ion-row{ 
-    height: 100%; 
-    // background-position: center;
-    // background-repeat: no-repeat;
-    // background-size: cover;
-    // background-position: center;
-    // background-repeat: no-repeat;
-    // background-size: cover;
-    // background-image: url("../../../assets/auth-bg.png");
+    height: 100%;  
 } 
 
+.privacy-con{ 
+    display: flex;
+    margin-top: 10px;
+    p{ 
+        font-size: 13px;
+        margin-left: 10px;
+    } 
+    b{
+        cursor: pointer;
+    }
+}
 .panel{
     text-align-last: left; 
     margin-bottom: 50px;

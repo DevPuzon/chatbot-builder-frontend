@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  crypt_code: "[]`8271",
+  crypt_code: "[]`rtl082017e",
   firebase:{
     apiKey: "AIzaSyAMe193JtamVePNjIiMRvvnGANwhOsNSX0",
     authDomain: "prototypeproject-eeb91.firebaseapp.com",
@@ -17,7 +17,7 @@ export const environment = {
   SECRET_ACCESS_KEY : "5Pia8GUCTVTcm4RuB+XAqMdwsiHsjVdu1a2I6t29",
   AWS_REGION : "ap-southeast-1",
   S3_BUCKET : "kawi-rb",
-  backend:"https://api.retailgate.tech:20185/api/"
+  backend:"http://localhost:8080/"
 };
 
 /*

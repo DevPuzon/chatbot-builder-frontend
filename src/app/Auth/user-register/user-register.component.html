@@ -1,45 +1,156 @@
 
-  <div class="super-center"> 
-    <ion-label class="ion-text-center"   > 
-      <div class="panel"> 
-        <p class="title"><b>Join now!</b></p>
-        <p class="desc"><b>Many opportunity waiting for you.</b></p>
-      </div>
-      <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()"  (keyup.enter)="onSubmit()">
-        <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
-          <ion-label position="stacked">Messenger ID</ion-label>
-          <ion-input formControlName="clientID" placeholder="Please provide your messenger ID."></ion-input>
-        </ion-item>
-        <div *ngIf="submitted && f.clientID.errors">  
-          <div class="error-text">{{(f.clientID.errors.required) ? 'ID is required' :
-            (f.clientID.errors) ? 'Number only.' :  ''}}</div>
-        </div>
-
-        <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
-          <ion-label position="stacked">Email</ion-label>
-          <ion-input formControlName="email" placeholder="What is your email address?"></ion-input>
-        </ion-item>
-        <div *ngIf="submitted && f.email.errors">  
-          <div class="error-text">{{(f.email.errors.required) ? 'Email is required' :
-            (f.email.errors) ? 'Email is not valid.' :  ''}}</div>
-        </div>
-
-        <ion-item color="transparent" style="margin-bottom: 14px;" class="ion-no-padding">
-          <ion-label position="stacked">Password</ion-label>
-          <ion-input formControlName="password" type="{{typePass}}" placeholder="Shhh! don't share your password to anyone except on me. :)"></ion-input>
-          <ion-icon class="passwordIcon" slot="end" name="{{imgPass}}" (click)="onClickShow()"></ion-icon>
-        </ion-item> 
-        <div *ngIf="submitted && f.password.errors">  
-          <div class="error-text">{{(f.password.errors.required) ? 'Password is required' :
-            (f.password.errors) ? 'Password is not valid.' :  ''}}</div>
-        </div>
-        <div class="signin-con"> 
-          <ion-button   class="btn-login" (click)="onSubmit()"> 
-          Sign up</ion-button> 
+  <div class="header">
+    <img class="img-head" src="../../../assets/expand-logo.png" alt="">
+  </div>
+  <div class="container">
+    <div class="c-main-process"> 
+      <div class="c-process" *ngFor="let a of process;index as i">
+        <div class="i-process">
+          <div class="circle-main">          
+            <div class="circle">
+              <p class="num">{{i +1}}</p>            
+              <!-- <img src="" alt=""> -->
+            </div>
+          </div>
+          <p class="c-text">{{a.text}}</p>  
+          <div *ngIf="i <= process_index" class="c-cur"></div>
         </div> 
-        <div class='have-acc'>  
-          <p (click)="haveAccount()">Have account.</p>
-        </div>
-      </form>
-    </ion-label>
+        <div *ngIf="i != process.length-1" class="line"></div>
+      </div>
+    </div>
+    <div class="sub-content">
+      <!-- Privacy Policy -->
+      <div [hidden]="process_index != 0" class="privacy"> 
+        <app-privacy-policy></app-privacy-policy>
+      </div>
+      <div [hidden]="process_index != 0" class="privacy-con"> 
+        <p>I have read and agree to this <b [routerLink]="['/privacy-policy']">Privacy Policy</b></p>
+        <ion-checkbox (ionChange)="onChangeCPrivacy()" [(ngModel)]="check_privacy"></ion-checkbox>
+      </div>
+    
+      <!-- Account -->
+      <div [hidden]="process_index != 1" class="account resp-acc">
+        <h1 class="process-title">Create your account</h1>
+        <p class="muted-color">Register using your facebook account</p>
+        <div class="fb-create-acc"> 
+          <ion-button (click)="signInWithFB()" >
+            <ion-icon name="logo-facebook" slot="start"></ion-icon>
+            Facebook
+          </ion-button>
+        </div> 
+        <p class="muted-color">Or register using your email address</p> 
+        <form [formGroup]="account_form" class="form"  (keyup.enter)="onNextAcc()">  
+          <ion-item color="transparent"  class="ion-no-padding">
+            <ion-label position="stacked">Email</ion-label>
+            <ion-input formControlName="email" placeholder="What is your email address?"></ion-input>
+          </ion-item>
+          <div *ngIf="acc_submitted && f_acc.email.errors">  
+            <div class="error-text">{{(f_acc.email.errors.required) ? 'Email is required' :
+              (f_acc.email.errors) ? 'Email is not valid.' :  ''}}</div>
+          </div>
+
+          <ion-item color="transparent"  class="ion-no-padding">
+            <ion-label position="stacked">Password</ion-label>
+            <ion-input formControlName="password" type="{{typePass}}" placeholder="Don't share your password to anyone except on me. :)"></ion-input>
+            <ion-icon class="passwordIcon" slot="end" name="{{imgPass}}" (click)="onClickShow()"></ion-icon>
+          </ion-item> 
+          <div *ngIf="acc_submitted && f_acc.password.errors">  
+            <div class="error-text">{{(f_acc.password.errors.required) ? 'Password is required' :
+              (f_acc.password.errors) ? 'Password is not valid.' :  ''}}</div>
+          </div> 
+        </form>
+      </div>
+      
+      <!-- Basic -->
+      <div [hidden]="process_index != 2" class="basic resp-basic"> 
+        <input  id="baseFileUpload" #baseFileUpload type="file"
+        (click)="baseFileUpload.value = null" 
+        (change)="onChange(baseFileUpload.files[0])"  
+        style="display:none"
+        accept=".png, .jpg, .jpeg"> 
+        <h1 class="process-title">Basic</h1>
+        <p class="muted-color">Please complete the forms below</p>
+        <div class="c-getimg" (click)="getImage()" > 
+          <img class="c-img-add" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFmklEQVRoge2ZXWibVRjHfydIk7V1Y1czkCboRrsNoSvNEPHKNfjRjqEFQauFl91Wqx2d4jKa7SaoUIfg8EbIsl31wkGgZQPNhF5MsF1xF0I/ssn6sWzejLo1ayp9Hy/SluTkfdNkebt50f9VzvOc55z/P+e85+M5sI1tVAXlVEMiUge8ChwCGoE9QN2aewm4D0wDfwDXlVIZp/p+YojIDhH5UESuikhWyseyiFwRkS4R8Twr4p+LyL0KSNshLSInRWTH0yLfLiK3HSCu45aIvF0pn7K/ARFRQAQY2Cwum82ysLDA8vIyAB6PB5/PR01NzabdAN8BXyilVsrhVZYAyc3TH4EPrfymaTI2NkYymWR8fJz5+XlM0yyo43K5aGhooLW1lVAoRDAYxOVy2XX5K/COUuqfqgWISC1wDXhF962urpJIJIjH4ywsLGzWVAF8Ph+GYXDs2DE7IWNAm1LqYal2SgpYmzZDwHu6L5VKMTAwwPT0dAW0i9HU1EQkEqGxsdHKnQTaS00n2zFcQwQL8qOjoxw/frxq8gBTU1MYhsHIyIiVuw34qlS87QiISDswrNcZGhpicHCwaI5XC6UUfX19dHV1FVEhNwpXLeOsjGtr8p/Ai/n20dFR+vv7HSe/QUYpzpw5Q0dHh+66BbyslFrWHXZT6BM08qlUitOnT28ZeQARIRqNMjMzo7v2Aj1WMUUjsPbv3wZeWLetrq7S3d1d0ZzfvXs3tbW1AGQyGR48eFB27P79+7l48aK+OqWBl/RRsBqBznzyAIlEouIPtre3l0QiQSKRoLe3t6LYyclJhoeHdbMXeFc3Wgnozi+Ypkk8Hq+IgBOIxWJW0/Uj3VAgYG3Tej3fNjY2VvEm5QTm5uaYmJjQzUf0Q58+Aq8BBQeWZDLpPLsyYdG3h9ydYwO6gGY9Ynx83FlWFcCm70P5BV1AwX6ezWaZn593mFb5uHPnDisrRaeIpvzCc5pzT34hnU6XXPd37dpFT4/l8kxzc3PB71OnTlnWO3/+PIuLi5Y+0zRJp9MEAgFbjrqA5/MLjx49sqGeQ21tLZ2dnSXrAPj9fvx+v6UvFovZCrDhsDO/sNlh7v8IyS/oI1Bw9q6vry/ZUiaT4fLly5a+YDC48a/Pzs7aLgaZTOnkhAWHAo66gPv5Ba/Xi8vlsv0OFhcXiUajlr5IJLIh4ObNm7b1SsHlcuH1enXzvYI6mnMqv+B2u2loaKi4Y6cQCASs7tEFHHUBN/Xara2tDtMqH4cPH7YyF3DUBVwHChbeUCjkLKsK0NbWppuWyXHcQIGAtXTftXxbMBjE5/NtBb+S8Pv9tLS06OZkOcfpSwUVXC4Mw3CWXRkwDMMqW3FJN1hdaDzAX+TdCUzTpLu7m6mpKb26Laq50Bw8eJALFy7oAu4Ce/URsLsTnwS+ybdNT09jGIbV2cRRuN1u4vE4+/bt010nlFLndKPdTvw9uWvlBhobGwmHwyjlWEa+CEopwuGwFfkU8INVjKUApdRj4GO0bbujo4O+vr4tEbGeVmlvb9ddAvRYZSRg88zcOeAz3T4yMkI0GiWbzT4p3wK43W7C4bAVeYBBpVS/XexmAmqAK8AR3TczM8PZs2eZnJyslG8BDhw4QCQSsZo2AD8DHUqpf+3iy0nu7gR+AYq2RdM0GR4eJhaLMTc3VwHt3DpvGAZHjx61S+7+DoSqSu6uQ0TqgZ+AN6z8pmly48aNjfT67OysZXo9EAgQDAYJhUK0tLQ8nfR6noga4Gvg083iVlZWSKfTLC0tAVBXV4fX6y33geNb4MtS06YqiMhbIpLagiemGRF5c0tIW4jwiMgJEbnrAPEFEemTZ/Ra6RGRD0RkREQeV0D6sYgMi8j7IuKuhoOTD907KH7oXk8SPAT+JvfQPQH8ZrcxbWMbTxn/AZ1Wt6qdAEWPAAAAAElFTkSuQmCC" />
+          <ion-avatar  button >
+            <img  [src]="basic_form.value.user_profile">
+          </ion-avatar>
+        </div>  
+
+        <form [formGroup]="basic_form" class="form"  (keyup.enter)="onNextBasic()">  
+          <ion-item color="transparent"  class="ion-no-padding">
+            <ion-label position="stacked">First name</ion-label>
+            <ion-input formControlName="first_name" placeholder="What is your first name?"></ion-input>
+          </ion-item>
+          <div *ngIf="basic_submitted && f_basic.first_name.errors">  
+            <div class="error-text">{{(f_basic.first_name.errors.required) ? 'First name is required' :
+              (f_basic.first_name.errors) ? 'First name is not valid.' :  ''}}</div>
+          </div>
+
+          <ion-item color="transparent"  class="ion-no-padding">
+            <ion-label position="stacked">Last name</ion-label>
+            <ion-input formControlName="last_name" placeholder="What is your last name?"></ion-input>
+          </ion-item> 
+          <div *ngIf="basic_submitted && f_basic.last_name.errors">  
+            <div class="error-text">{{(f_basic.last_name.errors.required) ? 'Last name is required' :
+              (f_basic.last_name.errors) ? 'Last name is not valid.' :  ''}}</div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Profile -->
+      <div [hidden]="process_index != 3" class="profile resp-profile">
+        <h1 class="process-title">Tell us who you are</h1>
+        <p class="muted-color">What job you are doing?</p>
+        <form [formGroup]="profile_form" class="form"  (keyup.enter)="onNextBasic()">   
+          <ion-item  class="ion-no-padding" lines="none">
+            <ion-label>Profession</ion-label>
+            <ion-select formControlName="profession" interface="popover" placeholder="Select One">
+              <ion-select-option [value]="a" *ngFor="let a of professions">{{a}}</ion-select-option> 
+            </ion-select>
+          </ion-item>
+          <div *ngIf="profile_submitted && f_profile.profession.errors">  
+            <div class="error-text">{{(f_profile.profession.errors.required) ? 'Profession is required' :
+              (f_profile.profession.errors) ? 'Profession is not valid.' :  ''}}</div>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Contact -->
+      <div [hidden]="process_index != 4" class="contact resp-contact">
+        <h1 class="process-title">Keep in touch with us</h1>
+        <p class="muted-color">Please complete the forms below</p>
+        <form [formGroup]="contact_form" class="form"  (keyup.enter)="onNextContact()">   
+          <ion-item color="transparent"  class="ion-no-padding">
+            <ion-label position="stacked">Mobile number</ion-label>
+            <ion-input formControlName="mobile_number" placeholder="What is your mobile number?"></ion-input>
+          </ion-item>
+          <div *ngIf="contact_submitted && f_contact.mobile_number.errors">  
+            <div class="error-text">{{(f_contact.mobile_number.errors.required) ? 'Mobile number is required' :
+              (f_contact.mobile_number.errors) ? 'Mobile number is not valid.' :  ''}}</div>
+          </div>
+        </form>
+      </div>
+      <div  [hidden]="process_index != 4" class="contact-con resp-contact"> 
+        <p>I have read and agree to the <b [routerLink]="['/terms-condition']">Terms and Condition</b></p>
+        <ion-checkbox [(ngModel)]="check_contact"></ion-checkbox>
+      </div>   
+
+    </div> 
+  </div>
+  <div class="c-footer">
+    <div> 
+      <ion-button color="light" (click)="haveAccount()">
+        Already have account
+      </ion-button>
+    </div>
+    <div class="slot-end">
+      <ion-button [disabled]="btn_prev_status" (click)="onBack()">
+        Back
+      </ion-button>
+      <ion-button [disabled]="btn_nxt_status" (click)="onNext()">
+        <ion-icon *ngIf="process_index == 4" name="checkmark-outline" slot="start"></ion-icon>
+        {{process_index != 4 ? 'Next':'Done'}}
+      </ion-button>
+    </div>
   </div>

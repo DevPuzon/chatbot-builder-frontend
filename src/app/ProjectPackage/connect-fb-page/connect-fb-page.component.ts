@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { CustomHttp } from 'src/app/utils/custom-http.service';
 
 @Component({
   selector: 'app-connect-fb-page',
@@ -10,7 +10,7 @@ import { CustomHttpService } from 'src/app/utils/custom-http.service';
 export class ConnectFbPageComponent implements OnInit {
   @Input() data:any[]; 
   constructor(
-    private custHttps:CustomHttpService,
+    private custHttps:CustomHttp,
     private mdlCtrl:ModalController
   ) { }
 

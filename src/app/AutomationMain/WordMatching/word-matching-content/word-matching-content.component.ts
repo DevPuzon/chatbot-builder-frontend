@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, PopoverController, ToastController } from '@ionic/angular';
-import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { CustomHttp } from 'src/app/utils/custom-http.service';
 import { LoggerUtil } from 'src/app/utils/logger-util';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
 import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
@@ -19,7 +19,7 @@ export class WordMatchingContentComponent implements OnInit {
   @Input() wmatchingdtas = new Array();
   user_word_bools = new Array();
   constructor(private popoverController:PopoverController,
-    private custHttps:CustomHttpService,
+    private custHttps:CustomHttp,
     private router:Router,
     private toast : ToastMessageService,
     private loadingController:LoadingController) { }

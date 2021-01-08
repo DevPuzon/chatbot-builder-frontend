@@ -6,6 +6,9 @@ import { AuthMainComponent } from './Auth/auth-main/auth-main.component';
 import { UserLoginComponent } from './Auth/user-login/user-login.component';
 import { UserRegisterComponent } from './Auth/user-register/user-register.component';
 import { ConnectRealAccComponent } from './AutomationMain/connect-real-acc/connect-real-acc.component'; 
+import { SplashScreenComponent } from './InteractivePackage/splash-screen/splash-screen.component';
+import { PrivacyPolicyComponent } from './StaticPackage/privacy-policy/privacy-policy.component';
+import { TermsConditionComponent } from './StaticPackage/terms-condition/terms-condition.component';
 import { IonPopOverListComponent } from './utils/ion-pop-over-list/ion-pop-over-list.component';
  
 const routes: Routes = [ 
@@ -13,11 +16,18 @@ const routes: Routes = [
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full',
-  },  
+  },    
+  {
+    path: 'privacy-policy',
+    component:PrivacyPolicyComponent
+  },   
+  {
+    path: 'terms-condition',
+    component:TermsConditionComponent
+  },    
   {
     path:"auth",
-    component:AuthMainComponent,
-    canActivate:[AuthGuardService],
+    component:AuthMainComponent, 
     children:[
       {
         path:"login",
@@ -25,6 +35,10 @@ const routes: Routes = [
       },
       {
         path:"register",
+        component:UserRegisterComponent
+      },
+      {
+        path:"register/next-proceed/:id",
         component:UserRegisterComponent
       },
     ]
@@ -40,9 +54,10 @@ const routes: Routes = [
   {
     path: 'c',
     loadChildren: () => import('./TemplatePackage/main-template/main-template.module').then( m => m.MainTemplatePageModule)
-  }
+  },
 
 
+  // {path: '**', redirectTo: 'auth/login'},
 ];
 
 @NgModule({
@@ -56,10 +71,13 @@ export class AppRoutingModule { }
 export const declarations= [
   AppComponent,UserLoginComponent,UserRegisterComponent,
   IonPopOverListComponent,AuthMainComponent,
-  ConnectRealAccComponent
+  ConnectRealAccComponent,SplashScreenComponent,
+  PrivacyPolicyComponent,TermsConditionComponent
 
 ]
 export const entryComponents= [
   UserLoginComponent,UserRegisterComponent
-  ,AuthMainComponent,  ConnectRealAccComponent
+  ,AuthMainComponent,  ConnectRealAccComponent,
+  ,SplashScreenComponent,PrivacyPolicyComponent,
+  TermsConditionComponent
 ]

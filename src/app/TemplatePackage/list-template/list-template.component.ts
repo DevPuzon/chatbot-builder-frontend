@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'; 
 import { Router } from '@angular/router';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { CustomHttp } from 'src/app/utils/custom-http.service';
 import { PreviewTemplateComponent } from '../preview-template/preview-template.component';
 
 @Component({
@@ -13,7 +14,9 @@ export class ListTemplateComponent implements OnInit {
   constructor(
     private loadingController:LoadingController,
     private router:Router,
-    private modalController:ModalController
+    private modalController:ModalController,
+    private toast:ToastController,
+    private cusHttp:CustomHttp
   ) { }
 
   ngOnInit() {}
@@ -27,10 +30,9 @@ export class ListTemplateComponent implements OnInit {
   }
   async onBlankProj(){
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    await loading.present(); 
-    setTimeout(async () => {
-      await loading.dismiss();  
-      this.router.navigateByUrl("t"); 
-    },2800);  
+    await loading.present();  
+    this.cusHttp.post('',async(req,res)=>{
+      
+    });
   }
 }

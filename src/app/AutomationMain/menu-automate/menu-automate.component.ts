@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 import { FacebookLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { ConnectFbPageComponent } from 'src/app/ProjectPackage/connect-fb-page/connect-fb-page.component';
-import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { CustomHttp } from 'src/app/utils/custom-http.service';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
 import { ConnectRealAccComponent } from '../connect-real-acc/connect-real-acc.component';
 import { ExportasfileComponent } from '../exportasfile/exportasfile.component';
@@ -18,7 +18,7 @@ export class MenuAutomateComponent implements OnInit {
   constructor(private router:Router,
     private modalController:ModalController,
     private loadingController:LoadingController,
-    private cushttp:CustomHttpService,
+    private cusHttp:CustomHttp,
     private authService: SocialAuthService,
     private toast:ToastMessageService,
     private alertController:AlertController,
@@ -33,7 +33,7 @@ export class MenuAutomateComponent implements OnInit {
   isGuest = false;
   logout(){   
     this.popover.dismiss();
-    this.cushttp.onLogoutUser();
+    this.cusHttp.onLogoutUser();
   }
   async onExport(){ 
     this.popover.dismiss();

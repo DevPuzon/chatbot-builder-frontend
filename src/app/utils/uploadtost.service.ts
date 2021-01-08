@@ -13,7 +13,7 @@ export class UploadtostService {
   static SECRET_ACCESS_KEY = environment.SECRET_ACCESS_KEY;
   static AWS_REGION = environment.AWS_REGION;
   static S3_BUCKET = environment.S3_BUCKET;
-  static uploadFile(file) {
+  static uploadFile(file,path) {
     return new Promise<any>((resolve)=>{  
       const contentType = file.type;
       const bucket = new S3(
@@ -25,7 +25,7 @@ export class UploadtostService {
       );
       const params = {
           Bucket: this.S3_BUCKET,
-          Key: 'chatbotbuilder/'+UuidService.makeid(12)+"--"+file.name,
+          Key: path,
           Body: file,
           ACL: 'public-read',
           ContentType: contentType

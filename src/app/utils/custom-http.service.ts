@@ -3,34 +3,31 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CryptService } from './crypt.service';
 import { rejects } from 'assert';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { LoggerUtil } from './logger-util';
+import { environment } from 'src/environments/environment'; 
 import { BlockUtils } from './block-utils';
 import { WmatchingutilsService } from './wmatchingutils.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CustomHttpService {
-
-  // private base  ="https://fbchatbotexample012.herokuapp.com/"; 
-  // private base  ="https://chatbot-builder-api.herokuapp.com/api/"; 
-  private base = "https://api.retailgate.tech:20185/api/";
-  // private static base = "https://api.retailgate.tech:20185/api/";
-  // private base  ="http://localhost:20184/api/";  
+export class CustomHttp { 
+  // private base = "https://api.retailgate.tech:20185/api/";
+  private base = "http://localhost:8080/";
   private token  = "";
-  constructor(private http:HttpClient,
+  constructor(private http:HttpClient, 
     private router:Router){  
       this.base = environment.backend;
-      LoggerUtil.log(this.base);
+      console.log(this.base);
       this.token ="Bearer "+ localStorage.getItem("-=[]t");
   }
+
   get(ctrl){  
     this.base = environment.backend;
+    console.log(this.base);
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
-    LoggerUtil.log(this.token);
+    console.log(this.token);
     const url = this.base+ctrl;
-    LoggerUtil.log(url);
+    console.log(url);
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
     .set('Authorization', this.token) 
@@ -40,16 +37,15 @@ export class CustomHttpService {
   }
   
   getP(url){     
-    const headers = new HttpHeaders()
-    .set('cache-control', 'no-cache') 
-    .set('content-type', 'application/json')  
+    console.log(url);
+    const headers = new HttpHeaders() 
     return this.http
     .get(url, { headers: headers })
   }
 
   getNoBase(ctrl){  
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
-    LoggerUtil.log(this.token);
+    console.log(this.token);
     const url = ctrl;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
@@ -61,13 +57,13 @@ export class CustomHttpService {
   getId(ctrl,id){
     this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
-    LoggerUtil.log(this.token);
+    console.log(this.token);
     const url = this.base+ctrl+"/"+id;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
     .set('Authorization', this.token)
     .set('content-type', 'application/json') ;
-    LoggerUtil.log(url);
+    console.log(url);
     return this.http
     .get(url, { headers: headers })
   } 
@@ -75,15 +71,15 @@ export class CustomHttpService {
   post(ctrl,body){
     this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
-    LoggerUtil.log(this.token);
+    console.log(this.token);
     const url = this.base+ctrl;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
     .set('Authorization', this.token)
     .set('content-type', 'application/json') 
-    LoggerUtil.log("post");
-    LoggerUtil.log(body);
-    LoggerUtil.log(url);
+    console.log("post");
+    console.log(body);
+    console.log(url);
     return this.http
     .post(url,body, { headers: headers })
   }
@@ -94,17 +90,15 @@ export class CustomHttpService {
     return this.http
     .post(url,body, { headers: headers })
   }
-  put(ctrl,id,body){
+  put(ctrl,body){
     this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
-    LoggerUtil.log(this.token);
-    const url = this.base+ctrl+"/"+id;
+    console.log(this.token);
+    const url = this.base+ctrl;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
     .set('Authorization', this.token)
-    .set('content-type', 'application/json') 
-    LoggerUtil.log(body);
-    LoggerUtil.log(url);
+    .set('content-type', 'application/json')  
     return this.http
     .put(url,body, { headers: headers })
   }
@@ -112,7 +106,7 @@ export class CustomHttpService {
   del(ctrl,id){
     this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
-    LoggerUtil.log(this.token);
+    console.log(this.token);
     const url = this.base+ctrl+"/"+id;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
@@ -128,7 +122,7 @@ export class CustomHttpService {
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache') 
     .set('content-type', 'application/json') 
-    LoggerUtil.log(url); 
+    console.log(url); 
     return this.http
     .get(url, { headers: headers })
   }
@@ -139,7 +133,7 @@ export class CustomHttpService {
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache') 
     .set('content-type', 'application/json') 
-    LoggerUtil.log(url); 
+    console.log(url); 
     return this.http
     .delete(url, { headers: headers })
   }
@@ -150,20 +144,21 @@ export class CustomHttpService {
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache') 
     .set('content-type', 'application/json') 
-    LoggerUtil.log("post");
-    LoggerUtil.log(JSON.stringify(body));
-    LoggerUtil.log(url);
+    console.log("post");
+    console.log(JSON.stringify(body));
+    console.log(url);
     return this.http .post(url,body, { headers: headers })
   }
+  
   putNoToken(ctrl,id,body){
     this.base = environment.backend;
     const url = this.base+ctrl+"/"+id;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache') 
     .set('content-type', 'application/json') 
-    LoggerUtil.log("post");
-    LoggerUtil.log(JSON.stringify(body));
-    LoggerUtil.log(url);
+    console.log("post");
+    console.log(JSON.stringify(body));
+    console.log(url);
     return this.http.put(url,body, { headers: headers })
   }
   
@@ -174,12 +169,7 @@ export class CustomHttpService {
     for (let i = 0 ; i < keys.length;i++){
       let key = keys[i];
       let keyarray = error[key];
-      LoggerUtil.log(keyarray);
-      for(let x = 0 ; x < keyarray.length ; x++){
-        // LoggerUtil.log(keyarray[x]); 
-        // arr.push(keyarray[x]);
-        return keyarray[x];
-      }
+      return keyarray.message; 
     } 
   }
 
@@ -187,11 +177,11 @@ export class CustomHttpService {
    getUser(){
     this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
-    LoggerUtil.log(this.token);
+    console.log(this.token);
     return new Promise<any>((resolve,reject)=>{ 
       this.get("account")
       .subscribe((snap:any)=>{
-        LoggerUtil.log(snap);
+        console.log(snap);
         if(!snap){
           reject();
           this.onLogoutUser();
@@ -202,7 +192,7 @@ export class CustomHttpService {
         resolve(snap);
       }, 
       (err: Response) => { 
-        LoggerUtil.log(err) ;
+        console.log(err) ;
         reject(err);
         this.onLogoutUser();
       });

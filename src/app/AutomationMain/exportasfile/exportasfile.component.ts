@@ -21,6 +21,7 @@ export class ExportasfileComponent implements OnInit {
       createdBy: ['', [Validators.required ]],
       name: ['', [Validators.required ]],
       type: ['', [Validators.required ]],
+      msgr_id: ['', [Validators.pattern("^[0-9]*$"),]], 
     }, { 
      }); 
   }

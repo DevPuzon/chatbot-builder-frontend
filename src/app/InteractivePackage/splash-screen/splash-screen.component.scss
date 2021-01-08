@@ -1,0 +1,66 @@
+div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+  }
+  .pulse{ 
+    animation-name: pulse;
+    animation-duration: 2.3s; 
+    animation-timing-function: ease-out; 
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-fill-mode: none;
+    animation-play-state: running;
+  }
+
+  #custom-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100000;
+    width:100%;
+    background-color: #FFFFFF;
+  }
+  
+  .flb {
+    background-color: #3ebffb;
+    height:100%;
+    width:100%;
+    animation: pulse 3s linear forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .Aligner-item {
+    max-width: 50%;
+  }
+  .Aligner-item--top {
+    align-self: flex-start;
+  }
+  .Aligner-item--bottom {
+    align-self: flex-end;
+  }
+  #custom-overlay #appicon {
+    display: block;
+    margin: 0 auto; 
+    height: auto;
+    animation: animation 3100ms linear infinite both;
+    animation-delay: 1s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

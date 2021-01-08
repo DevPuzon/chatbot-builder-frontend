@@ -1,48 +1,56 @@
 
 <div class="super-center"> 
-  <ion-label class="ion-text-center"   > 
+  <div class="login-con"> 
     <div class="panel"> 
       <p class="title"><b>Hey!</b></p>
       <p class="desc"><b>How's your day?</b></p>
     </div>
     <form [formGroup]="form" class="form" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">  
-      <ion-item color="transparent" style="margin-top: 14px;margin-bottom: 14px;" class="ion-no-padding">
-        <ion-label position="stacked">Email</ion-label>
-        <ion-input formControlName="email" placeholder="What is your email address?"></ion-input>
-      </ion-item>
-      <div *ngIf="submitted && f.email.errors">  
-        <div class="error-text">{{(f.email.errors.required) ? 'Email is required' :
-          (f.email.errors) ? 'Email is not valid.' :  ''}}</div>
+      <div class="field">
+        <ion-item color="transparent"  class="ion-no-padding">
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input formControlName="email" placeholder="What is your email address?"></ion-input>
+        </ion-item>
+        <div *ngIf="submitted && f.email.errors">  
+          <div class="error-text">{{(f.email.errors.required) ? 'Email is required' :
+            (f.email.errors) ? 'Email is not valid.' :  ''}}</div>
+        </div> 
       </div>
 
-      <ion-item color="transparent" style="margin-bottom: 14px;" class="ion-no-padding">
-        <ion-label position="stacked">Password</ion-label>
-        <ion-input formControlName="password" type="{{typePass}}" placeholder="Shhh! don't share your password to anyone except on me. :)"></ion-input>
-        <ion-icon class="passwordIcon" slot="end" name="{{imgPass}}" (click)="onClickShow()"></ion-icon>
-      </ion-item> 
-      <div *ngIf="submitted && f.password.errors">  
-        <div class="error-text">{{(f.password.errors.required) ? 'Password is required' :
-          (f.password.errors) ? 'Password is not valid.' :  ''}}</div>
-      </div>
-      <div class="signin-con"> 
-        <ion-button  fill="outline" class="btn-login" (click)="onSubmit()"> 
-        Sign in</ion-button>
-        <div class="login-or">
-          <div class="line"></div>
-          <p class="or">OR</p>
-          <div class="line"></div>
+      <div class="field">
+        <ion-item color="transparent"  class="ion-no-padding">
+          <ion-label position="stacked">Password</ion-label>
+          <ion-input formControlName="password" type="{{typePass}}" placeholder="Don't share your password to anyone except on me. :)"></ion-input>
+          <ion-icon class="passwordIcon" slot="end" name="{{imgPass}}" (click)="onClickShow()"></ion-icon>
+        </ion-item> 
+        <div *ngIf="submitted && f.password.errors">  
+          <div class="error-text">{{(f.password.errors.required) ? 'Password is required' :
+            (f.password.errors) ? 'Password is not valid.' :  ''}}</div>
         </div>
-        <ion-button class="btn-fb" (click)="signInWithFB()">
-          <ion-icon name="logo-facebook" slot="start"></ion-icon>
-          Facebook
-        </ion-button>
-      </div>
-      <div class='forgotpass'> 
-        <p >Forgot password?</p>
-        <p (click)="noAccount()">Don't have account yet.</p>
       </div>
     </form>
-  </ion-label>  
+    <div  class="privacy-con"> 
+      <ion-checkbox [(ngModel)]="check_privacy"></ion-checkbox>
+      <p [style.color]="!check_privacy && !!(submitted || submitted_fb)  ? 'red':''">I have read and agree to this <b [routerLink]="['/privacy-policy']">Privacy Policy</b></p>
+    </div>
+    <div class="signin-con"> 
+      <ion-button  fill="outline" class="btn-login" (click)="onSubmit()"> 
+      Sign in</ion-button>
+      <div class="login-or">
+        <div class="line"></div>
+        <p class="or">OR</p>
+        <div class="line"></div>
+      </div>
+      <ion-button class="btn-fb" (click)="signInWithFB()">
+        <ion-icon name="logo-facebook" slot="start"></ion-icon>
+        Facebook
+      </ion-button>
+    </div>
+    <div class='forgotpass'> 
+      <p >Forgot password?</p>
+      <p (click)="noAccount()">Don't have account yet.</p>
+    </div>
+  </div> 
 </div>
 <div *ngIf="!isConnectAcc" class="c-guest" (click)="onGuest()">
   <p>Try it as a guest!</p>

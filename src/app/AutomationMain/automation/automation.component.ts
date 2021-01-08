@@ -6,7 +6,7 @@ import { AddTextButtonPopupComponent } from '../add-text-button-popup/add-text-b
 import { BlockUtils } from 'src/app/utils/block-utils';
 import { UuidService } from 'src/app/utils/uuid.service';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
-import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { CustomHttp } from 'src/app/utils/custom-http.service';
 import { ChatbotFunc } from 'src/app/utils/chatbot-func';
 import { WmatchingutilsService } from 'src/app/utils/wmatchingutils.service';
 import { BlobService } from 'src/app/utils/blob.service';
@@ -49,7 +49,7 @@ export class AutomationComponent implements OnInit {
     private alertController:AlertController,
     private storage :AngularFireStorage,  
     private loadingController:LoadingController,
-    private custHttps:CustomHttpService) { 
+    private custHttps:CustomHttp) { 
     }   
   
   guestID:any;
@@ -572,7 +572,7 @@ export class AutomationComponent implements OnInit {
     return new Promise<any>(async (resolve)=>{ 
       var loading = await this.loadingController.create({ message: "Please wait ...."  });
       await loading.present();  
-      const data = await UploadtostService.uploadFile(file);
+      const data = await UploadtostService.uploadFile(file,'chatbotbuilder/'+UuidService.makeid(512));
       await loading.dismiss();  
       resolve(data.Location);
     })

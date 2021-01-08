@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular'; 
+import {  SplashScreenController } from 'src/app/InteractivePackage/splash-screen/splash-screen.component';
+import { CustomHttp } from 'src/app/utils/custom-http.service';
 import { IonPopOverListComponent } from 'src/app/utils/ion-pop-over-list/ion-pop-over-list.component';
+import { ToastMessageService } from 'src/app/utils/toast-message.service';
 import { ConnectFbPageComponent } from '../connect-fb-page/connect-fb-page.component' ;
 
+declare var $:any;
 @Component({
   selector: 'app-list-project',
   templateUrl: './list-project.component.html',
@@ -11,15 +15,64 @@ import { ConnectFbPageComponent } from '../connect-fb-page/connect-fb-page.compo
 })
 export class ListProjectComponent implements OnInit { 
 
+  projects = new Array(); 
   constructor(
     private router:Router,
+    private splCtrl :SplashScreenController,
     private loadingController:LoadingController,
     private popCtrl:PopoverController, 
     private modalController:ModalController,
-    private alertController:AlertController
+    private alertController:AlertController,
+    private toast:ToastMessageService,
+    private cusHttp:CustomHttp
   ) { }
+ 
+  ngOnInit() { 
+    this.initProjects(); 
+    $(window).scroll(function() {
+      if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+          alert("near bottom!");
+      }
+   });
+  }
 
-  ngOnInit() {}
+  isLoading = false;
+  nextPage = '';
+  initProjects() { 
+    this.splCtrl.show(); 
+    this.cusHttp.get('project/list')
+    .subscribe((snap:any)=>{   
+      this.splCtrl.dismiss();
+      console.log(snap);
+      this.nextPage = snap.nextPage;
+      if(snap.data.length == 0){
+        return;
+      }
+      this.projects = snap.data;
+    },err=>{    
+      this.toast.presentToast(err.error.error_message);
+    })
+  }
+
+  loadData(scroll){ 
+    if(this.nextPage ==''){
+      scroll.target.complete();
+      return;
+    }
+    this.cusHttp.get(this.nextPage)
+    .subscribe((snap:any)=>{ 
+      scroll.target.complete();
+      this.nextPage = snap.nextPage;
+      console.log(snap);
+      if(snap.data.length == 0){
+        return;
+      }
+      this.projects = this.projects.concat(snap.data);
+    },err=>{  
+      console.log(err);
+      this.toast.presentToast(err.error.error_message);
+    });
+  }
 
   async onConnect(){  
     const modal = await this.modalController.create({
@@ -100,9 +153,14 @@ export class ListProjectComponent implements OnInit {
   async onBlankProj(){
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present(); 
-    setTimeout(async () => {
-      await loading.dismiss();  
-      this.router.navigateByUrl("t"); 
-    },2800);  
+    
+    this.cusHttp.post('project/create',{})
+    .subscribe(async (snap)=>{
+      await loading.dismiss(); 
+      console.log(snap); 
+    },async(err)=>{
+      await loading.dismiss(); 
+      this.toast.presentToast(err.error.error_message);
+    }) ;
   }
 }

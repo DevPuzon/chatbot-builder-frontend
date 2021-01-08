@@ -1,8 +1,5 @@
-ion-content{
-    height: 100vh;
-}
-ion-label{ 
-    width: 80%;
+.c-main{ 
+    text-align: -webkit-center;
 }
 .passwordIcon{
     font-size:2rem !important;
@@ -107,7 +104,26 @@ ion-row{
     // background-size: cover;
     // background-image: url("../../../assets/auth-bg.png");
 } 
-
+.c-getimg{
+    position: relative;
+    display: inline-block ;
+    width: 120px;
+    margin-right: 10px;
+    .c-img-add{ 
+        position: absolute;
+        bottom: -8px;
+        right: 42px;
+        cursor: pointer;
+        width: 35px;
+    }
+    ion-avatar{ 
+        width: 80px;
+        cursor: pointer;
+        img{
+            background-color: #E6E6E6 ;
+        }
+    }
+}
 .panel{
     text-align-last: left; 
     margin-bottom: 50px;
@@ -120,3 +136,159 @@ ion-row{
         margin-top: 15px; 
     }
 }
+.container{
+    height: 70%;
+}
+.c-footer{
+    padding: 8px;
+    display: flex;
+    .slot-end{
+        width: 100%;
+        text-align: -webkit-right;
+    }
+}
+.header{
+    margin: 10px; 
+    .img-head{
+        height: 80px;
+    }
+}
+
+.c-main-process{
+    display: flex;
+    justify-content: center;
+    .c-process{
+        display: flex;
+        place-items: center;
+        p{
+            margin: 0px;
+        }
+        .i-process{        
+            width: -webkit-fill-available;
+            text-align: -webkit-center;
+            .circle-main{ 
+                .circle{
+                    background-color: #208EF0;
+                    border-radius: 55px;
+                    width: 25px;
+                    height: 25px;
+                    .num{ 
+                        margin: 0px;
+                        padding-top: 4px;
+                        color: white;
+                    }
+                }
+            }
+            .c-text{
+                margin-top: 10px;
+                font-size: revert;
+                font-weight: 200;
+            }
+            .c-cur{ 
+                height: 5px;
+                width: 40px;
+                background: #208EF0;
+                border-radius: 8px;
+            }
+        }
+    }
+}
+.sub-content{
+    padding: 12px;
+    height: 90%; 
+    width: 100%;
+}
+.privacy{
+    height: 90%;
+    overflow: auto; 
+    width: 100%;
+}
+.privacy-con{
+    float: right;
+    display: flex;
+    margin-top: 10px;
+    ion-checkbox{ 
+        margin-left: 10px;
+    }
+    b{
+        cursor: pointer;
+    }
+}
+.process-title{ 
+    font-size: revert;
+    margin-bottom: 8px;
+    font-weight: 300;
+}
+.account{
+    padding-left: 18%;
+    padding-right: 18%;
+    p{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+.basic{
+    padding-left: 18%;
+    padding-right: 18%;
+    p{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+.profile{
+    padding-left: 18%;
+    padding-right: 18%;
+    p{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+.contact{
+    padding-left: 18%;
+    padding-right: 18%;
+    p{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+.contact-con{
+    float: right;
+    display: flex;
+    margin-top: 10px;
+    padding-left: 18%;
+    padding-right: 18%;
+    ion-checkbox{ 
+        margin-left: 10px;
+    }
+    b{
+        cursor: pointer;
+    }
+}
+.line{    
+    width: 60px;
+    height: 1px;
+    background: #363636;
+}
+@media only screen and (max-width: 766px) {  
+    .line{  
+        width: 30px;
+    }
+    .resp-acc{
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    .resp-basic{
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    .resp-profile{
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    .resp-contact{
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+ }

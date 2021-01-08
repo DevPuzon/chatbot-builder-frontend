@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular'; 
-import { CustomHttpService } from 'src/app/utils/custom-http.service';
+import { CustomHttp } from 'src/app/utils/custom-http.service';
 import { IonPopOverListComponent } from 'src/app/utils/ion-pop-over-list/ion-pop-over-list.component';
 @Component({
   selector: 'app-main-template',
@@ -11,7 +11,7 @@ import { IonPopOverListComponent } from 'src/app/utils/ion-pop-over-list/ion-pop
 export class MainTemplatePage implements OnInit {
 
   constructor(
-    private cushttp:CustomHttpService,
+    private cusHttp:CustomHttp,
     private router:Router,
     private popCtrl:PopoverController
   ) { }
@@ -38,7 +38,7 @@ export class MainTemplatePage implements OnInit {
             this.router.navigateByUrl("p");
           break; 
         case "Logout": 
-          this.cushttp.onLogoutUser();
+          this.cusHttp.onLogoutUser();
           break;
       }
     });

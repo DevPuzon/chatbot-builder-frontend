@@ -67,7 +67,9 @@ $app-theme: mat-light-theme((
   position: relative;
   display: inline-block; 
 }
-
+.muted-color{ 
+  color: #6C6C6C;
+}
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
@@ -100,8 +102,7 @@ $app-theme: mat-light-theme((
   -webkit-box-orient: vertical
 }
 .error-text{ 
-  font-size: 14px;
-  margin-top: 8px;
+  font-size: 14px; 
   margin-bottom: 0px;
   margin-right: 0px;
   margin-left: 0px;

@@ -1,61 +1,10 @@
 ion-content{
     height: 100vh;
-}  
-.passwordIcon{
-    font-size:2rem !important;
-    position: relative !important;
-    top: 22px !important;
-    margin: 0 auto !important;
-}
-.forgotpass{
-margin-top: 8px;
-display: inline-block;
-    p{
-        margin-top: 3px;
-        margin-bottom: 6px;
-        cursor: pointer;
-        color: #5195FF;
-    }
-}
+}   
 
-.logo-circle{
-    height: 100px;
-    width: 100px;
-    border-radius: 50px;
-    margin-bottom: 20px;
+ion-col{
+    padding: 0px;
 }
-
-.signin-con{
-    margin-top: 35px;
-    .btn-login{
-        width: 100%;
-        margin-top: 10px;
-    }
-    .btn-fb{
-        width: 70%;
-    }
-    .login-or{ 
-        margin-bottom: 18px;
-        margin-top: 18px;
-        padding-left: 18px;
-        padding-right: 18px;
-        display: flex;    
-        place-items: center;
-        .line{
-            margin-left: 12px;
-            margin-right: 10px;
-            height: 1.3px;
-            background-color: #8E8E8E;
-            width: -webkit-fill-available;
-        }
-        .or{
-            color: #8E8E8E;
-            font-size: 14px;
-            margin: 0px;
-        }
-    }
-}
-
 .con-right{ 
     text-align-last: center;
     // background-color: #91D1F5;  
@@ -83,6 +32,7 @@ display: inline-block;
         text-align-last: left;
     }
     .title{
+        margin-top: 80px;
         font-size: 90px;
         font-weight: bolder;
         line-height: 96px;
@@ -138,3 +88,49 @@ ion-row{
     background-color: white;
     height: 100vh;
 }
+.c-reg{
+    height: 100vh;
+    background-image: url("../../../assets/bg-lightblue.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    .c-reg-sub{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 70%;
+        width: 60%;
+        .c-card{      
+            height: 100%; 
+            border-radius: 8px; 
+            background-color: white;
+            box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12);
+        } 
+    }
+}
+
+@media only screen and (max-width: 766px) {  
+    .c-reg{
+        height: 100vh;
+        background-image: url("../../../assets/bg-lightblue.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        .c-reg-sub{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 100%;
+            width: 100%;
+            .c-card{      
+                height: 100%; 
+                border-radius: 0px; 
+                background-color: white;
+                box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12);
+            } 
+        }
+    }
+    .con-right{ 
+        display: none;
+    }
+ }

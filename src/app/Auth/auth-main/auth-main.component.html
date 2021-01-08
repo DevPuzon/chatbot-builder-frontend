@@ -1,6 +1,6 @@
  
  <ion-content>
-  <ion-row >
+  <ion-row *ngIf="isLogin">
     <ion-col 
     size="12" size-sm="12" size-lg="4" size-md="4"> 
       <div class="router"> 
@@ -24,4 +24,12 @@
      </ion-row>
     </ion-col>
   </ion-row>
+  <div *ngIf="!isLogin" class="c-reg">
+    <div class="c-reg-sub">
+      <div class="c-card"> 
+        <ion-router-outlet></ion-router-outlet>
+      </div>
+    </div>
+  </div>
 </ion-content>
+<!-- <app-splash-screen></app-splash-screen> -->
