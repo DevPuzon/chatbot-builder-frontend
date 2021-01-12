@@ -1,6 +1,10 @@
 ion-col{
     padding: 0px;
 }
+h2{ 
+    font-weight: 400;
+    margin: 0px;
+}
 .toolbar{ 
     .toolbar-icon{
         width: 50px;
@@ -14,6 +18,20 @@ ion-col{
     margin: 8px;
     font-size: 26px;
     font-weight: 500;
+}
+.c-title-project{
+    margin: 15px;
+    .title{
+        font-size: 22px;
+    }
+    .desc{
+        font-size: smaller;
+        font-weight: 580;
+        color: #535353;
+    }
+    p{
+        margin: 0px;
+    }
 }
 .blocks-word-main-con{
     padding: 10px;
@@ -144,6 +162,7 @@ ion-col{
                 background-color: #F4F4F4;
             } 
             .img-container{  
+                overflow: auto;
                 cursor: pointer;
                 height: 300px;
                 display: flex;

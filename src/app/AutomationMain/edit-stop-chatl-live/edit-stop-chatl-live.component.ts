@@ -9,6 +9,8 @@ import { BlockUtils } from 'src/app/utils/block-utils';
 })
 export class EditStopChatlLiveComponent implements OnInit {
   @Input() maindatas :any; 
+  @Input() wmatchingdtas :any; 
+  
   @Input() block_index = 0 ;
   @Input() mini_block_index  = 0 ;   
   @Input() btn_name ="";  
@@ -33,7 +35,7 @@ export class EditStopChatlLiveComponent implements OnInit {
     }else{
       this.saveNoBlocks();
     } 
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas);  
     this.show_blocks= this.blocks;
   }
  
@@ -70,7 +72,7 @@ export class EditStopChatlLiveComponent implements OnInit {
       
       this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
     .message.attachment.payload.buttons[this.button_index].title = this.btn_name; 
-      BlockUtils.setLocalBlocks(this.maindatas);
+      BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas); 
     } 
   }
   
@@ -81,7 +83,7 @@ export class EditStopChatlLiveComponent implements OnInit {
     }  
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index]
     .message.attachment.payload.buttons[this.button_index].payload.blocks= this.blocks; 
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas);  
   } 
   
   onInput(txt){

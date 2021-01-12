@@ -24,9 +24,10 @@ export class SplashScreenController {
   constructor(private factoryResolver: ComponentFactoryResolver ) {
     this.factoryResolver = factoryResolver
   }
- 
-
+  
+  isManualDismiss = false;
   show() { 
+    this.isManualDismiss = true;
     console.log("show");
     this.rootViewContainer = AppComponent.statviewContainerRef; 
     const factory = this.factoryResolver
@@ -37,14 +38,27 @@ export class SplashScreenController {
   }
 
   showDefTime() { 
-    this.show();
+    this.rootViewContainer = AppComponent.statviewContainerRef; 
+    const factory = this.factoryResolver
+                        .resolveComponentFactory(SplashScreenComponent)
+    const component = factory
+      .create(this.rootViewContainer.parentInjector)
+    this.rootViewContainer.insert(component.hostView) 
+    console.log(this.isManualDismiss);
     setTimeout(() => {
-      this.dismiss();
-    }, 0);
+      if(!this.isManualDismiss){ 
+        this.dismiss();
+      }
+    }, 2150);
   }
   
   showCusTime(seconds) { 
-    this.show();
+    this.rootViewContainer = AppComponent.statviewContainerRef; 
+    const factory = this.factoryResolver
+                        .resolveComponentFactory(SplashScreenComponent)
+    const component = factory
+      .create(this.rootViewContainer.parentInjector)
+    this.rootViewContainer.insert(component.hostView) 
     setTimeout(() => {
       this.dismiss();
     }, seconds);

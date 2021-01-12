@@ -8,16 +8,48 @@
     </ion-buttons> 
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+<ion-content> 
+  <!-- <ion-row 
+  *ngFor="let fbpage of fbpages">
+    <ion-col size="12">
+      <div class="c-conn-main" slot="start">
+        <img [src]="fbpage.page_img" alt="">
+        <div class="c-text"> 
+          <h2>{{fbpage.name}}</h2>
+          <h3>{{fbpage.fb_page_id}}</h3>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col  size="12">
+      <ion-button *ngIf="fbpage.project_id == null" slot="end" size="default" (click)="onConnect(fbpage)"
+      fill="outline">Connect to Page</ion-button> 
+      <div  class="c-connected">
+        <p *ngIf="fbpage.project_id != null">Connected to {{fbpage.project_name}}</p>
+      </div>
+    </ion-col>
+  </ion-row>  -->
   <ion-list>
     <ion-item details="false" lines="full"
-    *ngFor="let d of data">
-      <div class="c-conn-main" slot="start">
-        <img [src]="d.url" alt="">
-        <h2>{{d.name}}</h2>
-      </div>
-      <ion-button slot="end" size="default"
-      fill="outline">Connect to Page</ion-button>
+    *ngFor="let fbpage of fbpages">
+      <ion-row style="width: 100%;">
+        <ion-col size="12" size-sm="12"  size-md="12" size-lg="8">
+          <div class="c-conn-main" >
+            <img [src]="fbpage.page_img" alt="">
+            <div class="c-text"> 
+              <h2>{{fbpage.name}}</h2>
+              <h3>{{fbpage.fb_page_id}}</h3>
+            </div>
+          </div>
+        </ion-col>
+        <ion-col size="12" size-sm="12"  size-md="12" size-lg="">
+          <div  class="c-connected">
+            <ion-button *ngIf="fbpage.project_id == null"  size="default" (click)="onConnect(fbpage)"
+            fill="outline">Connect to Page</ion-button> 
+            <p *ngIf="fbpage.project_id != null">Connected to {{fbpage.project_name}}</p>
+          </div>
+        </ion-col>
+      </ion-row> 
     </ion-item>
   </ion-list>
 </ion-content>

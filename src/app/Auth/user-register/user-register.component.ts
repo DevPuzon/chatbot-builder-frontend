@@ -105,8 +105,21 @@ export class UserRegisterComponent implements OnInit {
         this.isNextProceed = true;
         this.process_index = 3; 
         this.btn_nxt_status = false;
+        this.initNextProceed();
       }
     }); 
+  }
+
+  initNextProceed() {
+    this.cusHttp.post('user/check-next-proceed',{})
+    .subscribe((snap:any)=>{
+      console.log(snap);
+      if(!snap.is_not_complete){
+        this.router.navigateByUrl('p');
+      }
+    },async err=>{
+      this.toast.presentToast(this.cusHttp.httpErrRes(err));
+    })
   }
 
   async ngOnInit() {   
@@ -224,10 +237,10 @@ export class UserRegisterComponent implements OnInit {
       console.log(JSON.stringify(snap));  
       this.toast.presentToast("Registered succesfully");
       this.router.navigateByUrl("p");
-    },err=>{  
+    },err=>{   
       loading.dismiss();
       console.log(err.error);
-      this.toast.presentToast(err.error.error_message);
+      this.toast.presentToast(this.cusHttp.httpErrRes(err));
     });
   }
 
@@ -257,7 +270,7 @@ export class UserRegisterComponent implements OnInit {
     },err=>{  
       loading.dismiss();
       console.log(err.error);
-      this.toast.presentToast(err.error.error_message);
+      this.toast.presentToast(this.cusHttp.httpErrRes(err));
     });
   }
  

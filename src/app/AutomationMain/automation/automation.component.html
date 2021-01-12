@@ -11,9 +11,13 @@
           </ion-button>
         </ion-buttons> 
       </ion-toolbar>
-      <h1 class="c-auth" *ngIf="guestID">Guest ID : {{guestID}}</h1>
+      <h2 class="c-auth" *ngIf="guestID">Guest ID : {{guestID}}</h2>
+      <div class="c-title-project">
+        <p class="title">{{projectData.name}}</p>
+        <p *ngIf="projectData.fbpage_name != null"class="desc">Connected to {{projectData.fbpage_name}}</p>
+      </div>
       <div class="blocks-word-main-con">  
-        <h1>Blocks</h1>
+        <h2>Blocks</h2>
         <div class="btn-deploy-con">
           <ion-button color="primary"
           (click)="onDeploy()">
@@ -76,7 +80,7 @@
       style="display:none"
       accept=".png, .jpg, .jpeg">
       <div class="builder-container" > 
-        <!-- <h1 class="builder-block-title">{{block.block_name}}</h1> -->
+        <!-- <h2 class="builder-block-title">{{block.block_name}}</h2> -->
         <input [readonly]="block_index == 0 || block_index == 1" 
         [(ngModel)]="block.block_name"  
         (focusout)="kFocusOTitle(block.block_name)"

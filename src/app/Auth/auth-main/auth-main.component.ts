@@ -15,8 +15,9 @@ export class AuthMainComponent implements OnInit {
     private splCtrl:SplashScreenController, 
     private router:Router) {  
     route.url.subscribe((url:any) =>{
-      this.isLogin = !!router.url.includes('login'); 
+      splCtrl.isManualDismiss = false;
       this.splCtrl.showDefTime(); 
+      this.isLogin = !!router.url.includes('login'); 
     }); 
     
   }

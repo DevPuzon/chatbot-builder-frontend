@@ -1,5 +1,5 @@
 <div class="blocks-word-main-con">
-  <h1>Word matching</h1> 
+  <h2>Word matching</h2> 
   <ion-searchbar
   mode="ios"  #searchWord
      (ionInput)="onSearch(searchWord.value)"
@@ -7,6 +7,7 @@
    </ion-searchbar> 
    
   <ion-row *ngFor="let wmatchingdta of wmatchingdtas;index as i" > 
+    {{user_word_bools[i]}}
     <ion-col size="12" style="display: flex;" *ngIf="user_word_bools[i]">
       <h3 style="margin: 0px; width: -webkit-fill-available;">{{i+1}}.</h3>
       <img style="cursor:pointer" (click)="onDelConv(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">

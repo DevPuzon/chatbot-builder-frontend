@@ -79,7 +79,7 @@ export class WmPropertiesComponent implements OnInit  {
       } 
     }  
  
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);  
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas,this.maindatas);  
   }
 
   
@@ -110,7 +110,7 @@ export class WmPropertiesComponent implements OnInit  {
     for(let i = 0 ; i < this.blocks.length;i++){
       this.blocks[i].ischecked =false;
     }
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);  
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas,this.maindatas);  
 
   }
   onEnterMsg(){ 

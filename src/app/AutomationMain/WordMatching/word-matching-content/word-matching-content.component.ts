@@ -22,53 +22,42 @@ export class WordMatchingContentComponent implements OnInit {
     private custHttps:CustomHttp,
     private router:Router,
     private toast : ToastMessageService,
-    private loadingController:LoadingController) { }
+    private loadingController:LoadingController) {
+      
+     }
     
   user:any;
 
   async ngOnInit() {
-    this.user = JSON.parse(localStorage.getItem("-==0us"));
-    this.initSortable();
-    this.init();
-    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
-    await loading.present(); 
-    loading.dismiss();  
+    // this.user = JSON.parse(localStorage.getItem("-==0us"));
+    // this.initSortable();
+    this.onSearch("");  
+    // var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    // await loading.present(); 
+    // loading.dismiss();  
   }   
-  
-  async init() {  
-    const localwordmatch =await WmatchingutilsService.getWordMatch();
-    if(localwordmatch != null){ 
-      this.wmatchingdtas =  localwordmatch;
-    }else{ 
-      this.wmatchingdtas.push({user_possible_words:[],commands:[]});  
-    }
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
-    this.onSearch(""); 
-    // setInterval(()=>{
-    //   WmatchingutilsService.cleanWordMatch(this.wmatchingdtas);
-    //   WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
-    // },3000);
-  } 
-  async getCloudblocks(){  
-     //WORDMATCH
-     this.custHttps.get("wordmatch/"+this.user.clientID)
-     .subscribe(async (snap:any)=>{  
-       snap = snap.response;
-       console.log(snap); 
-       if(!snap){  
-         return;
-       } 
-       this.wmatchingdtas = snap; 
-       WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);
-       this.onSearch(""); 
-     }, 
-     async (errorCode: Response) => {  
-       this.toast.presentToast("Something went wrong please try again later"); 
-       setTimeout(() => { 
-         this.router.navigateByUrl("/");
-       }, 1800);
-     }); 
-  }
+   
+  // async getCloudblocks(){  
+  //    //WORDMATCH
+  //   //  this.custHttps.get("wordmatch/"+this.user.clientID)
+  //   //  .subscribe(async (snap:any)=>{  
+  //   //    snap = snap.response;
+  //   //    console.log(snap); 
+  //   //    if(!snap){  
+  //   //      return;
+  //   //    } 
+  //   //    this.wmatchingdtas = snap; 
+  //   //    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas,this.maindatas);
+  //   //    this.onSearch(""); 
+  //   //  }, 
+  //   //  async (errorCode: Response) => {  
+  //   //    this.toast.presentToast("Something went wrong please try again later"); 
+  //   //    setTimeout(() => { 
+  //   //      this.router.navigateByUrl("/");
+  //   //    }, 1800);
+  //   //  }); 
+  // }
+
   async onSCommand(ev,wmatchingdtas_i){
     const popover = await this.popoverController.create({
       component: WmPropertiesComponent , 
@@ -95,7 +84,7 @@ export class WordMatchingContentComponent implements OnInit {
          sets.push(JSON.parse($(this).val()));
         }); 
         _this.wmatchingdtas[id_con].commands = sets; 
-        WmatchingutilsService.setWordMatch(_this.wmatchingdtas,this.maindatas); 
+        WmatchingutilsService.cleanWordMatch(_this.wmatchingdtas,this.maindatas); 
         $(".slide-placeholder-animator").remove(); 
       },
      }); 
@@ -105,16 +94,16 @@ export class WordMatchingContentComponent implements OnInit {
   kWord(word,wm_i,$event){
     if(!word){return;}
     this.wmatchingdtas[wm_i].user_possible_words.push(word);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas);  
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas,this.maindatas);  
     $event.target.value = "";
   }
   delWord(word_i,wm_i){
     this.wmatchingdtas[wm_i].user_possible_words.splice(word_i, 1);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   onDelComm(comm_i,wm_i){
     this.wmatchingdtas[wm_i].commands.splice(comm_i, 1);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   async onEditComm(ev,comm_i,wm_i,txt_message){ 
     const popover = await this.popoverController.create({
@@ -126,17 +115,17 @@ export class WordMatchingContentComponent implements OnInit {
         maindatas:this.maindatas,
         wmatchingdtas:this.wmatchingdtas}
     });
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas,this.maindatas); 
     return await popover.present();
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   onAddWordM(){ 
     this.wmatchingdtas.push({user_possible_words:[],commands:[ ]});
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas,this.maindatas); 
     this.onSearch("");
   }
   onDelConv(conv_i){
     this.wmatchingdtas.splice(conv_i,1);
-    WmatchingutilsService.setWordMatch(this.wmatchingdtas,this.maindatas); 
+    WmatchingutilsService.cleanWordMatch(this.wmatchingdtas,this.maindatas); 
   }
   onSearch(txt){ 
     this.user_word_bools = new Array();

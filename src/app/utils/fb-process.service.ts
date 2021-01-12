@@ -112,7 +112,8 @@ export class FbProcessService {
 
   static async setFbPageAccessToken(data){
     return new Promise<any>((resolve,reject)=>{ 
-      FbProcessService.stat_cusHttp.post(`user/set-fb-token`,data)
+      console.log(data);
+      FbProcessService.stat_cusHttp.post(`fbpage/set-fb-token`,data)
       .subscribe((snap:any)=>{ ;
         console.log(snap);
         resolve(snap)

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IndexedDBAngular } from 'indexeddb-angular';
+import { AutomationFunctionService } from './automation-function.service';
 import { BlockUtils } from './block-utils';
 
 @Injectable({
@@ -8,14 +9,14 @@ import { BlockUtils } from './block-utils';
 export class WmatchingutilsService {
 
   constructor() { }
-  static setWordMatch(data,maindatas){ 
-    this.cleanWordMatch(data);
-    this.pureSetWordMatch( data);
-  }
+  // static setWordMatch(data,maindatas){ 
+  //   this.cleanWordMatch(data,maindatas);
+  //   // this.pureSetWordMatch( data);
+  // }
 
-  static async cleanWordMatch(data) { 
-    const block_names = await this.getMainBlocks();     
-    if(!data){
+  static async cleanWordMatch(wData,blocks) { 
+    const block_names = await this.getMainBlocks(blocks);     
+    if(!wData){
       return false;
     }
     if(!block_names){
@@ -24,8 +25,8 @@ export class WmatchingutilsService {
     if( block_names.length == 0){
       return false;
     }  
-    for(let i = 0 ;i< data.length ;i ++){ 
-      const commands = data[i].commands; 
+    for(let i = 0 ;i< wData.length ;i ++){ 
+      const commands = wData[i].commands; 
       if(commands || commands != null || commands != undefined || commands.length > 0){ 
         for(let k = 0 ; k < commands.length ; k ++){ 
           if(commands[k].command_type == "block"){ 
@@ -60,10 +61,12 @@ export class WmatchingutilsService {
         } 
       }
     } 
-    this.pureSetWordMatch( data);
+
+    AutomationFunctionService.savingTime(blocks,wData);
+    // this.pureSetWordMatch( data);
   }
-  static async addcleanWordMatch(data){
-    const block_names = await this.getMainBlocks();   
+  static async addcleanWordMatch(data,blocks){
+    const block_names = await this.getMainBlocks(blocks);   
     if(!data){
       return false;
     }
@@ -108,11 +111,11 @@ export class WmatchingutilsService {
         } 
       }
     } 
-    this.pureSetWordMatch( data);
+    // this.pureSetWordMatch( data);
   }
   
-  static async getMainBlocks() {
-    const blocks = await BlockUtils.getLocalBlocks();
+  static async getMainBlocks(blocks) {
+    // const blocks = await BlockUtils.getLocalBlocks();
     if(!blocks){
       return null;
     }
@@ -122,15 +125,15 @@ export class WmatchingutilsService {
     }
     return ret ;
   }
-  static async getWordMatch():Promise<any[]>{
-    let ret = this.pureGetWordMatch();
-    if(ret){
-      await this.cleanWordMatch(ret);
-      return ret;
-    }else{
-      return null;
-    }
-  }
+  // static async getWordMatch(blocks,wdata):Promise<any[]>{
+  //   // let ret = this.pureGetWordMatch();
+  //   if(wdata){
+  //     await this.cleanWordMatch(wdata,blocks);
+  //     return wdata;
+  //   }else{
+  //     return null;
+  //   }
+  // }
 
   static getBlockProperties(command){ 
     try{
@@ -140,76 +143,76 @@ export class WmatchingutilsService {
     }
   }
 
-  static db = new IndexedDBAngular('rti_db_word_matching', 1);
-  static pureGetWordMatch(){
-    // const length = parseInt(localStorage.getItem("word_matching_length"));
-    // let ret = new Array();
-    // for(let i = 0 ; i < length ; i ++){
-    //   ret.push(JSON.parse(localStorage.getItem("word_matching_"+i)));
-    // }
-    // if(ret){ 
-    //   return ret;
-    // }else{
-    //   return null;
-    // }
+  // static db = new IndexedDBAngular('rti_db_word_matching', 1);
+  // static pureGetWordMatch(){
+  //   // const length = parseInt(localStorage.getItem("word_matching_length"));
+  //   // let ret = new Array();
+  //   // for(let i = 0 ; i < length ; i ++){
+  //   //   ret.push(JSON.parse(localStorage.getItem("word_matching_"+i)));
+  //   // }
+  //   // if(ret){ 
+  //   //   return ret;
+  //   // }else{
+  //   //   return null;
+  //   // }
     
-    return new Promise<any>((resolve)=>{ 
+  //   return new Promise<any>((resolve)=>{ 
       
-      this.db.createStore(1,function (dbs){ 
-        dbs.currentTarget.result.createObjectStore('word_matching'); 
-      }).then(()=>{   
-        this.db.getByKey('word_matching',0).then((snap)=>{  
-          if(!snap){resolve(null) ;return;}
-          try{ 
-            snap = JSON.parse(snap);
-            resolve(snap);
-          }catch(err){
-            this.db.clear('word_matching');
-            console.log(err);
-            resolve(null); 
-          }
-        })
-      }).catch(err=>{ 
-        console.log(err);
-      })  
-    })
-  }
-  static pureSetWordMatch(word_matching){
-    // word_matching = JSON.parse(word_matching);
-    // for(let i = 0 ; i < word_matching.length ; i ++){
-    //   localStorage.setItem("word_matching_"+i,JSON.stringify(word_matching[i]));
-    // }
-    // localStorage.setItem("word_matching_length",word_matching.length);
+  //     this.db.createStore(1,function (dbs){ 
+  //       dbs.currentTarget.result.createObjectStore('word_matching'); 
+  //     }).then(()=>{   
+  //       this.db.getByKey('word_matching',0).then((snap)=>{  
+  //         if(!snap){resolve(null) ;return;}
+  //         try{ 
+  //           snap = JSON.parse(snap);
+  //           resolve(snap);
+  //         }catch(err){
+  //           this.db.clear('word_matching');
+  //           console.log(err);
+  //           resolve(null); 
+  //         }
+  //       })
+  //     }).catch(err=>{ 
+  //       console.log(err);
+  //     })  
+  //   })
+  // }
+  // static pureSetWordMatch(word_matching){
+  //   // word_matching = JSON.parse(word_matching);
+  //   // for(let i = 0 ; i < word_matching.length ; i ++){
+  //   //   localStorage.setItem("word_matching_"+i,JSON.stringify(word_matching[i]));
+  //   // }
+  //   // localStorage.setItem("word_matching_length",word_matching.length);
     
-    return new Promise<any>(async (resolve)=>{   
-      word_matching = JSON.stringify(word_matching);
-      this.db.createStore(1,function (dbs){ 
-        dbs.currentTarget.result.createObjectStore('word_matching'); 
-      }).then(()=>{  
-        const dep_version= localStorage.getItem("dep_version");
-        if(dep_version){
-          this.db.update('word_matching',word_matching,0);
-        }else{
-          this.db.add('word_matching',word_matching,0);
-        }
-        this.db.getByKey('word_matching',0).then((snap)=>{ 
-          resolve({done:true});
-        })
-      }).catch(err=>{ 
-        console.log(err);
-      })  
-    })
-  }
+  //   return new Promise<any>(async (resolve)=>{   
+  //     word_matching = JSON.stringify(word_matching);
+  //     this.db.createStore(1,function (dbs){ 
+  //       dbs.currentTarget.result.createObjectStore('word_matching'); 
+  //     }).then(()=>{  
+  //       const debug_version= localStorage.getItem("debug_version");
+  //       if(debug_version){
+  //         this.db.update('word_matching',word_matching,0);
+  //       }else{
+  //         this.db.add('word_matching',word_matching,0);
+  //       }
+  //       this.db.getByKey('word_matching',0).then((snap)=>{ 
+  //         resolve({done:true});
+  //       })
+  //     }).catch(err=>{ 
+  //       console.log(err);
+  //     })  
+  //   })
+  // }
   
-  static delWordMatch(){
-    return new Promise<any>((resolve)=>{ 
-      this.db.createStore(1,function (dbs){ 
-        dbs.currentTarget.result.createObjectStore('word_matching'); 
-      }).then(()=>{   
-        this.db.clear('word_matching').then(()=>{resolve({done:true})})
-      }).catch(err=>{ 
-        console.log(err);
-      })  
-    })
-  }
+  // static delWordMatch(){
+  //   return new Promise<any>((resolve)=>{ 
+  //     this.db.createStore(1,function (dbs){ 
+  //       dbs.currentTarget.result.createObjectStore('word_matching'); 
+  //     }).then(()=>{   
+  //       this.db.clear('word_matching').then(()=>{resolve({done:true})})
+  //     }).catch(err=>{ 
+  //       console.log(err);
+  //     })  
+  //   })
+  // }
 }

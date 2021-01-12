@@ -17,7 +17,6 @@ import { ConnectFbPageComponent } from '../connect-fb-page/connect-fb-page.compo
     IonicModule,
     MainProjectPageRoutingModule
   ],
-  declarations: [MainProjectPage,ListProjectComponent,
-  ConnectFbPageComponent]
+  declarations: [MainProjectPage,ListProjectComponent]
 })
 export class MainProjectPageModule {}

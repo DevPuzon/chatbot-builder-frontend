@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AutomationComponent } from '../automation/automation.component';
+import { AutomationGuardGuard } from './automation-guard.guard';
 
 import { MainAutomationPage } from './main-automation.page';
 
@@ -12,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: MainAutomationPage,
+    component: MainAutomationPage, 
     children:[
       {
         path:"automate",

@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular'; 
 import {  SplashScreenController } from 'src/app/InteractivePackage/splash-screen/splash-screen.component';
+import { CryptService } from 'src/app/utils/crypt.service';
 import { CustomHttp } from 'src/app/utils/custom-http.service';
 import { IonPopOverListComponent } from 'src/app/utils/ion-pop-over-list/ion-pop-over-list.component';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
@@ -28,18 +29,13 @@ export class ListProjectComponent implements OnInit {
   ) { }
  
   ngOnInit() { 
-    this.initProjects(); 
-    $(window).scroll(function() {
-      if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-          alert("near bottom!");
-      }
-   });
+    this.splCtrl.show(); 
+    this.initProjects();  
   }
 
   isLoading = false;
   nextPage = '';
   initProjects() { 
-    this.splCtrl.show(); 
     this.cusHttp.get('project/list')
     .subscribe((snap:any)=>{   
       this.splCtrl.dismiss();
@@ -50,7 +46,7 @@ export class ListProjectComponent implements OnInit {
       }
       this.projects = snap.data;
     },err=>{    
-      this.toast.presentToast(err.error.error_message);
+      this.toast.presentToast(this.cusHttp.httpErrRes(err));
     })
   }
 
@@ -70,17 +66,33 @@ export class ListProjectComponent implements OnInit {
       this.projects = this.projects.concat(snap.data);
     },err=>{  
       console.log(err);
-      this.toast.presentToast(err.error.error_message);
+      this.toast.presentToast(this.cusHttp.httpErrRes(err));
     });
   }
 
-  async onConnect(){  
+  async onConnect(p){  
     const modal = await this.modalController.create({
-      component: ConnectFbPageComponent, 
+      component: ConnectFbPageComponent,
+      backdropDismiss:false, 
+      componentProps:{
+        project_id:p.project_id
+      }
     });
-    return await modal.present();
+    await modal.present();
+    await modal.onDidDismiss()
+    .then((snap:any)=>{
+      const data = snap.data;
+      console.log(data);
+      if(!data){
+        return;
+      }
+      if(data.isConnect){
+        this.initProjects();
+      }
+    })
   }
-  async onItemClick(ev){
+
+  async onClickItemMenu(ev){
     const popover = await this.popCtrl.create({
       component: IonPopOverListComponent ,  
       event: ev ,
@@ -149,18 +161,20 @@ export class ListProjectComponent implements OnInit {
       }
     });
   }
+ 
 
   async onBlankProj(){
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present(); 
     
     this.cusHttp.post('project/create',{})
-    .subscribe(async (snap)=>{
+    .subscribe(async (snap:any)=>{
       await loading.dismiss(); 
       console.log(snap); 
-    },async(err)=>{
+      this.projects.unshift(snap);
+    },async(err)=>{ 
       await loading.dismiss(); 
-      this.toast.presentToast(err.error.error_message);
+      this.toast.presentToast(this.cusHttp.httpErrRes(err));
     }) ;
   }
 }

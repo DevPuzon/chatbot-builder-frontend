@@ -10,7 +10,8 @@ import { ChatbotFunc } from 'src/app/utils/chatbot-func';
 })
 export class AddCarButtonComponent implements OnInit {
   @Input() maindatas :any;
-
+  @Input() wmatchingdtas :any;
+  
   @Input() block_index = 0 ;
   @Input() mini_block_index  = 0 ; 
   @Input() element_i  = 0 ; 
@@ -32,14 +33,14 @@ export class AddCarButtonComponent implements OnInit {
     this.mini_block = this.maindatas[this.block_index].
     mini_blocks[this.mini_block_index];
     this.onCheckButton(); 
-    let localBlocks = await BlockUtils.getCarButtonBlocks(this.block_index,this.mini_block_index,this.element_i,this.button_index);
+    let localBlocks = await BlockUtils.getCarButtonBlocks(this.block_index,this.mini_block_index,this.element_i,this.button_index,this.maindatas);
      
     if(localBlocks != null || localBlocks != undefined){
       this.saveHasBlocks(localBlocks);
     }else{
       this.saveNoBlocks();
     } 
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas);  
     this.show_blocks= this.blocks;
   }
 
@@ -89,7 +90,7 @@ export class AddCarButtonComponent implements OnInit {
       let btn = this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.elements[this.element_i].buttons[this.button_index];
       if(btn){
         btn.title = this.btn_name;
-        BlockUtils.setLocalBlocks(this.maindatas);
+        BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas); 
       }
     } 
   }
@@ -99,7 +100,7 @@ export class AddCarButtonComponent implements OnInit {
       this.blocks[i].ischecked = false;
     }
     this.onCheckURLBlock(null); 
-    BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas); 
   }
 
   // {
@@ -121,7 +122,7 @@ export class AddCarButtonComponent implements OnInit {
       title:this.btn_name
     } 
  
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas);  
   }
 
   onCheckURLBlock(index){
@@ -135,7 +136,7 @@ export class AddCarButtonComponent implements OnInit {
       url:this.txt_URL, 
       title:this.btn_name
     }  
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas);  
   }
   onInput(txt){
     if(txt ==""){

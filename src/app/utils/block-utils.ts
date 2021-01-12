@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { resolve } from 'dns';
 import { IndexedDBAngular } from 'indexeddb-angular'; 
+import { AutomationFunctionService } from './automation-function.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,52 +11,52 @@ export class BlockUtils {
   static db = new IndexedDBAngular('rti_db', 1);
   constructor() { }
 
-  static getLocalBlocks(){
-    // let ret ; 
-    // if(localStorage.getItem("localblock_length") == null || 
-    // localStorage.getItem("localblock_length") == "" || localStorage.getItem("localblock_length") 
-    // == undefined){
-    //   return null;
-    // }
-    // const length =parseInt(localStorage.getItem("localblock_length"));
-    // let locablocks = new Array();
-    // for(let i = 0 ; i <  length ; i ++){
-    //   locablocks.push(JSON.parse(localStorage.getItem("localblock_"+i)));
-    // }
-    // ret = locablocks;
-    // // ret = this.reBtnsPayloadParse(JSON.parse(await this.getLocalBlocks()))
-    // this.cleanBlocks(ret); 
-    // console.log(ret);
+  // static getLocalBlocks(){
+  //   // let ret ; 
+  //   // if(localStorage.getItem("localblock_length") == null || 
+  //   // localStorage.getItem("localblock_length") == "" || localStorage.getItem("localblock_length") 
+  //   // == undefined){
+  //   //   return null;
+  //   // }
+  //   // const length =parseInt(localStorage.getItem("localblock_length"));
+  //   // let locablocks = new Array();
+  //   // for(let i = 0 ; i <  length ; i ++){
+  //   //   locablocks.push(JSON.parse(localStorage.getItem("localblock_"+i)));
+  //   // }
+  //   // ret = locablocks;
+  //   // // ret = this.reBtnsPayloadParse(JSON.parse(await this.getLocalBlocks()))
+  //   // this.cleanBlocks(ret); 
+  //   // console.log(ret);
     
-    // return  ret;
-    return new Promise<any>((resolve)=>{ 
-      this.db.createStore(1,function (dbs){ 
-        dbs.currentTarget.result.createObjectStore('localblock'); 
-      }).then(()=>{  
-        // this.db.getAll("localblock").then((snap)=>{
-        //   console.log(snap);
-        //   resolve(snap);
-        // }).catch(err=>{
-        //   console.log(err);
-        // })
+  //   // return  ret;
+  //   return new Promise<any>((resolve)=>{ 
+  //     this.db.createStore(1,function (dbs){ 
+  //       dbs.currentTarget.result.createObjectStore('localblock'); 
+  //     }).then(()=>{  
+  //       // this.db.getAll("localblock").then((snap)=>{
+  //       //   console.log(snap);
+  //       //   resolve(snap);
+  //       // }).catch(err=>{
+  //       //   console.log(err);
+  //       // })
         
-        this.db.getByKey('localblock',0).then((snap)=>{  
-          if(!snap){resolve(null) ;return;}
-          try{ 
-            snap = JSON.parse(snap);
-            this.cleanBlocks(snap);  
-            resolve(snap);
-          }catch(err){
-            this.db.clear('localblock');
-            console.log(err);
-            resolve(null);
-          }
-        })
-      }).catch(err=>{ 
-        console.log(err);
-      })  
-    })
-  }
+  //       this.db.getByKey('localblock',0).then((snap)=>{  
+  //         if(!snap){resolve(null) ;return;}
+  //         try{ 
+  //           snap = JSON.parse(snap);
+  //           this.cleanBlocks(snap);  
+  //           resolve(snap);
+  //         }catch(err){
+  //           this.db.clear('localblock');
+  //           console.log(err);
+  //           resolve(null);
+  //         }
+  //       })
+  //     }).catch(err=>{ 
+  //       console.log(err);
+  //     })  
+  //   })
+  // }
 
   static delBlocks(){
     return new Promise<any>((resolve)=>{ 
@@ -69,51 +70,55 @@ export class BlockUtils {
     })
   }
    
-  static setLocalBlocks(mblocks){   
-    return new Promise<any>(async (resolve)=>{  
-      mblocks = JSON.stringify(mblocks);
-      // for(let i = 0 ; i <  mblocks.length ;i++){ 
-      //   // await this.timer(50);  
-      //   const block_name = mblocks[i].block_name; 
-      //   if(block_name == ""){
-      //     mblocks[i].block_name = i+ ". Block";
-      //   }
-      //   const hasBlockIndex= mblocks.findIndex(o => o.block_name === block_name);  
-      //   if(hasBlockIndex!= i && hasBlockIndex!= -1){
-      //     mblocks[i].block_name = block_name +" : copy";
-      //   }
-      //   localStorage.setItem("localblock_"+i,JSON.stringify(mblocks[i])); 
-      // }   
-      // localStorage.setItem("localblock_length",mblocks.length); 
+  static setLocalBlocks(maindatas,wdatas){   
+    // return new Promise<any>(async (resolve)=>{  
+    //   mblocks = JSON.stringify(mblocks);
+    //   // for(let i = 0 ; i <  mblocks.length ;i++){ 
+    //   //   // await this.timer(50);  
+    //   //   const block_name = mblocks[i].block_name; 
+    //   //   if(block_name == ""){
+    //   //     mblocks[i].block_name = i+ ". Block";
+    //   //   }
+    //   //   const hasBlockIndex= mblocks.findIndex(o => o.block_name === block_name);  
+    //   //   if(hasBlockIndex!= i && hasBlockIndex!= -1){
+    //   //     mblocks[i].block_name = block_name +" : copy";
+    //   //   }
+    //   //   localStorage.setItem("localblock_"+i,JSON.stringify(mblocks[i])); 
+    //   // }   
+    //   // localStorage.setItem("localblock_length",mblocks.length); 
         
-      this.db.createStore(1,function (dbs){ 
-        dbs.currentTarget.result.createObjectStore('localblock'); 
-      }).then(()=>{  
+    //   this.db.createStore(1,function (dbs){ 
+    //     dbs.currentTarget.result.createObjectStore('localblock'); 
+    //   }).then(()=>{  
          
-        // this.db.clear("localblock").then(async ()=>{
-        //   for(let i = 0 ; i <  mblocks.length ;i++){  
-        //     this.db.add('localblock',mblocks[i],i);
-        //   } 
-        //   this.db.getAll('localblock').then((snap)=>{
-        //     console.log(snap);
-        //     resolve({done:true});
-        //   })
-        // })  
+    //     // this.db.clear("localblock").then(async ()=>{
+    //     //   for(let i = 0 ; i <  mblocks.length ;i++){  
+    //     //     this.db.add('localblock',mblocks[i],i);
+    //     //   } 
+    //     //   this.db.getAll('localblock').then((snap)=>{
+    //     //     console.log(snap);
+    //     //     resolve({done:true});
+    //     //   })
+    //     // })  
         
-        const dep_version= localStorage.getItem("dep_version");
-        if(dep_version){
-          this.db.update('localblock',mblocks,0);
-        }else{
-          this.db.add('localblock',mblocks,0);
-        }
-        this.db.getByKey('localblock',0).then((snap)=>{  
-          resolve({done:true});
-        })
-      }).catch(err=>{ 
-        console.log(err);
-      })  
-    })
-    // return mblocks;
+    //     const debug_version= localStorage.getItem("debug_version");
+    //     if(debug_version){
+    //       this.db.update('localblock',mblocks,0);
+    //     }else{
+    //       this.db.add('localblock',mblocks,0);
+    //     }
+    //     this.db.getByKey('localblock',0).then((snap)=>{  
+    //       resolve({done:true});
+    //     })
+    //   }).catch(err=>{ 
+    //     console.log(err);
+    //   })  
+    // })
+    // // return mblocks;
+
+
+    //// savee ===================
+    AutomationFunctionService.savingTime(maindatas,wdatas);
   }
 
   // static updateBlock(mblock,i){
@@ -535,10 +540,10 @@ export class BlockUtils {
     return ret ;
   }
 
-  static async getTxtButtonBlocks(block_index,mini_block_index,button_index){
+  static async getTxtButtonBlocks(block_index,mini_block_index,button_index,blocks){
     button_index = button_index ;
-    let blocks ;
-    blocks = await this.getLocalBlocks();
+    // let blocks ;
+    // blocks = await this.getLocalBlocks();
     if(blocks == "" || blocks == null ){
       return null;
     } 
@@ -556,10 +561,10 @@ export class BlockUtils {
     return ret;
   } 
 
-  static async getCarButtonBlocks(block_index,mini_block_index,element_i,button_index){
+  static async getCarButtonBlocks(block_index,mini_block_index,element_i,button_index,blocks){
     button_index = button_index ;
-    let blocks ;
-    blocks = await this.getLocalBlocks();
+    // let blocks ;
+    // blocks = await this.getLocalBlocks();
     if(blocks == "" || blocks == null ){
       return null;
     }
@@ -577,9 +582,9 @@ export class BlockUtils {
     ret = mini_blocks.message.attachment.payload.elements[element_i].buttons[button_index].payload;
     return ret;
   } 
-  static async getQReplyButtonBlocks(block_index,mini_block_index,qreply_i){
-    let blocks ;
-    blocks = await this.getLocalBlocks();
+  static async getQReplyButtonBlocks(block_index,mini_block_index,qreply_i,blocks){
+    // let blocks ;
+    // blocks = await this.getLocalBlocks();
     if(blocks == "" || blocks == null ){
       return null;
     }

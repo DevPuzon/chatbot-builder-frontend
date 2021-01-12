@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 import { FacebookLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { ConnectFbPageComponent } from 'src/app/ProjectPackage/connect-fb-page/connect-fb-page.component';
@@ -15,14 +15,17 @@ import { ExportasfileComponent } from '../exportasfile/exportasfile.component';
 })
 export class MenuAutomateComponent implements OnInit {
 
+  @Input() project_id:any;
   constructor(private router:Router,
     private modalController:ModalController,
     private loadingController:LoadingController,
     private cusHttp:CustomHttp,
+    private route:ActivatedRoute,
     private authService: SocialAuthService,
     private toast:ToastMessageService,
     private alertController:AlertController,
-    private popover:PopoverController) { }
+    private popover:PopoverController) {  
+    }
 
   ngOnInit() {
     if(window.location.href.includes('guest')){
@@ -39,6 +42,9 @@ export class MenuAutomateComponent implements OnInit {
     this.popover.dismiss();
     const modal = await this.modalController.create({
       component: ExportasfileComponent, 
+      componentProps:{
+        project_id:this.project_id
+      }
     });
     return await modal.present();
   }
@@ -48,10 +54,14 @@ export class MenuAutomateComponent implements OnInit {
   }
   async onConnectFb(){ 
     this.popover.dismiss();
+    console.log(this.project_id);
     const modal = await this.modalController.create({
-      component: ConnectFbPageComponent 
+      component: ConnectFbPageComponent ,
+      componentProps:{
+        project_id: this.project_id
+      }
     });
-    return await modal.present();  
+    await modal.present(); 
   } 
   
   async onContinue(){

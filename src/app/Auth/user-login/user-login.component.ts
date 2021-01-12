@@ -62,9 +62,7 @@ export class UserLoginComponent implements OnInit {
   async onLogin() { 
     var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     await loading.present();  
-
-    await  BlockUtils.delBlocks();
-    await WmatchingutilsService.delWordMatch();
+ 
     localStorage.clear();
     const data = {
       email:this.form.value.email,
@@ -89,7 +87,7 @@ export class UserLoginComponent implements OnInit {
       // }, 700);
     },  async (err) => { 
       await loading.dismiss(); 
-      this.toast.presentToast(err.error.error_message);
+      this.toast.presentToast(this.cusHttp.httpErrRes(err));
     });
   }
 
@@ -153,7 +151,7 @@ export class UserLoginComponent implements OnInit {
         resolve(snap);
       } , async (err) => { 
         reject({});
-        this.toast.presentToast(err.error.error_message);
+        this.toast.presentToast(this.cusHttp.httpErrRes(err));
       });
     });
   }

@@ -8,6 +8,7 @@ import { BlockUtils } from 'src/app/utils/block-utils';
 export class AddCbackResponseComponent implements OnInit {
 
   @Input() maindatas :any; 
+  @Input() wmatchingdtas :any;
   @Input() block_index = 0 ;
   @Input() mini_block_index  = 0 ;    
   @Input() status_title ="resolve";  
@@ -84,7 +85,7 @@ export class AddCbackResponseComponent implements OnInit {
       .reject_blocks = this.blocks;
     }
      
-    BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas); 
   } 
 
   onInput(txt){

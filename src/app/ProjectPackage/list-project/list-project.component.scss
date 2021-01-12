@@ -1,12 +1,7 @@
 
 .content{
-    background-color: #F3F2F2;       
-    text-align: -webkit-center;
-    width: 100%;
-    justify-content: center; 
-    ion-row{
-        width: fit-content;
-    }
+    background-color: #F3F2F2;     
+    width: 100%; 
 }
 .toolbar{  
     .toolbar-icon{
@@ -62,7 +57,7 @@
             img{
                 background: #E6E5E4;
                 border-radius: 60px;
-                padding: 10px;  
+                // padding: 10px;  
                 height: 90px;
             } 
         }

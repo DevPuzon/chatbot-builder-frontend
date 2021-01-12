@@ -10,7 +10,7 @@ import { WmatchingutilsService } from './wmatchingutils.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CustomHttp { 
+export class CustomHttp {
   // private base = "https://api.retailgate.tech:20185/api/";
   private base = "http://localhost:8080/";
   private token  = "";
@@ -203,12 +203,20 @@ export class CustomHttp {
     })
   }
   async onLogoutUser(){// this.toast.presentToast("Something went wrong");
-    await  BlockUtils.delBlocks();
-    await WmatchingutilsService.delWordMatch();
+    // await  BlockUtils.delBlocks();
+    // await WmatchingutilsService.delWordMatch();
     localStorage.clear();
     this.router.navigateByUrl("auth/login");
       setTimeout(() => { 
         window.location.reload();
       }, 800);
   }
+  
+  httpErrRes(err: any): any {
+    if(err.status == 401){
+      localStorage.removeItem('-=[]t');
+      this.router.navigateByUrl('/'); 
+    }
+    return err.error.error_message;
+  } 
 }

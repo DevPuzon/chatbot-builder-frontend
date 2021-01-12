@@ -7,6 +7,7 @@ import { UserLoginComponent } from './Auth/user-login/user-login.component';
 import { UserRegisterComponent } from './Auth/user-register/user-register.component';
 import { ConnectRealAccComponent } from './AutomationMain/connect-real-acc/connect-real-acc.component'; 
 import { SplashScreenComponent } from './InteractivePackage/splash-screen/splash-screen.component';
+import { ConnectFbPageComponent } from './ProjectPackage/connect-fb-page/connect-fb-page.component';
 import { PrivacyPolicyComponent } from './StaticPackage/privacy-policy/privacy-policy.component';
 import { TermsConditionComponent } from './StaticPackage/terms-condition/terms-condition.component';
 import { IonPopOverListComponent } from './utils/ion-pop-over-list/ion-pop-over-list.component';
@@ -29,6 +30,11 @@ const routes: Routes = [
     path:"auth",
     component:AuthMainComponent, 
     children:[
+      {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full',
+      },    
       {
         path:"login",
         component:UserLoginComponent
@@ -72,12 +78,14 @@ export const declarations= [
   AppComponent,UserLoginComponent,UserRegisterComponent,
   IonPopOverListComponent,AuthMainComponent,
   ConnectRealAccComponent,SplashScreenComponent,
-  PrivacyPolicyComponent,TermsConditionComponent
+  PrivacyPolicyComponent,TermsConditionComponent,
+  ConnectFbPageComponent
 
 ]
 export const entryComponents= [
   UserLoginComponent,UserRegisterComponent
   ,AuthMainComponent,  ConnectRealAccComponent,
   ,SplashScreenComponent,PrivacyPolicyComponent,
-  TermsConditionComponent
+  TermsConditionComponent,ConnectFbPageComponent
+  
 ]

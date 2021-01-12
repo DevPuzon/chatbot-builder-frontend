@@ -10,6 +10,7 @@ import { ChatbotFunc } from 'src/app/utils/chatbot-func';
 })
 export class AddTextButtonPopupComponent implements OnInit {
   @Input() maindatas :any;
+  @Input() wmatchingdtas :any;
 
   @Input() block_index = 0 ;
   @Input() mini_block_index  = 0 ; 
@@ -31,14 +32,14 @@ export class AddTextButtonPopupComponent implements OnInit {
     this.mini_block = this.maindatas[this.block_index].
     mini_blocks[this.mini_block_index];
     this.onCheckButton(); 
-    let localBlocks = await BlockUtils.getTxtButtonBlocks(this.block_index,this.mini_block_index,this.button_index);
+    let localBlocks = await BlockUtils.getTxtButtonBlocks(this.block_index,this.mini_block_index,this.button_index,this.maindatas);
      
     if(localBlocks != null || localBlocks != undefined){
       this.saveHasBlocks(localBlocks);
     }else{
       this.saveNoBlocks();
     }
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas);  
     this.show_blocks= this.blocks;
   }
 
@@ -88,7 +89,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       let btn = this.maindatas[this.block_index].mini_blocks[this.mini_block_index].message.attachment.payload.buttons[this.button_index];
       if(btn){
         btn.title = this.btn_name;
-        BlockUtils.setLocalBlocks(this.maindatas);
+        BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas); 
       } 
     }
   }
@@ -98,7 +99,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       this.blocks[i].ischecked = false;
     }
     this.onCheckURLBlock(null); 
-    BlockUtils.setLocalBlocks(this.maindatas);
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas); 
   }
 
   // {
@@ -140,7 +141,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       func = ChatbotFunc.genButtonTemplate(text,buttons);
     } 
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func; 
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas);  
   }
 
   onCheckURLBlock(index){
@@ -175,7 +176,7 @@ export class AddTextButtonPopupComponent implements OnInit {
       func = ChatbotFunc.genButtonTemplate(text,buttons);
     }
     this.maindatas[this.block_index].mini_blocks[this.mini_block_index] = func; 
-    BlockUtils.setLocalBlocks(this.maindatas); 
+    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas);  
   }
   
   onInput(txt){
