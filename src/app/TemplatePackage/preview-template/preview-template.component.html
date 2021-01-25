@@ -6,14 +6,14 @@
   </ion-buttons>
   <div>
     <div class="c-template">
-      <div class="profile" (click)="onDismiss()"> 
+      <div class="profile" > 
         <!-- <img src="https://images.chatfuel.com/bot/raw/ff2a518e-3ad4-4e48-975f-8d2a0f339a43"> -->
-        <img src="https://images.chatfuel.com/bot/raw/de864fe2-fead-4887-b40f-75637d7385e3">
+        <img [src]="template_data.temp_img">
       </div>
       <div class="txt">
-        <p class="title">Project 1 </p>
-        <p class="subtitle">By Retailgate page </p>
-        <p class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Venenatis urna cursus eget nunc scelerisque viverra mauris. Arcu non sodales neque sodales ut etiam sit. Posuere urna nec tincidunt praesent semper feugiat nibh sed. Tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras fermentum. Suspendisse interdum consectetur libero id faucibus nisl tincidunt. Faucibus scelerisque eleifend donec pretium vulputate sapien nec. Bibendum neque egestas congue quisque egestas. Mi eget mauris pharetra et ultrices neque ornare aenean.</p>
+        <p class="title">{{template_data.name}} </p>
+        <p class="subtitle">{{template_data.created_by}} </p>
+        <p class="desc">{{template_data.description}} </p>
       </div>
     </div>  
   </div> 

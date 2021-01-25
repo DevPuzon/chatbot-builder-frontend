@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { CustomHttp } from './custom-http.service';
 
 @Injectable({
@@ -82,8 +83,8 @@ export class FbProcessService {
   
   static async getLongLiveUserAToken(fb_exchange_token){ 
     return new Promise<any>((resolve,reject)=>{
-      const client_id = '917782305413341';
-      const client_secret = '8d899f40bbdc627957c006855712cf38'; 
+      const client_id =  environment.fb_app_client_id;
+      const client_secret = environment.fb_app_client_secret; 
       FbProcessService.stat_cusHttp.getP(`https://graph.facebook.com/v9.0/oauth/access_token?grant_type=fb_exchange_token&client_id=${client_id}&client_secret=${client_secret}&fb_exchange_token=${fb_exchange_token}`)
       .subscribe((snap:any)=>{
         console.log('getLongLiveUserAToken');

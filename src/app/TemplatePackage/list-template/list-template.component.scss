@@ -1,12 +1,15 @@
-
+.c-container{
+    text-align: -webkit-center;
+}
 .content{
     background-color: #F3F2F2;       
     text-align: -webkit-center;
     width: 100%;
     justify-content: center; 
     padding-bottom: 30px;
+    max-width: 1500px;
     ion-row{
-        width: fit-content;
+        // width: auto;
     }
 }
 .toolbar{  
@@ -19,8 +22,9 @@
     }
 }
 .c-menu-view{
-    margin-left: 6%;
-    margin-right: 6%; 
+    width: fit-content;
+    // margin-left: 6%;
+    // margin-right: 6%; 
     ion-segment{
         overflow: auto;
         display: -webkit-inline-box;
@@ -124,8 +128,8 @@
     }
 }
 .btn-connect{     
-    position: absolute; 
-    transform: translate(-65%, -185%);
+    position: absolute;    
+    transform: translate(-44%, -185%);
 }
 .btn-item-menu{
     width: fit-content;

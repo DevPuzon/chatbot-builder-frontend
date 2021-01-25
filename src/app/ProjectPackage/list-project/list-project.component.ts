@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AlertController, LoadingController, ModalController, PopoverController } from '@ionic/angular'; 
 import {  SplashScreenController } from 'src/app/InteractivePackage/splash-screen/splash-screen.component';
 import { CryptService } from 'src/app/utils/crypt.service';
@@ -25,12 +25,16 @@ export class ListProjectComponent implements OnInit {
     private modalController:ModalController,
     private alertController:AlertController,
     private toast:ToastMessageService,
+    private route: ActivatedRoute,
     private cusHttp:CustomHttp
-  ) { }
+  ) { 
+    route.url.subscribe((url:any) =>{
+      this.splCtrl.show(); 
+      this.initProjects(); 
+    }); 
+  }
  
-  ngOnInit() { 
-    this.splCtrl.show(); 
-    this.initProjects();  
+  ngOnInit() {  
   }
 
   isLoading = false;

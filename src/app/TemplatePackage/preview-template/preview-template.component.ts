@@ -8,15 +8,18 @@ import { ModalController } from '@ionic/angular';
 })
 export class PreviewTemplateComponent implements OnInit {
 
+  template_data :any;
   constructor(
     private mdlCtrl:ModalController
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.template_data);
+  }
  
   onPreviewMe(){
     //https://m.me/107790447304615
-    window.open('https://m.me/102223365016973', '_blank')
+    window.open(`https://m.me/${this.template_data.fb_page_id}`, '_blank')
   }
   onDismiss(){
     this.mdlCtrl.dismiss();

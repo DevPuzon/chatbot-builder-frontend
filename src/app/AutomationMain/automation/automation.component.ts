@@ -104,6 +104,7 @@ export class AutomationComponent implements OnInit {
       component: MenuAutomateComponent ,  
       event: ev ,
       componentProps:{
+        template_id:this.projectData.template_id,
         project_id:this.projectData.project_id
       }
     });

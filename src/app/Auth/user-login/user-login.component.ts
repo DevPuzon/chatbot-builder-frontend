@@ -115,17 +115,18 @@ export class UserLoginComponent implements OnInit {
       const u_long_access_token = await FbProcessService.getLongLiveUserAToken(snap.authToken);
       const data = await FbProcessService.getLongLivePageToken(snap.id,u_long_access_token);
       const prep_data = await FbProcessService.prepPages(data);
-      console.log(prep_data);
       const fb_data = await this.onSaveFbLogin(snap,u_long_access_token); 
       await FbProcessService.setFbPageAccessToken(prep_data);
       await loading.dismiss();  
+      console.log(prep_data);
       
       if(fb_data.is_not_complete){
         this.router.navigateByUrl('/auth/register/next-proceed/'+fb_data.user_id);
       }else{
         this.router.navigateByUrl('p');
       }
-    }).catch(async (err)=>{
+    })
+    .catch(async (err)=>{
       await loading.dismiss(); 
       console.log(err);
     })

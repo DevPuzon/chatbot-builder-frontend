@@ -54,7 +54,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
         providers: [ 
           {
             id: FacebookLoginProvider.PROVIDER_ID,
-            provider: new FacebookLoginProvider('917782305413341')
+            provider: new FacebookLoginProvider(environment.fb_app_client_id)
           }
         ]
       } as SocialAuthServiceConfig,

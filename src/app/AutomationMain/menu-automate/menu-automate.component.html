@@ -12,7 +12,7 @@
     Invite
   </ion-item>
   <ion-item *ngIf="!isGuest"  (click)="onExport()" lines="full" details="false" button> 
-    Export as template
+    {{template_id == null ? 'Export as template':'Update template' }}
   </ion-item>
   <ion-item *ngIf="isGuest"  (click)="onContinue()" lines="full" details="false" button> 
     Continue in real account
