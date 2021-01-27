@@ -71,20 +71,12 @@ export class UserLoginComponent implements OnInit {
     console.log(CryptService.decryptData(data.password));
     this.cusHttp.postNoToken("user/email-login", data)
     .subscribe(async (snap:any)=>{ 
-      await loading.dismiss();   
-      console.log(snap);
-      this.router.navigateByUrl("p"); 
-      // localStorage.setItem("-=[]t",snap.token); 
-      // setTimeout(() => { 
-      //   this.cusHttp.getUser()
-      //   .then(()=>{
-      //     setTimeout(() => {
-      //       this.router.navigateByUrl("p"); 
-      //     }, 800);
-      //   }).catch(()=>{
-      //     this.toast.presentToast("Something went wrong");
-      //   });
-      // }, 700);
+      localStorage.setItem('-=[]t',snap.token);
+      setTimeout(async () => { 
+        await loading.dismiss();   
+        console.log(snap);
+        this.router.navigateByUrl("p"); 
+      }, 800); 
     },  async (err) => { 
       await loading.dismiss(); 
       this.toast.presentToast(this.cusHttp.httpErrRes(err));
@@ -95,7 +87,7 @@ export class UserLoginComponent implements OnInit {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
-  async signInWithFB(): Promise<void> {
+  async signInWithFB()  {
     this.submitted_fb = true;
     this.submitted = false;
     if(this.submitted_fb && !this.check_privacy){

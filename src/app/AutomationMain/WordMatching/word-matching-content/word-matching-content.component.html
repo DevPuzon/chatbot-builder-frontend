@@ -6,10 +6,9 @@
      (ionCancel)="onSearch('')">
    </ion-searchbar> 
    
-  <ion-row *ngFor="let wmatchingdta of wmatchingdtas;index as i" > 
-    {{user_word_bools[i]}}
-    <ion-col size="12" style="display: flex;" *ngIf="user_word_bools[i]">
-      <h3 style="margin: 0px; width: -webkit-fill-available;">{{i+1}}.</h3>
+  <ion-row *ngFor="let wmatchingdta of wmatchingdtas;index as i" >  
+    <ion-col size="12" style=" text-align: right;" *ngIf="user_word_bools[i]">
+      <!-- <h3 style="margin: 0px; width: -webkit-fill-available;">{{i+1}}.</h3> -->
       <img style="cursor:pointer" (click)="onDelConv(i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
     </ion-col>
     <ion-col class="col-con" size="12" size-sm="12" size-md="6" size-lg="6" *ngIf="user_word_bools[i]">
@@ -29,20 +28,18 @@
       <p class="say">Bot reply.</p>
       <p (click)="onSCommand($event,i)" class="word-input" style="cursor: pointer;">Select command</p>
       <ion-row id="{{i}}comms" class="choices-block wm-slides-sub-arrange " >  
-        <ion-col class="bot-reply-col" size="12"
-          *ngFor="let command of wmatchingdta.commands;index as ie"   >  
-          <!-- <input  id="{{i}}sets[]" type="hidden" value="{{command | json}}"> -->
+        <ion-col class="bot-reply-col" size="12" 
+          *ngFor="let command of wmatchingdta.commands;index as ie"   >   
           <div class="del-command">
-          <div class="tooltip"> 
-            <img class="logo-del" (click)="onDelComm(ie,i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
-            <span class="tooltiptext">Delete command</span>
-          </div>
+            <div class="tooltip"> 
+              <img class="logo-del" (click)="onDelComm(ie,i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+              <span class="tooltiptext">Delete command</span>
+            </div>
           </div>
           <div (click)="onEditComm($event,ie,i,command.text_message)"> 
           <div *ngIf="command.command_type == 'block'"> 
-            <ion-row>
-              <ion-col size="auto" *ngFor="let block_property of command.block_properties;index as ie"> 
-           
+            <ion-row style="margin-right: 50px;">
+              <ion-col size="auto" *ngFor="let block_property of command.block_properties;index as ie">  
                 <div class="non-block" *ngIf="block_property.ischecked">
                   <p class="txt-block">{{block_property.block_name}}</p> 
                 </div>

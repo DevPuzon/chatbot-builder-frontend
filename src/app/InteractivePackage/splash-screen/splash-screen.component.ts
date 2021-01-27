@@ -49,7 +49,7 @@ export class SplashScreenController {
       if(!this.isManualDismiss){ 
         this.dismiss();
       }
-    }, 2150);
+    }, 0);
   }
   
   showCusTime(seconds) { 

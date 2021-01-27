@@ -103,11 +103,11 @@ export class CustomHttp {
     .put(url,body, { headers: headers })
   }
   
-  del(ctrl,id){
+  del(ctrl){
     this.base = environment.backend;
     this.token ="Bearer "+ localStorage.getItem("-=[]t");
     console.log(this.token);
-    const url = this.base+ctrl+"/"+id;
+    const url = this.base+ctrl;
     const headers = new HttpHeaders()
     .set('cache-control', 'no-cache')
     .set('Authorization', this.token)

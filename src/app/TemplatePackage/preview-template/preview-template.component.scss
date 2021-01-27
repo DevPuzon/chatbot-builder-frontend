@@ -1,6 +1,11 @@
 .c-exit{ 
     position: absolute;
     width: fit-content;
+    ion-button{
+        background: #FFF9;
+        border-radius: 25px;
+        margin: 8px; 
+    }
 }
 .c-template{
     .txt{ 
@@ -39,8 +44,7 @@
         height: 350px;
         overflow: hidden;
         img{
-            width: 100%;
-            margin-top: -100px;
+            width: 100%; 
         }
     }
 }

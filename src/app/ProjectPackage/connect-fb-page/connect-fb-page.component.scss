@@ -36,3 +36,12 @@ ion-item{
 ion-col{
     padding: 0px;
 }
+.c-con-fb{ 
+    display: grid;
+    img{ 
+        justify-self: center; 
+    }
+    ion-button{ 
+        --background: #2099EE;
+    }
+}

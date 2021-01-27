@@ -19,6 +19,7 @@ export class WmPropertiesComponent implements OnInit  {
  
   ngOnInit() { 
     this.init();
+    this.show_blocks= this.blocks;
   }
   init() { 
     this.wmatchingdta = this.wmatchingdtas[this.wmatchingdtas_i];  
@@ -32,11 +33,12 @@ export class WmPropertiesComponent implements OnInit  {
   }
 
   is_block=true;
-  isBlock(){
-    this.is_block= !this.is_block;
+  isBlock(is_block){
+    this.is_block= is_block;
   } 
 
   blocks = new Array();
+  show_blocks = new Array();
   saveNoBlocks() { 
     for(let i  = 0 ; i < this.maindatas.length; i++){
       // this.wmatchingdta.commands[this.command_i].block_properties.push({
@@ -68,7 +70,8 @@ export class WmPropertiesComponent implements OnInit  {
     } 
   }
   
-  onCheckBtnBlock(index){   
+  onCheckBtnBlock(block_name){
+    const index = this.blocks.findIndex(o=>o.block_name === block_name);
     if(index != null){    
       this.wmatchingdta.commands[this.command_i] = {}; 
       let boolGl = !this.blocks[index].ischecked;   
@@ -115,5 +118,33 @@ export class WmPropertiesComponent implements OnInit  {
   }
   onEnterMsg(){ 
     this.popCtrl.dismiss();
+  }
+
+  
+  onInput(txt){
+    if(txt ==""){
+      this.show_blocks = this.blocks;
+    }else{  
+      let arr_map = this.blocks.map(el => el.block_name); 
+      const search_bools = this.search(arr_map,txt);
+      this.show_blocks = new Array(); 
+      for(let i = 0 ; i < search_bools.length ;i++){
+        if(search_bools[i]){
+          this.show_blocks.push(this.blocks[i]);
+        }
+      }
+    }
+  }
+  onCancel(){
+    this.show_blocks = this.blocks;
+  }
+  
+  search(arr_map,text){
+    let ret = [];
+    for(let i = 0 ; i < arr_map.length;i++){
+      const map = arr_map[i].toLowerCase();
+      ret.push(map.includes(text.toLowerCase()));
+    }
+    return ret;
   }
 }

@@ -32,7 +32,8 @@ declare var $:any;
   styleUrls: ['./automation.component.scss'] 
 })
 export class AutomationComponent implements OnInit { 
-  @ViewChild('wordmatching') wordmatching : WordMatchingContentComponent;
+  @ViewChild('wordmatching') wordmatching : WordMatchingContentComponent; 
+  isSaving = true;
   block_index= 0; 
   btntxt_index = null;
   text=""
@@ -52,7 +53,9 @@ export class AutomationComponent implements OnInit {
     project_id: null,
     template_id: null,
     updated_at: null,
-    user_id: null
+    user_id: null,
+    user_img: null,
+    user_fullname:null
   }
   constructor(private popoverController:PopoverController,
     private toast:ToastMessageService,
@@ -163,7 +166,7 @@ export class AutomationComponent implements OnInit {
   initSortable() { 
     let _this = this;
     $(".slides-sub-arrange").sortable({ 
-     stop: function(e, ui) {
+     stop: (e, ui)=>{
       var data = ""; 
         var sets = [];            
         $('input[id^=subsets]').each(function(){
@@ -175,9 +178,11 @@ export class AutomationComponent implements OnInit {
            mini_blocks[i] = sets[i]; 
           }
         }
-       //  _this.maindatas[_this.block_index].mini_blocks = sets; 
+        console.log(mini_blocks);
+        _this.maindatas[_this.block_index].mini_blocks = mini_blocks; 
         BlockUtils.setLocalBlocks(_this.maindatas,_this.wmatchingdtas); 
         $(".slide-placeholder-animator").remove(); 
+        $(".slides-sub-arrange").trigger("click");
      },
     });
     
@@ -197,6 +202,7 @@ export class AutomationComponent implements OnInit {
         //  _this.maindatas[_this.block_index].mini_blocks = sets; 
         BlockUtils.setLocalBlocks(_this.maindatas,_this.wmatchingdtas); 
          $(".slide-placeholder-animator").remove(); 
+         $(".slides-main-arrange").trigger("click");
       },
      });
   }
@@ -235,7 +241,7 @@ export class AutomationComponent implements OnInit {
   //   })
   // }
 
-  async initMaindatas() { 
+  async initMaindatas() {   
     this.wmatchingdtas.push({user_possible_words:[],commands:[]});  
     this.maindatas.push(
       {
@@ -249,7 +255,7 @@ export class AutomationComponent implements OnInit {
       {
         "block_name":"Default message",
         "mini_blocks":[ 
-          ChatbotFunc.genText(`This block is trying to understand the user response.`)
+          ChatbotFunc.genText(`Sorry I cant understand you.`)
           ]
       }
     )
@@ -278,8 +284,7 @@ export class AutomationComponent implements OnInit {
     this.block = block; 
     this.block_index = i; 
     this.checkIsShowMinBlock();
-    this.initEmoji();
-    BlockUtils.setLocalBlocks(this.maindatas,this.wmatchingdtas);  
+    this.initEmoji(); 
   }
 
   async onDelBlock(block_i){ 
@@ -320,6 +325,7 @@ export class AutomationComponent implements OnInit {
     let message =txt; 
     const text = `${message}${event.emoji.native}`;  
     this.kTitleTxt(text,min_block,mini_block_i);
+    console.log(text);
     // this.showEmojiPicker = false;
   } 
   kTitleTxt(txt,min_block,mini_block_i){ 
@@ -501,7 +507,11 @@ export class AutomationComponent implements OnInit {
       console.log(JSON.stringify(this.maindatas));
       this.block_index =0;  
       this.onSearch("");
-      this.wordmatching.onSearch("");
+        
+      console.log(this.wordmatching);
+      setTimeout(() => { 
+        this.wordmatching.onSearch("");
+      }, 1000);
       this.checkIsShowMinBlock(); 
     }, 
     async (errorCode: Response) => {  

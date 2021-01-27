@@ -1,8 +1,10 @@
 export const environment = {
   production: true,
-  crypt_code: "[]`rtl082017e",
-  fb_app_client_id:"3443378839110052",
-  fb_app_client_secret: "2cf1e2eb03747cd8ecdd069f17fc58da",
+  crypt_code: "[]`rtl082017e",  
+  
+  fb_app_client_id:"917782305413341",
+  fb_app_client_secret: "8d899f40bbdc627957c006855712cf38",
+
   firebase:{
     apiKey: "AIzaSyAMe193JtamVePNjIiMRvvnGANwhOsNSX0",
     authDomain: "prototypeproject-eeb91.firebaseapp.com",

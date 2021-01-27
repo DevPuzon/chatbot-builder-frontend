@@ -3,7 +3,7 @@
     <ion-col style="height: 100vh; overflow: auto;" size="12" size-sm="12" size-md="4" size-lg="4">  
       <ion-toolbar class="toolbar" color="primary">   
         <img slot="start"  class="toolbar-icon" src="../../../assets/icon/favicon.png"> 
-        <ion-title  >Retailgate  </ion-title>
+        <ion-title  >AiGency  </ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="onMenu($event)" >
             <ion-icon slot="icon-only"
@@ -24,7 +24,7 @@
             <ion-icon name="rocket-outline" slot="start"></ion-icon>
             Deploy
           </ion-button>
-          <ion-buttons>
+          <!-- <ion-buttons>
             <ion-button class="test-color" color="primary">
               Test
             </ion-button> 
@@ -35,7 +35,7 @@
               <p  class="code">QWED</p>
               <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAAA10lEQVRIie2WOw7CMBBE30b0QIfogBtwGOAmtLQcBc6QMrScAKgQLeIEQxNLLiIcwfJTMtXYGvnJm1W80DRZvJDUA2ZA3+HsnZkVyZSknqST/LR6xMsivwBGL96ytjqRHwRjZlaRdVWWjrxHnVTAqeGuwMbMbrXAJXSPz7dfSpoGeKrUng03BuZhkSq1S8NJUmmHYe9rzdWCW3ALbsH/B47/1QWw/jjYzHIg/xT4J0pdpUsw0dP2is61UuXIe3Qadw+SuuHs5ONehmfA5Ol7whHYxjNX83QHpcHLvwDsnt8AAAAASUVORK5CYII=">
             </div>
-          </div>
+          </div> -->
           <ion-buttons> 
             <ion-button class="cust-color" color="danger"
              (click)="onClearAll()">
@@ -53,7 +53,7 @@
             <ion-col *ngFor="let data of maindatas;index as i"
             size="12"
             size-sm="12"
-            size-md="12"
+            size-md="12"  
             size-lg="6" [hidden]="!search_blocks[i]">  
               <div  class="block-container" [ngStyle]="block_index == i?{'background-color': '#B3D9FB'} : {'background-color': 'white'}" >
                 <p class="block-title" (click)="onBlocks(data,i)">{{data.block_name}}</p>
@@ -80,11 +80,28 @@
       style="display:none"
       accept=".png, .jpg, .jpeg">
       <div class="builder-container" > 
+        <!-- <div class="c-saving" *ngIf="isSaving">  
+          <ion-progress-bar value="0.25" buffer="0.5"></ion-progress-bar>
+          <p>Saving</p>
+        </div> -->
         <!-- <h2 class="builder-block-title">{{block.block_name}}</h2> -->
-        <input [readonly]="block_index == 0 || block_index == 1" 
-        [(ngModel)]="block.block_name"  
-        (focusout)="kFocusOTitle(block.block_name)"
-         type="text" class="builder-block-title"> 
+        
+        <ion-row>
+          <ion-col size="12" size-sm="12" size-md="12" size-lg="8">
+            <input [readonly]="block_index == 0 || block_index == 1" 
+            [(ngModel)]="block.block_name"  
+            (focusout)="kFocusOTitle(block.block_name)"
+            type="text" class="builder-block-title"> 
+          </ion-col>
+          <ion-col size="12" size-sm="12" size-md="12" size-lg="4" class="ion-align-self-center">
+            <div class="p-profile">
+              <ion-avatar>
+                <img [src]="projectData.user_img" alt="">
+              </ion-avatar>
+              <p>{{projectData.user_fullname}}</p>
+            </div>
+          </ion-col>
+        </ion-row>
         <div class="arrange-main slides-sub-arrange" > 
           <div *ngFor="let min_block of block.mini_blocks;index as i"
            class="arrange slide" (click)="onNavMinblock(i)"
@@ -119,7 +136,7 @@
                   *ngIf="min_block.type == 'button-text-only' || min_block.type == 'text-only'">
                     <div class="textarea-container"> 
                       <textarea class="txt" #textminblock (keyup)="kTitleTxt(textminblock.value,min_block,i)" >{{min_block.type == 'text-only'? min_block.message.text : min_block.message.attachment.payload.text}} </textarea>
-                      <!-- <ion-buttons>
+                      <ion-buttons>
                         <ion-button (click) ="onEmojiPicker(i)" style="margin-left: auto;">
                           <ion-icon slot="icon-only"
                           name="{{showEmojiPickers[i] ? 'close-outline' : 'happy-outline'}}"></ion-icon>
@@ -127,7 +144,7 @@
                       </ion-buttons>  
                       <emoji-mart class="emoji-mart" set="facebook"  [hidden]="!showEmojiPickers[i]"
                       (emojiSelect)="addEmojiTextBtnOnly($event,textminblock.value,min_block,i)" 
-                      title="Pick your emoji.…"></emoji-mart>   -->
+                      title="Pick your emoji.…"></emoji-mart>  
                     </div>
                     <div class="buttons-container"
                     *ngIf="min_block.type == 'button-text-only'">
@@ -238,18 +255,21 @@
                       <div *ngIf="min_block.message.quick_replies.length > 0" style="display: inline-flex;">
                         <div [class]="qreply.title == '' ? 'err-qreply-button':'qreply-button'" 
                            *ngFor="let qreply of min_block.message.quick_replies;index as qreply_i" >
-                          <p class="button-title" (click)="onQreplyEdit($event,i,qreply_i,qreply.title)">{{qreply.title == '' ? 'Enter button name':qreply.title}}</p>
-                          <div class="button-main"> 
-                            <div class="button-subtitle func" (click)="onQreplyEdit($event,i,qreply_i,qreply.title)" >
-                              <ion-row>
-                                <ion-col size="auto" *ngFor="let payload of qreply.payload" >
-                                  <p  class="block-style" *ngIf="payload.ischecked">{{payload.block_name}}  </p></ion-col>
-                              </ion-row>
-                            </div> 
-                            <div class="tooltip"> 
-                              <img class="logo-del" (click)="onDelQreply(i,qreply_i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
-                              <span class="tooltiptext">Delete quick reply</span>
-                            </div>
+                           <div class="q-btn-main" (click)="onQreplyEdit($event,i,qreply_i,qreply.title)"> 
+                              <p class="button-title">{{qreply.title == '' ? 'Enter button name':qreply.title}}</p>
+                              <div class="button-main" > 
+                                <div class="button-subtitle func" >
+                                  <ion-row>
+                                    <ion-col size="auto" *ngFor="let payload of qreply.payload" >
+                                      <p  class="block-style" *ngIf="payload.ischecked">{{payload.block_name}}  </p></ion-col>
+                                  </ion-row>
+                                </div> 
+                              </div> 
+                           </div>
+                        
+                          <div class="tooltip del"> 
+                            <img class="logo-del" (click)="onDelQreply(i,qreply_i)" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAxklEQVRIie2VsQrCQAyG/4Sgu5ujL1Vo7g2kg7oK7uKkoG/Qvpng5tClghAXC0Xba62KCPdPF3L5v0vu4AgtStM0YeaFmU0eUkcAuziON0RkTfXkM8+ybApg79tjZjPn3LYpz75iIprfTZZ5ng9UlVSVRETMbAUAzJx4PSqnbWyzj1SVgJYO/kJPl/zuqERkHEXRqYy/PqLfAsqX0HX9MuATCoAACIAA6KC6/6AAMOxraGYj59y5jOs6WAO49PC+AjhUzQHgBqFBOWBaSTLKAAAAAElFTkSuQmCC">
+                            <span class="tooltiptext">Delete quick reply</span>
                           </div>
                         </div>
                       </div>

@@ -96,7 +96,8 @@ export class ListProjectComponent implements OnInit {
     })
   }
 
-  async onClickItemMenu(ev){
+  async onClickItemMenu(item,ev){
+    console.log(item);
     const popover = await this.popCtrl.create({
       component: IonPopOverListComponent ,  
       event: ev ,
@@ -112,6 +113,30 @@ export class ListProjectComponent implements OnInit {
       console.log(data);
       switch(data.name){
         case "Duplicate":
+          var alert = await this.alertController.create({ 
+            header: 'Duplicate',
+            message: 'Do you want to <strong>duplicate</strong> this project?',
+            buttons: [
+              {
+                text: 'Cancel', 
+              }, {
+                text: 'Yes',
+                handler: async () => {  
+                  var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+                  await loading.present(); 
+                  
+                  this.cusHttp.post(`project/delete?project_id=${item.project_id}`,{})
+                  .subscribe(async (snap:any)=>{
+                    loading.dismiss();   
+                    this.projects.splice(this.projects.indexOf(item),1);
+                  },async (err)=>{   
+                    this.toast.presentToast(this.cusHttp.httpErrRes(err));
+                  }); 
+                }
+              }
+            ]
+          }); 
+          await alert.present(); 
           break;
           
         case "Rename":
@@ -122,7 +147,8 @@ export class ListProjectComponent implements OnInit {
               { 
                 type: 'text',
                 name:"newname",
-                id: 'txt1', 
+                id: 'txt1',  
+                value:item.name,
                 placeholder: 'New name'
               } 
             ],
@@ -136,9 +162,20 @@ export class ListProjectComponent implements OnInit {
                 }
               }, {
                 text: 'rename',
-                handler: (data) => {
+                handler: async (data) => {
                   const newName = data.newname;
-                  console.log(newName);
+                  if(newName == item.name){return;}
+                  var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+                  await loading.present(); 
+                  
+                  this.cusHttp.put(`project/rename?project_id=${item.project_id}&name=${newName}`,{})
+                  .subscribe(async (snap:any)=>{
+                    loading.dismiss();
+                    Object.assign(item,{name:newName});
+                    console.log(item);
+                  },async (err)=>{   
+                    this.toast.presentToast(this.cusHttp.httpErrRes(err));
+                  });
                 }
               }
             ]
@@ -147,7 +184,7 @@ export class ListProjectComponent implements OnInit {
           break;
           
         case "Delete":
-          const alert = await this.alertController.create({ 
+          var alert = await this.alertController.create({ 
             header: 'Delete',
             message: 'Do you want to <strong>delete</strong> this project?',
             buttons: [
@@ -155,7 +192,17 @@ export class ListProjectComponent implements OnInit {
                 text: 'Cancel', 
               }, {
                 text: 'Yes',
-                handler: async () => {   
+                handler: async () => {  
+                  var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+                  await loading.present(); 
+                  
+                  this.cusHttp.del(`project/delete?project_id=${item.project_id}`)
+                  .subscribe(async (snap:any)=>{
+                    loading.dismiss();   
+                    this.projects.splice(this.projects.indexOf(item),1);
+                  },async (err)=>{   
+                    this.toast.presentToast(this.cusHttp.httpErrRes(err));
+                  }); 
                 }
               }
             ]

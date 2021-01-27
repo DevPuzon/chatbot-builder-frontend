@@ -5,6 +5,20 @@ h2{
     font-weight: 400;
     margin: 0px;
 }
+.p-profile{
+    display: flex; 
+    float: right;
+    ion-avatar{
+        height: 38px;
+        width: 38px;
+    }
+    p{    
+        place-self: center;
+        margin: 0px;
+        margin-left: 4px;
+        font-weight: 400;
+    }
+}
 .toolbar{ 
     .toolbar-icon{
         width: 50px;
@@ -78,8 +92,7 @@ h2{
     .blocks-container{
         margin: 8px;
         .block-container{    
-            background-color: #FFFFFF;
-            padding: 12px; 
+            background-color: #FFFFFF; 
             margin-bottom: 8px;
             border-radius: 4px;
             display: flex;
@@ -87,11 +100,13 @@ h2{
             border: 3px solid #F3F2F2;
             img{
                 cursor:pointer;
-                height: fit-content;
+                place-self: center;
+                margin-right: 10px;
             }
-            .block-title{
-                font-size: 19px;
-                width:-webkit-fill-available;
+            .block-title{    font-size: 19px;
+                padding: 12px;
+                place-self: center;
+                width: -webkit-fill-available;
             }
             p{
                 margin: 0px;
@@ -135,11 +150,18 @@ h2{
 .builder-container{ 
     overflow: auto;
     height: 99vh; 
-    background-color: #F9F8F8; 
-    padding-top: 10px; 
+    background-color: #F9F8F8;  
     padding-right: 10px;
     padding-left: 20px;
-    
+     
+    .c-saving{
+        p{    margin: 8px;
+            font-size: revert;
+            margin-top: 0px;
+            font-weight: 500;
+            color: #3880FF;
+        }
+    }
     .builder-block-title{
         margin-bottom: 10px;
         border: 0px;
@@ -244,11 +266,7 @@ h2{
             border: 0;
         }
     }
-} 
-
-.upimg{
-    height: -webkit-fill-available;
-}
+}  
 .buttons-container:hover  .del-btn-txt {
     display: block;
 }
@@ -353,8 +371,7 @@ h2{
     }
     .con{
         display: inline-flex ;
-        .qreply-button{
-            
+        .qreply-button{ 
             margin-right: 8px;
             padding: 2px;
             cursor: pointer;
@@ -362,13 +379,23 @@ h2{
             width: 310px;
             border: 2px solid #44B0B0;
             border-radius: 15px; 
+            position: relative;
+            .q-btn-main{
+                position: relative;
+                height: 100%;
+            } 
+            .del{ 
+                position: absolute;
+                right: 6px;
+                top: 40%;
+            }
             .button-title{
                 color: #44B0B0;
                 font-size: 19px;
-                margin-top: 10px;
+                padding-top: 10px;
                 margin-bottom: 0px;
             } 
-            .button-main{ 
+            .button-main{  
                 display: flex;
                 margin: 2px;
                 .button-subtitle{
@@ -390,13 +417,22 @@ h2{
             width: 310px;
             border: 2px solid #FC4338;
             border-radius: 15px; 
+            position: relative;
+            .q-btn-main{
+                height: 100%;
+            } 
+            .del{ 
+                position: absolute;
+                right: 6px;
+                top: 40%;
+            }
             .button-title{
                 color: #FC4338;
                 font-size: 19px;
-                margin-top: 10px;
+                padding-top: 10px;
                 margin-bottom: 0px;
             } 
-            .button-main{ 
+            .button-main{  
                 display: flex;
                 margin: 2px;
                 .button-subtitle{

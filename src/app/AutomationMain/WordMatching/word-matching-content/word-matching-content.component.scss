@@ -96,9 +96,13 @@ ion-popover {
             border-radius: 4px;
             margin-bottom: 4px;
             border: 2px solid #C6C6C6;
+            position: relative;
         }
         .del-command{
-            text-align: -webkit-right;
+            position: absolute; 
+            top: 50%; 
+            transform: translate(-50%, -50%);
+            right: 0px;
             .logo-del{
                 cursor: pointer;
                 width: 17px;

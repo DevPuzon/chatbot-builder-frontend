@@ -31,7 +31,8 @@ export class WordMatchingContentComponent implements OnInit {
   async ngOnInit() {
     // this.user = JSON.parse(localStorage.getItem("-==0us"));
     // this.initSortable();
-    this.onSearch("");  
+    
+    // this.onSearch("");  
     // var loading = await  this.loadingController.create({ message: "Please wait ...."  });
     // await loading.present(); 
     // loading.dismiss();  
@@ -133,6 +134,9 @@ export class WordMatchingContentComponent implements OnInit {
       for(let i = 0 ; i < this.wmatchingdtas.length ;i ++){
         this.user_word_bools.push(true);
       } 
+      console.log("asdasdas");
+      console.log(this.wmatchingdtas);
+      console.log(this.user_word_bools);
       return;
     }
     let user_words = this.wmatchingdtas.map(o=>o.user_possible_words); 
@@ -151,6 +155,5 @@ export class WordMatchingContentComponent implements OnInit {
       }
     } 
       
-    LoggerUtil.log(this.user_word_bools);
   }
 }

@@ -2,7 +2,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, ModalController, NavController } from '@ionic/angular';
+import { FacebookLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { CustomHttp } from 'src/app/utils/custom-http.service';
+import { FbProcessService } from 'src/app/utils/fb-process.service';
 import { ToastMessageService } from 'src/app/utils/toast-message.service';
 
 @Component({
@@ -13,7 +15,7 @@ import { ToastMessageService } from 'src/app/utils/toast-message.service';
 export class ConnectFbPageComponent implements OnInit { 
   @Input() project_id: any;
   isConnect = false;
-  constructor(
+  constructor(private authService: SocialAuthService,
     private custHttps:CustomHttp,
     private mdlCtrl:ModalController,
     private router:Router,
@@ -50,7 +52,7 @@ export class ConnectFbPageComponent implements OnInit {
     this.mdlCtrl.dismiss({isConnect:this.isConnect});
   }
   
-  async onConnect(d){
+  async onConnectFbPage(d){
     if(d.is_problem_connection){
       this.toast.presentToast(`Please make sure you are an ${d.name} admin.`)
       return;
@@ -73,5 +75,53 @@ export class ConnectFbPageComponent implements OnInit {
       await loading.dismiss();
       this.toast.presentToast(this.cusHttp.httpErrRes(err));
     })
+  }
+  async onConnectFbAcc(){
+    
+    var loading = await  this.loadingController.create({ message: "Please wait ...."  });
+    await loading.present(); 
+    const fbLoginOptions = {
+      // scope: 'pages_messaging,pages_messaging_subscriptions,email,pages_show_list,manage_pages',
+      scope:'email,public_profile,pages_show_list,pages_messaging,pages_read_engagement,pages_manage_metadata',
+      return_scopes: true,
+      enable_profile_selector: true
+     }; 
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID,fbLoginOptions ).then(async (snap)=>{
+      console.log(snap);
+      FbProcessService.stat_cusHttp = this.cusHttp; 
+      const u_long_access_token = await FbProcessService.getLongLiveUserAToken(snap.authToken);
+      const data = await FbProcessService.getLongLivePageToken(snap.id,u_long_access_token);
+      const prep_data = await FbProcessService.prepPages(data);
+      const fb_data = await this.onSaveFbLogin(snap,u_long_access_token); 
+      await FbProcessService.setFbPageAccessToken(prep_data);
+      await loading.dismiss();  
+      console.log(prep_data);
+      
+      window.location.reload();
+    })
+    .catch(async (err)=>{
+      await loading.dismiss(); 
+      console.log(err);
+    })
+  }
+
+  onSaveFbLogin(basicInfo,u_long_access_token) {
+    return new Promise<any>((resolve,reject)=>{
+      const data = {   
+        provider:"email+facebook",
+        social_user_id :basicInfo.id,
+        user_img :basicInfo.photoUrl,
+        fb_user_access_token:u_long_access_token,
+        is_email_verified: true
+      } 
+      this.cusHttp.put('fbpage/connect-email-to-fb',data)
+      .subscribe((snap:any)=>{ 
+        console.log(snap);
+        resolve(snap);
+      } , async (err) => { 
+        reject({});
+        this.toast.presentToast(this.cusHttp.httpErrRes(err));
+      });
+    });
   }
 }

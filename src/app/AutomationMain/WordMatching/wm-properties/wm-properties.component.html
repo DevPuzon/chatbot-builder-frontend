@@ -3,14 +3,19 @@
     <h4>Bot reply</h4> 
     <ion-toolbar class="toolbar-segment md in-toolbar hydrated">
       <ion-segment value="all" class="md in-toolbar hydrated">
-        <ion-segment-button (click)="isBlock()"  >Blocks</ion-segment-button>
-        <ion-segment-button  (click)="isBlock()"  >Message</ion-segment-button>
+        <ion-segment-button (click)="isBlock(true)"  >Blocks</ion-segment-button>
+        <ion-segment-button  (click)="isBlock(false)"  >Message</ion-segment-button>
       </ion-segment>
     </ion-toolbar>
     <div class="c-blocks-container"  *ngIf="is_block">
-      <h4>Redirect to block</h4> 
+      <h4>Redirect to block</h4>  
+      <ion-searchbar
+      mode="ios"  #search
+      (ionInput)="onInput(search.value)"
+      (ionCancel)="onCancel()">
+      </ion-searchbar>
       <ion-row  class="choices-block"> 
-        <ion-col *ngFor="let block of blocks;index as i" (click)="onCheckBtnBlock(i)"> 
+        <ion-col size="auto" *ngFor="let block of show_blocks;index as i" (click)="onCheckBtnBlock(block.block_name)"> 
           <div [class]="block.ischecked ? 'has-block':'non-block'">
             <p class="txt-block">{{block.block_name}}</p>
           </div>
