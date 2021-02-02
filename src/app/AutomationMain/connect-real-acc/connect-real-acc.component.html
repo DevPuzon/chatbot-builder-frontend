@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Connect to real account</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="router">
+    <app-user-login *ngIf="isLogin" [isConnectAcc]="true" (isPathLogin)="onPathLogin()"></app-user-login> 
+    <app-user-register  *ngIf="!isLogin"  [isConnectAcc]="true" (isPathLogin)="onPathLogin()"></app-user-register> 
+  </div>
+</ion-content>

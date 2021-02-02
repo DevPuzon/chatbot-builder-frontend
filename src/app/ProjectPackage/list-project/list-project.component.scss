@@ -1,0 +1,129 @@
+
+.toolbar{  
+    .toolbar-icon{
+        width: 50px;
+        background: #ffffff;
+        border-radius: 25px;
+        padding: 4px;
+        margin-left: 10px;
+    }
+}
+.c-more-tem{ 
+    display: flex;
+    place-content: flex-end;
+    font-weight: 500;
+    cursor: pointer;
+    p{  
+        color: #3880FF;
+    }
+    p:hover{
+        text-decoration: underline;
+    }
+    img{  
+        height: fit-content;
+    }
+}
+.c-blank{  
+    text-align: center;     
+    width: 127px;
+    padding: 8px;
+    background: #3880FF;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    img{ 
+        height: 37px;
+    }
+    .title{
+        text-align: start;
+        font-weight: 500;
+        margin-left: 12px;
+        margin-right: 12px; 
+        font-size: 14px;
+        color: #FFF;
+        text-align: center;
+        line-height: normal;
+    }
+}  
+.end{        
+    position: absolute;
+    left: 82%;
+    bottom: 0%; 
+    height: 100%;
+    .btn-connect{ 
+        place-self: center;
+    }
+    .btn-menu{        
+        border-radius: 0px 8px 8px 0px;
+        width: 53px; 
+        height: 100%;
+        margin-left: 10px;
+        background-color: #CFCBCB;
+        position: relative;
+        cursor: pointer;
+        img{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+.main-item{
+    cursor: pointer;
+    position: relative;
+    .c-proj{ 
+        display: flex;
+        background: #fff;
+        border-radius: 8px;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+        p{
+            width: fit-content;
+        }   
+        .txt{
+            p{        
+                margin-left: 12px;
+                margin-right: 12px;
+                text-align: start;
+            } 
+            .title{
+                text-align: start;
+                font-weight: 500; 
+                margin-top: 15px;
+                margin-bottom: 0px;
+                font-size: 23px;
+                line-height: normal;
+            }
+            .desc{
+                font-size: smaller;
+                font-weight: 580;
+                color: #535353;
+            }
+        }
+        .profile{
+            img{
+                place-self: center;
+                margin: 10px;
+                background: #E6E5E4;
+                border-radius: 60px; 
+                height: 50px;
+            } 
+        }
+    }
+}
+.btn-item-menu{
+    width: fit-content;
+    position: absolute; 
+    top: 30px;
+    right: 10px;
+}
+.template-color{
+    background-color: #662063;
+    color: #ffffff;
+}
+.blank-color{
+    background-color: #208EF0;
+    color: #ffffff;
+}

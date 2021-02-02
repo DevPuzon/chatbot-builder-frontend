@@ -1,0 +1,142 @@
+.login-con{ 
+    width: 80%;
+}  
+ .field{
+    margin-bottom: 17px;
+ }
+.passwordIcon{
+    font-size:2rem !important;
+    position: relative !important;
+    top: 22px !important;
+    margin: 0 auto !important;
+}
+.forgotpass{
+    width: 100%;
+    text-align-last: center;
+    margin-top: 8px;
+    display: inline-block;
+    p{
+        margin-top: 3px;
+        margin-bottom: 6px;
+        cursor: pointer;
+        color: #5195FF;
+    }
+}
+
+.logo-circle{
+    height: 100px;
+    width: 100px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+}
+
+.signin-con{ 
+    .btn-login{
+        width: 100%;
+        margin-top: 10px;
+    }
+    .btn-fb{
+        width: 100%;
+    }
+    .login-or{ 
+        margin-bottom: 18px;
+        margin-top: 18px; 
+        display: flex;    
+        place-items: center;
+        .line{
+            margin-left: 12px;
+            margin-right: 10px;
+            height: 1.3px;
+            background-color: #8E8E8E;
+            width: -webkit-fill-available;
+        }
+        .or{
+            color: #8E8E8E;
+            font-size: 14px;
+            margin: 0px;
+        }
+    }
+}
+
+.con-right{ 
+    text-align-last: center;
+    // background-color: #91D1F5;  
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #136ADE; 
+    background-image: url("../../../assets/auth-bg.png");
+    img{
+        // width: -webkit-fill-available;
+        // padding: 100px;
+    }
+    .p{ 
+        width: fit-content;
+        color: #1E1E1E;
+        margin: 0px;
+    }
+    .desc{
+        margin-top: 70px;
+        font-size: 28px;
+        width: 100%;
+        text-align-last: left;
+    }
+    .title{
+        font-size: 90px;
+        font-weight: bolder;
+        line-height: 96px;
+        text-align-last: left;
+    }
+    .subtitle{
+        margin-top: 35px;
+        font-weight: 500;
+        font-size: 38px;
+    }
+}
+ion-row{ 
+    height: 100%;  
+} 
+
+.privacy-con{ 
+    display: flex;
+    margin-top: 10px;
+    p{ 
+        font-size: 13px;
+        margin-left: 10px;
+    } 
+    b{
+        cursor: pointer;
+    }
+}
+.panel{
+    text-align-last: left; 
+    margin-bottom: 50px;
+    .title{
+        font-size: 45px;
+        color: #2B2B2B; 
+    }
+    .desc{ 
+        color: #8A8A8A; 
+        margin-top: 15px; 
+    }
+}
+.c-guest{
+    cursor:pointer;
+    text-align: center;
+    height: 80px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #488AFF;
+    border-radius: 7px;
+    margin: 9px;
+    p{
+        margin: 0px;
+        font-size: 30px;
+        font-weight: 450;
+        color: white;
+    }
+}

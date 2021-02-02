@@ -1,0 +1,47 @@
+.c-conn-main{
+    display: flex;
+    margin-bottom: 10px;
+    img{
+        height: 80px;
+    border-radius: 10px;
+    }
+    .c-text{
+        margin-left: 10px;
+        place-self: center;
+        h2{ 
+            margin: 0px;
+            margin-bottom: 4px;
+        }
+        h3{ 
+            margin: 0px;
+        }
+    } 
+}
+
+ion-item{
+    padding-top: 10px;
+    .c-connected{ 
+        p{ 
+            color: #848484;
+            font-size: 18px;
+            font-weight: 400;  
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+    }
+}
+ion-col{
+    padding: 0px;
+}
+.c-con-fb{ 
+    display: grid;
+    img{ 
+        justify-self: center; 
+    }
+    ion-button{ 
+        --background: #2099EE;
+    }
+}

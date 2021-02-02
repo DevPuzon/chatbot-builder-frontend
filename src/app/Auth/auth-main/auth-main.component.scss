@@ -1,0 +1,136 @@
+ion-content{
+    height: 100vh;
+}   
+
+ion-col{
+    padding: 0px;
+}
+.con-right{ 
+    text-align-last: center;
+    // background-color: #91D1F5;  
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #136ADE; 
+    background-image: url("../../../assets/auth-bg.png");
+    img{
+        // width: -webkit-fill-available;
+        // padding: 100px;
+    }
+    .p{ 
+        width: fit-content;
+        color: #1E1E1E;
+        margin: 0px;
+    }
+    .desc{
+        margin-top: 70px;
+        font-size: 28px;
+        width: 100%;
+        text-align-last: left;
+    }
+    .title{
+        margin-top: 80px;
+        font-size: 90px;
+        font-weight: bolder;
+        line-height: 96px;
+        text-align-last: left;
+    }
+    .subtitle{
+        margin-top: 35px;
+        font-weight: 500;
+        font-size: 38px;
+    }
+}
+ion-row{ 
+    height: 100%; 
+    // background-position: center;
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    // background-position: center;
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    // background-image: url("../../../assets/auth-bg.png");
+} 
+
+.panel{
+    text-align-last: left; 
+    margin-bottom: 50px;
+    .title{
+        font-size: 45px;
+        color: #2B2B2B; 
+    }
+    .desc{ 
+        color: #8A8A8A; 
+        margin-top: 15px; 
+    }
+}
+.c-guest{
+    cursor:pointer;
+    text-align: center;
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #488AFF;
+    border-radius: 7px;
+    p{
+        margin: 0px;
+        font-size: 30px;
+        font-weight: 450;
+        color: white;
+    }
+}
+.router{
+    background-color: white;
+    height: 100vh;
+}
+.c-reg{
+    height: 100vh;
+    background-image: url("../../../assets/bg-lightblue.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    .c-reg-sub{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 70%;
+        width: 60%;
+        .c-card{      
+            height: 100%; 
+            border-radius: 8px; 
+            background-color: white;
+            box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12);
+        } 
+    }
+}
+
+@media only screen and (max-width: 766px) {  
+    .c-reg{
+        height: 100vh;
+        background-image: url("../../../assets/bg-lightblue.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        .c-reg-sub{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 100%;
+            width: 100%;
+            .c-card{      
+                height: 100%; 
+                border-radius: 0px; 
+                background-color: white;
+                box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12);
+            } 
+        }
+    }
+    .con-right{ 
+        display: none;
+    }
+ }

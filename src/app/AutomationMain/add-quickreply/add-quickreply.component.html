@@ -1,0 +1,27 @@
+<div class="container">
+  <h4>If user clicks</h4>
+  <input type="text" class="input-button-title"
+  placeholder="Add button title" [(ngModel)]="btn_name" (keyup)="kBtnTitle()">
+  <ion-toolbar class="toolbar-segment md in-toolbar hydrated">
+    <ion-segment value="all" class="md in-toolbar hydrated">
+      <ion-segment-button class="segment-button-checked" >Blocks</ion-segment-button> 
+    </ion-segment>
+  </ion-toolbar>
+  <div class="c-blocks-container">
+    <h4>Redirect to block</h4> 
+    <ion-row  class="choices-block"> 
+      <ion-col size="12">
+        <ion-searchbar
+           mode="ios"  #search
+          (ionInput)="onInput(search.value)"
+          (ionCancel)="onCancel()">
+        </ion-searchbar>
+      </ion-col>
+      <ion-col *ngFor="let block of show_blocks;index as i" (click)="onCheckBtnBlock(block.block_name)"> 
+        <div [class]="block.ischecked ? 'has-block':'non-block'">
+          <p class="txt-block">{{block.block_name}}</p>
+        </div>
+      </ion-col> 
+    </ion-row>
+  </div> 
+</div>

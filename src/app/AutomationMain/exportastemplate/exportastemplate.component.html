@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{template_id == null ? 'Export as template':'Update template' }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header> 
+<ion-progress-bar *ngIf="isProgressLoading" type="indeterminate"></ion-progress-bar>
+<ion-content>
+  <form [formGroup]="form" class="form" (keyup.enter)="onSubmit()">  
+   <input id="exportU"  #exportU type="file"
+    (click)="exportU.value = null" 
+    (change)="onChange(exportU.files)" 
+     name="files"  
+     style="display:none"
+     accept=".png, .jpg, .jpeg"> 
+     <ion-row>
+       <ion-col size="12"
+       size-sm="12"
+       size-md="5"
+       size-lg="5"> 
+        <div class="add-pic"
+        (click)="getImage()" >
+          <div
+            class="add-pic1"  > 
+            <img class="imgadd" src="data:image/png;base64,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" />  
+            <img  *ngIf="!form.value.temp_img" src="data:image/png;base64,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">
+            <img class="mainimg" *ngIf="form.value.temp_img" [src]="form.value.temp_img">
+          </div>  
+        </div>
+        <div *ngIf="submitted && f.temp_img.errors">  
+          <div class="error-text">{{(f.temp_img.errors.required) ? 'Profile is required' :
+            (f.temp_img.errors) ? 'Profile is not valid.' :  ''}}</div>
+        </div>
+       </ion-col>
+       <ion-col size="12"
+       size-sm="12"
+       size-md="7"
+       size-lg="7"> 
+        <ion-list  >  
+          <ion-item>
+            <ion-label position="stacked">Name</ion-label>
+            <ion-input formControlName="name"></ion-input>
+          </ion-item>
+          <div *ngIf="submitted && f.name.errors">  
+            <div class="error-text">{{(f.name.errors.required) ? 'Name is required' :
+              (f.name.errors) ? 'Name is not valid.' :  ''}}</div>
+          </div>
+          <ion-item>
+            <ion-label position="stacked">Created by</ion-label>
+            <ion-input  formControlName="created_by"></ion-input>
+          </ion-item>
+          <div *ngIf="submitted && f.created_by.errors">  
+            <div class="error-text">{{(f.created_by.errors.required) ? 'Created byis required' :
+              (f.created_by.errors) ? 'Created by is not valid.' :  ''}}</div>
+          </div>
+          <ion-item>
+            <ion-label position="stacked">Description</ion-label>
+            <ion-textarea  formControlName="description" rows="4" placeholder="......."></ion-textarea>
+          </ion-item>
+          <div *ngIf="submitted && f.description.errors">  
+            <div class="error-text">{{(f.description.errors.required) ? 'Description is required' :
+              (f.description.errors) ? 'Description is not valid.' :  ''}}</div>
+          </div> 
+
+          <ion-item>
+            <ion-label>Type</ion-label>
+            <ion-select  formControlName="type" interface="popover"
+               placeholder="Select One" >
+              <ion-select-option value="business">Business</ion-select-option>
+              <ion-select-option value="marketing">Marketing</ion-select-option>
+              <ion-select-option value="faqs">FAQs</ion-select-option>
+              <ion-select-option value="e-commerce">E-commerce</ion-select-option>
+              <ion-select-option value="concierge">Concierge</ion-select-option>
+              <ion-select-option value="recommendations">Recommendations</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="submitted && f.type.errors">  
+            <div class="error-text">{{(f.type.errors.required) ? 'Type is required' :
+              (f.type.errors) ? 'Type is not valid.' :  ''}}</div>
+          </div>  
+          
+          <ion-item lines="full">
+            <ion-label>For public</ion-label>
+            <ion-toggle formControlName="is_public"></ion-toggle>
+          </ion-item> 
+          
+        </ion-list>
+       </ion-col>
+     </ion-row>
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-button expand="full" (click)="onSubmit()"> 
+    {{template_id == null ? 'Export':'Update' }}
+  </ion-button>
+</ion-footer>

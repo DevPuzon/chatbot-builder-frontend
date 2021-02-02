@@ -1,0 +1,68 @@
+.content{
+    display: flex;
+    padding: 4px;
+    .container{
+        padding: 10px;
+        width: 400px;
+    }
+}
+
+.input-button-title{ 
+    height: 220px; 
+    width: 100%;
+    overflow: hidden;
+    background-color: transparent;
+    font-size: 16px;
+    line-height: 1.32; 
+    height: 189px;
+    padding: 7px 9px;
+    white-space: pre-wrap;
+    margin: 0;
+    border-radius: 7px;
+    top: 0;resize: none; 
+    border: 0;
+}
+.c-blocks-container{
+    .input-button-title{
+        padding: 8px;
+        border-radius: 7px;
+        width: 100%;
+    }
+    .choices-block{
+        display: flex;
+        .non-block{
+            cursor: pointer;
+            margin: 3px;
+            border-radius: 8px;
+            width: fit-content;
+            padding: 5px;
+            background: #C6C6C6;
+            p{
+                white-space: pre;
+                margin: 0px;
+            }
+        }
+        .has-block{
+            cursor: pointer;
+            margin: 3px;
+            border-radius: 8px;
+            padding: 5px;
+            width: fit-content;
+            background: #208EF0;;
+            .txt-block{
+                color: #FFF;
+            }
+            p{
+                white-space: pre;
+                margin: 0px;
+            }
+        }
+    }
+}
+.toolbar-segment{
+    margin-top: 7px;
+    margin-bottom: 11px;
+}
+ion-col{
+    padding: 0px;
+}

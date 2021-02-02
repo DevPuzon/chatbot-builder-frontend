@@ -1,0 +1,45 @@
+<ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar> 
+<ion-content>
+  <div class="c-container"> 
+    <div  class="content">
+      <div class="c-menu-view"> 
+        <ion-buttons size="default">
+          <ion-button class="c-view-proj" color="primary"
+          [routerLink]="['/p']">
+            View my projects
+          </ion-button>
+        </ion-buttons> 
+        <ion-segment value="all" (ionChange)="onCType($event)">
+          <ion-segment-button value="all">
+            <ion-label>All</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="new">
+            <ion-label>New</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="trending">
+            <ion-label>Trending</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="business">
+            <ion-label>Business</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="marketing">
+            <ion-label>Marketing</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="faqs">
+            <ion-label>FAQs</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="e-commerce">
+            <ion-label>E-commerce</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="concierge">
+            <ion-label>Concierge</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="recommendations">
+            <ion-label>Recommendations</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div> 
+      <app-list-template-content #list_template_content (send_out)="onChildActivity($event)"></app-list-template-content>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,22 @@
+
+<div class="c-ch">
+  <div class="c-ch-sub">
+    <div class="c-card"> 
+      <div class="header">
+        <img class="img-head" src="../../../assets/expand-logo.png" alt="">
+      </div>
+      <div class="container"><h1>Templates</h1> 
+        <app-list-template-content  [isGuestChooseTemplate]="true" 
+        (out_itemclick)="templateItemClick($event)" 
+        (out_loading)="templateLoading($event)"></app-list-template-content>
+      </div> 
+      <div class="c-footer">
+        <div class="slot-end">
+          <ion-button (click)="cProceed()">
+            {{guestTemplateChoosed == null ?  'Skip':'Next'}}
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
